@@ -1,0 +1,112 @@
+category: "编程语言/Python工具链"
+description: "Python相关工具命令"
+commands:
+  - name: python
+    category: "编程语言/Python工具链"
+    install_required: false
+    description: "运行Python解释器"
+    usage:
+      - "python [options] [script]"
+    options:
+      - flag: "-c <command>"
+        description: "执行Python命令"
+      - flag: "-m <module>"
+        description: "运行模块"
+      - flag: "-V, --version"
+        description: "显示版本信息"
+    examples:
+      - command: "python script.py"
+        description: "运行Python脚本"
+      - command: "python -m http.server 8000"
+        description: "启动简单HTTP服务器"
+      - command: "python -c 'print(\"Hello\")’"
+        description: "执行单行命令"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: pip
+    category: "编程语言/Python工具链"
+    install_required: false
+    description: "Python包管理器"
+    usage:
+      - "pip <command> [options]"
+    options:
+      - flag: "install"
+        description: "安装包"
+      - flag: "uninstall"
+        description: "卸载包"
+      - flag: "list"
+        description: "列出已安装的包"
+      - flag: "freeze"
+        description: "输出已安装包列表"
+    examples:
+      - command: "pip install requests"
+        description: "安装requests库"
+      - command: "pip install -r requirements.txt"
+        description: "从文件安装依赖"
+      - command: "pip freeze > requirements.txt"
+        description: "导出依赖列表"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: virtualenv
+    category: "编程语言/Python工具链"
+    install_required: true
+    install_method: "pip install virtualenv"
+    description: "创建Python虚拟环境"
+    usage:
+      - "virtualenv [options] <env_name>"
+    examples:
+      - command: "virtualenv venv"
+        description: "创建虚拟环境"
+      - command: "source venv/bin/activate"
+        description: "激活虚拟环境(Linux/Mac)"
+      - command: "venv\\Scripts\\activate"
+        description: "激活虚拟环境(Windows)"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: pytest
+    category: "编程语言/Python工具链"
+    install_required: true
+    install_method: "pip install pytest"
+    description: "Python测试框架"
+    usage:
+      - "pytest [options] [files]"
+    options:
+      - flag: "-v"
+        description: "显示详细输出"
+      - flag: "-k <pattern>"
+        description: "运行匹配的测试"
+      - flag: "--cov"
+        description: "显示覆盖率"
+    examples:
+      - command: "pytest"
+        description: "运行所有测试"
+      - command: "pytest -v test_app.py"
+        description: "运行指定文件的测试"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: pylint
+    category: "编程语言/Python工具链"
+    install_required: true
+    install_method: "pip install pylint"
+    description: "Python代码检查工具"
+    usage:
+      - "pylint [options] <modules>"
+    examples:
+      - command: "pylint mymodule.py"
+        description: "检查代码质量"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"

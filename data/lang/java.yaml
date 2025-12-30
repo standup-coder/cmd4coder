@@ -1,0 +1,247 @@
+category: "编程语言/Java工具链"
+description: "JDK自带工具和Java应用命令"
+commands:
+  - name: java
+    category: "编程语言/Java工具链"
+    install_required: true
+    install_method: "下载JDK: https://adoptium.net/ 或 https://www.oracle.com/java/"
+    description: "运行Java程序"
+    usage:
+      - "java [options] class [args...]"
+      - "java [options] -jar jarfile [args...]"
+    options:
+      - flag: "-cp, -classpath"
+        description: "指定类路径"
+      - flag: "-jar"
+        description: "运行JAR文件"
+      - flag: "-Xmx<size>"
+        description: "设置最大堆内存"
+      - flag: "-Xms<size>"
+        description: "设置初始堆内存"
+      - flag: "-D<name>=<value>"
+        description: "设置系统属性"
+    examples:
+      - command: "java -jar app.jar"
+        description: "运行JAR文件"
+      - command: "java -Xmx2g -jar app.jar"
+        description: "设置最大堆内存2GB"
+      - command: "java -Dspring.profiles.active=prod -jar app.jar"
+        description: "设置系统属性运行"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    related_commands:
+      - "javac"
+      - "jps"
+    references:
+      - "https://docs.oracle.com/en/java/javase/"
+
+  - name: javac
+    category: "编程语言/Java工具链"
+    install_required: true
+    install_method: "下载JDK: https://adoptium.net/"
+    description: "编译Java源代码"
+    usage:
+      - "javac [options] <source files>"
+    options:
+      - flag: "-d <directory>"
+        description: "指定输出目录"
+      - flag: "-cp, -classpath"
+        description: "指定类路径"
+      - flag: "-encoding"
+        description: "指定源文件编码"
+    examples:
+      - command: "javac HelloWorld.java"
+        description: "编译Java文件"
+      - command: "javac -d bin src/*.java"
+        description: "编译到bin目录"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: jps
+    category: "编程语言/Java工具链"
+    install_required: true
+    install_method: "JDK自带工具"
+    description: "显示Java进程状态"
+    usage:
+      - "jps [options]"
+    options:
+      - flag: "-l"
+        description: "显示完整类名或JAR路径"
+      - flag: "-v"
+        description: "显示JVM参数"
+      - flag: "-m"
+        description: "显示传递给main方法的参数"
+    examples:
+      - command: "jps"
+        description: "列出Java进程"
+      - command: "jps -l"
+        description: "显示完整信息"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    related_commands:
+      - "jstat"
+      - "jmap"
+
+  - name: jstat
+    category: "编程语言/Java工具链"
+    install_required: true
+    install_method: "JDK自带工具"
+    description: "监控JVM统计信息"
+    usage:
+      - "jstat [option] <vmid> [interval] [count]"
+    options:
+      - flag: "-gc"
+        description: "显示GC统计信息"
+      - flag: "-gcutil"
+        description: "显示GC利用率"
+      - flag: "-class"
+        description: "显示类加载统计"
+    examples:
+      - command: "jstat -gc 12345"
+        description: "显示进程GC信息"
+      - command: "jstat -gcutil 12345 1000 10"
+        description: "每秒显示GC利用率10次"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    related_commands:
+      - "jps"
+      - "jmap"
+
+  - name: jmap
+    category: "编程语言/Java工具链"
+    install_required: true
+    install_method: "JDK自带工具"
+    description: "生成堆转储和内存映射"
+    usage:
+      - "jmap [option] <pid>"
+    options:
+      - flag: "-dump:format=b,file=<file>"
+        description: "生成堆转储文件"
+      - flag: "-heap"
+        description: "显示堆信息"
+      - flag: "-histo"
+        description: "显示堆中对象统计"
+    examples:
+      - command: "jmap -heap 12345"
+        description: "查看堆信息"
+      - command: "jmap -dump:format=b,file=heap.bin 12345"
+        description: "生成堆转储文件"
+    notes:
+      - "生成堆转储会暂停JVM"
+    risks:
+      - level: medium
+        description: "堆转储操作会暂停应用，建议在低峰期执行"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    related_commands:
+      - "jhat"
+      - "jstack"
+
+  - name: jstack
+    category: "编程语言/Java工具链"
+    install_required: true
+    install_method: "JDK自带工具"
+    description: "打印Java线程堆栈"
+    usage:
+      - "jstack [option] <pid>"
+    options:
+      - flag: "-l"
+        description: "显示锁信息"
+      - flag: "-F"
+        description: "强制打印堆栈"
+    examples:
+      - command: "jstack 12345"
+        description: "打印线程堆栈"
+      - command: "jstack -l 12345 > thread.txt"
+        description: "导出线程信息到文件"
+    notes:
+      - "用于分析死锁和线程阻塞问题"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    related_commands:
+      - "jmap"
+      - "jcmd"
+
+  - name: jcmd
+    category: "编程语言/Java工具链"
+    install_required: true
+    install_method: "JDK自带工具"
+    description: "向运行JVM发送诊断命令"
+    usage:
+      - "jcmd <pid> <command>"
+    examples:
+      - command: "jcmd 12345 VM.version"
+        description: "查看JVM版本"
+      - command: "jcmd 12345 GC.heap_dump heap.hprof"
+        description: "生成堆转储"
+      - command: "jcmd 12345 Thread.print"
+        description: "打印线程堆栈"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    related_commands:
+      - "jmap"
+      - "jstack"
+
+  - name: jar
+    category: "编程语言/Java工具链"
+    install_required: true
+    install_method: "JDK自带工具"
+    description: "创建和管理JAR文件"
+    usage:
+      - "jar [options] [jarfile] [files...]"
+    options:
+      - flag: "-c"
+        description: "创建JAR文件"
+      - flag: "-x"
+        description: "提取JAR文件"
+      - flag: "-t"
+        description: "列出JAR文件内容"
+      - flag: "-f"
+        description: "指定JAR文件名"
+    examples:
+      - command: "jar -cf app.jar *.class"
+        description: "创建JAR文件"
+      - command: "jar -tf app.jar"
+        description: "列出JAR文件内容"
+      - command: "jar -xf app.jar"
+        description: "提取JAR文件"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: javadoc
+    category: "编程语言/Java工具链"
+    install_required: true
+    install_method: "JDK自带工具"
+    description: "生成Java文档"
+    usage:
+      - "javadoc [options] <source files>"
+    options:
+      - flag: "-d <directory>"
+        description: "指定输出目录"
+      - flag: "-author"
+        description: "包含作者信息"
+      - flag: "-version"
+        description: "包含版本信息"
+    examples:
+      - command: "javadoc -d docs src/*.java"
+        description: "生成文档到docs目录"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"

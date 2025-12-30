@@ -1,0 +1,353 @@
+category: "Operating System"
+description: "Ubuntu/Debian specific system commands and package management"
+commands:
+  - name: "apt update"
+    description: "Update package index from repositories"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo apt update"
+    examples:
+      - command: "sudo apt update"
+        description: "Refresh package list"
+    risks:
+      - level: "low"
+        description: "Requires sudo; updates package index only"
+    install_method: "Pre-installed on Ubuntu/Debian"
+    version_check: "apt --version"
+
+  - name: "apt upgrade"
+    description: "Upgrade all installed packages"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo apt upgrade"
+    options:
+      - flag: "-y"
+        description: "Automatic yes to prompts"
+    examples:
+      - command: "sudo apt upgrade"
+        description: "Upgrade all packages with confirmation"
+      - command: "sudo apt upgrade -y"
+        description: "Upgrade without prompts"
+    risks:
+      - level: "medium"
+        description: "May break compatibility; test in non-production first"
+    install_method: "Pre-installed on Ubuntu/Debian"
+    version_check: "apt --version"
+
+  - name: "apt install"
+    description: "Install new packages"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo apt install <package>"
+    options:
+      - flag: "-y"
+        description: "Automatic yes to prompts"
+    examples:
+      - command: "sudo apt install nginx"
+        description: "Install nginx web server"
+      - command: "sudo apt install vim git curl -y"
+        description: "Install multiple packages"
+    risks:
+      - level: "medium"
+        description: "Installing from untrusted repositories may introduce security risks"
+    install_method: "Pre-installed on Ubuntu/Debian"
+    version_check: "apt --version"
+
+  - name: "apt remove"
+    description: "Remove installed packages"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo apt remove <package>"
+    options:
+      - flag: "--purge"
+        description: "Remove package and configuration files"
+    examples:
+      - command: "sudo apt remove nginx"
+        description: "Remove nginx (keep config)"
+      - command: "sudo apt remove --purge nginx"
+        description: "Remove nginx and its config files"
+    risks:
+      - level: "high"
+        description: "Removing system packages may break system"
+    install_method: "Pre-installed on Ubuntu/Debian"
+    version_check: "apt --version"
+
+  - name: "apt search"
+    description: "Search for packages"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "apt search <keyword>"
+    examples:
+      - command: "apt search nginx"
+        description: "Search for nginx packages"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on Ubuntu/Debian"
+    version_check: "apt --version"
+
+  - name: "apt-cache show"
+    description: "Show package information"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "apt-cache show <package>"
+    examples:
+      - command: "apt-cache show nginx"
+        description: "Show detailed nginx package info"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on Ubuntu/Debian"
+    version_check: "apt-cache --version"
+
+  - name: "dpkg -i"
+    description: "Install .deb package file"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo dpkg -i <package.deb>"
+    examples:
+      - command: "sudo dpkg -i package.deb"
+        description: "Install local .deb file"
+    risks:
+      - level: "high"
+        description: "Installing untrusted .deb files may compromise system"
+    install_method: "Pre-installed on Ubuntu/Debian"
+    version_check: "dpkg --version"
+
+  - name: "dpkg -l"
+    description: "List installed packages"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "dpkg -l [pattern]"
+    examples:
+      - command: "dpkg -l"
+        description: "List all installed packages"
+      - command: "dpkg -l | grep nginx"
+        description: "Find nginx-related packages"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on Ubuntu/Debian"
+    version_check: "dpkg --version"
+
+  - name: "dpkg -r"
+    description: "Remove installed package"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo dpkg -r <package>"
+    examples:
+      - command: "sudo dpkg -r nginx"
+        description: "Remove nginx package"
+    risks:
+      - level: "high"
+        description: "May leave configuration files; use apt remove instead"
+    install_method: "Pre-installed on Ubuntu/Debian"
+    version_check: "dpkg --version"
+
+  - name: "systemctl start"
+    description: "Start a systemd service"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo systemctl start <service>"
+    examples:
+      - command: "sudo systemctl start nginx"
+        description: "Start nginx service"
+    risks:
+      - level: "medium"
+        description: "Starting services may expose network ports"
+    install_method: "Pre-installed on Ubuntu 16.04+"
+    version_check: "systemctl --version"
+
+  - name: "systemctl stop"
+    description: "Stop a systemd service"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo systemctl stop <service>"
+    examples:
+      - command: "sudo systemctl stop nginx"
+        description: "Stop nginx service"
+    risks:
+      - level: "high"
+        description: "May cause service outage"
+    install_method: "Pre-installed on Ubuntu 16.04+"
+    version_check: "systemctl --version"
+
+  - name: "systemctl status"
+    description: "Check service status"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status <service>"
+    examples:
+      - command: "systemctl status nginx"
+        description: "Check nginx service status"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on Ubuntu 16.04+"
+    version_check: "systemctl --version"
+
+  - name: "systemctl enable"
+    description: "Enable service to start on boot"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo systemctl enable <service>"
+    examples:
+      - command: "sudo systemctl enable nginx"
+        description: "Enable nginx on boot"
+    risks:
+      - level: "medium"
+        description: "Service will start automatically after reboot"
+    install_method: "Pre-installed on Ubuntu 16.04+"
+    version_check: "systemctl --version"
+
+  - name: "systemctl disable"
+    description: "Disable service from starting on boot"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo systemctl disable <service>"
+    examples:
+      - command: "sudo systemctl disable nginx"
+        description: "Disable nginx on boot"
+    risks:
+      - level: "low"
+        description: "Service won't start on reboot"
+    install_method: "Pre-installed on Ubuntu 16.04+"
+    version_check: "systemctl --version"
+
+  - name: "systemctl restart"
+    description: "Restart a systemd service"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo systemctl restart <service>"
+    examples:
+      - command: "sudo systemctl restart nginx"
+        description: "Restart nginx service"
+    risks:
+      - level: "medium"
+        description: "Brief service interruption during restart"
+    install_method: "Pre-installed on Ubuntu 16.04+"
+    version_check: "systemctl --version"
+
+  - name: "ufw enable"
+    description: "Enable Ubuntu firewall"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo ufw enable"
+    examples:
+      - command: "sudo ufw enable"
+        description: "Activate firewall"
+    risks:
+      - level: "high"
+        description: "May block SSH access; configure rules first"
+    install_method: "Pre-installed on Ubuntu"
+    version_check: "ufw version"
+
+  - name: "ufw allow"
+    description: "Allow firewall rule"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo ufw allow <port/service>"
+    examples:
+      - command: "sudo ufw allow 22"
+        description: "Allow SSH port"
+      - command: "sudo ufw allow ssh"
+        description: "Allow SSH service"
+      - command: "sudo ufw allow 80/tcp"
+        description: "Allow HTTP on TCP"
+    risks:
+      - level: "medium"
+        description: "Opening ports may expose services to network"
+    install_method: "Pre-installed on Ubuntu"
+    version_check: "ufw version"
+
+  - name: "ufw deny"
+    description: "Deny firewall rule"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo ufw deny <port/service>"
+    examples:
+      - command: "sudo ufw deny 23"
+        description: "Block telnet port"
+    risks:
+      - level: "medium"
+        description: "May block legitimate traffic"
+    install_method: "Pre-installed on Ubuntu"
+    version_check: "ufw version"
+
+  - name: "ufw status"
+    description: "Show firewall status and rules"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo ufw status"
+    options:
+      - flag: "verbose"
+        description: "Show detailed status"
+    examples:
+      - command: "sudo ufw status"
+        description: "Show firewall status"
+      - command: "sudo ufw status verbose"
+        description: "Show detailed firewall rules"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on Ubuntu"
+    version_check: "ufw version"
+
+  - name: "snap install"
+    description: "Install snap package"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo snap install <package>"
+    options:
+      - flag: "--classic"
+        description: "Install with classic confinement"
+    examples:
+      - command: "sudo snap install code --classic"
+        description: "Install VS Code"
+      - command: "sudo snap install vlc"
+        description: "Install VLC media player"
+    risks:
+      - level: "low"
+        description: "Snaps are sandboxed; generally safe"
+    install_method: "Pre-installed on Ubuntu 16.04+"
+    version_check: "snap version"

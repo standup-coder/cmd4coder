@@ -1,0 +1,211 @@
+category: "System Diagnostic"
+description: "Taobao System Activity Reporter - system performance monitoring tool"
+commands:
+  - name: "tsar"
+    description: "Display system performance statistics"
+    category: "System Diagnostic"
+    platforms:
+      - "linux"
+    usage:
+      - "tsar [options]"
+    options:
+      - flag: "-l"
+        description: "Show live mode (default 2 seconds interval)"
+      - flag: "-i"
+        description: "Set display interval (seconds)"
+      - flag: "-n"
+        description: "Number of iterations"
+      - flag: "-d"
+        description: "Specify date to display (YYYYMMDD)"
+      - flag: "--cpu"
+        description: "Display CPU stats"
+      - flag: "--mem"
+        description: "Display memory stats"
+      - flag: "--io"
+        description: "Display I/O stats"
+      - flag: "--traffic"
+        description: "Display network traffic"
+    examples:
+      - command: "tsar"
+        description: "Display today's system statistics"
+      - command: "tsar -l"
+        description: "Display live statistics"
+      - command: "tsar -l -i 5"
+        description: "Display live stats every 5 seconds"
+      - command: "tsar --cpu --mem"
+        description: "Display CPU and memory stats"
+      - command: "tsar -d 20241214"
+        description: "Display stats for specific date"
+    risks:
+      - level: "low"
+        description: "Read-only monitoring tool; no risks"
+    install_method: "Install from https://github.com/alibaba/tsar"
+    version_check: "tsar --version"
+
+  - name: "tsar --check"
+    description: "Check tsar configuration and data files"
+    category: "System Diagnostic"
+    platforms:
+      - "linux"
+    usage:
+      - "tsar --check"
+    examples:
+      - command: "tsar --check"
+        description: "Verify tsar installation and configuration"
+    risks:
+      - level: "low"
+        description: "Read-only check; no risks"
+    install_method: "Install from https://github.com/alibaba/tsar"
+    version_check: "tsar --version"
+
+  - name: "tsar --list"
+    description: "List available modules"
+    category: "System Diagnostic"
+    platforms:
+      - "linux"
+    usage:
+      - "tsar --list"
+    examples:
+      - command: "tsar --list"
+        description: "Show all available monitoring modules"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Install from https://github.com/alibaba/tsar"
+    version_check: "tsar --version"
+
+  - name: "tsar --cpu"
+    description: "Display detailed CPU statistics"
+    category: "System Diagnostic"
+    platforms:
+      - "linux"
+    usage:
+      - "tsar --cpu [options]"
+    options:
+      - flag: "-l"
+        description: "Live mode"
+      - flag: "-i"
+        description: "Interval in seconds"
+    examples:
+      - command: "tsar --cpu"
+        description: "Show CPU usage statistics"
+      - command: "tsar --cpu -l -i 3"
+        description: "Monitor CPU in real-time every 3 seconds"
+    risks:
+      - level: "low"
+        description: "Read-only monitoring; no risks"
+    install_method: "Install from https://github.com/alibaba/tsar"
+    version_check: "tsar --version"
+
+  - name: "tsar --mem"
+    description: "Display memory usage statistics"
+    category: "System Diagnostic"
+    platforms:
+      - "linux"
+    usage:
+      - "tsar --mem [options]"
+    options:
+      - flag: "-l"
+        description: "Live mode"
+      - flag: "-i"
+        description: "Interval in seconds"
+    examples:
+      - command: "tsar --mem"
+        description: "Show memory usage"
+      - command: "tsar --mem -l"
+        description: "Monitor memory in real-time"
+    risks:
+      - level: "low"
+        description: "Read-only monitoring; no risks"
+    install_method: "Install from https://github.com/alibaba/tsar"
+    version_check: "tsar --version"
+
+  - name: "tsar --load"
+    description: "Display system load average"
+    category: "System Diagnostic"
+    platforms:
+      - "linux"
+    usage:
+      - "tsar --load [options]"
+    examples:
+      - command: "tsar --load"
+        description: "Show system load average"
+      - command: "tsar --load -l"
+        description: "Monitor load average in real-time"
+    risks:
+      - level: "low"
+        description: "Read-only monitoring; no risks"
+    install_method: "Install from https://github.com/alibaba/tsar"
+    version_check: "tsar --version"
+
+  - name: "tsar --io"
+    description: "Display disk I/O statistics"
+    category: "System Diagnostic"
+    platforms:
+      - "linux"
+    usage:
+      - "tsar --io [options]"
+    examples:
+      - command: "tsar --io"
+        description: "Show disk I/O statistics"
+      - command: "tsar --io -l -i 5"
+        description: "Monitor I/O every 5 seconds"
+    risks:
+      - level: "low"
+        description: "Read-only monitoring; no risks"
+    install_method: "Install from https://github.com/alibaba/tsar"
+    version_check: "tsar --version"
+
+  - name: "tsar --traffic"
+    description: "Display network traffic statistics"
+    category: "System Diagnostic"
+    platforms:
+      - "linux"
+    usage:
+      - "tsar --traffic [options]"
+    examples:
+      - command: "tsar --traffic"
+        description: "Show network traffic"
+      - command: "tsar --traffic -l"
+        description: "Monitor network traffic in real-time"
+    risks:
+      - level: "low"
+        description: "Read-only monitoring; no risks"
+    install_method: "Install from https://github.com/alibaba/tsar"
+    version_check: "tsar --version"
+
+  - name: "tsar --tcp"
+    description: "Display TCP connection statistics"
+    category: "System Diagnostic"
+    platforms:
+      - "linux"
+    usage:
+      - "tsar --tcp [options]"
+    examples:
+      - command: "tsar --tcp"
+        description: "Show TCP connection statistics"
+      - command: "tsar --tcp -l"
+        description: "Monitor TCP connections in real-time"
+    risks:
+      - level: "low"
+        description: "Read-only monitoring; no risks"
+    install_method: "Install from https://github.com/alibaba/tsar"
+    version_check: "tsar --version"
+
+  - name: "tsar --partition"
+    description: "Display disk partition usage"
+    category: "System Diagnostic"
+    platforms:
+      - "linux"
+    usage:
+      - "tsar --partition [options]"
+    examples:
+      - command: "tsar --partition"
+        description: "Show disk partition usage"
+      - command: "tsar --partition -l"
+        description: "Monitor partition usage in real-time"
+    risks:
+      - level: "low"
+        description: "Read-only monitoring; no risks"
+    install_method: "Install from https://github.com/alibaba/tsar"
+    version_check: "tsar --version"

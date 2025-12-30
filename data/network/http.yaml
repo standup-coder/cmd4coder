@@ -1,0 +1,140 @@
+category: "Network Tools"
+description: "HTTP clients and web testing tools"
+commands:
+  - name: "wget"
+    description: "Download files from the web"
+    category: "Network Tools"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "wget [options] URL"
+    options:
+      - flag: "-O"
+        description: "Save to specific filename"
+      - flag: "-c"
+        description: "Continue interrupted download"
+      - flag: "-r"
+        description: "Recursive download"
+      - flag: "-b"
+        description: "Background download"
+      - flag: "--limit-rate"
+        description: "Limit download speed"
+    examples:
+      - command: "wget https://example.com/file.zip"
+        description: "Download file"
+      - command: "wget -O custom.zip https://example.com/file.zip"
+        description: "Download with custom filename"
+      - command: "wget -c https://example.com/large-file.iso"
+        description: "Resume interrupted download"
+      - command: "wget --limit-rate=200k https://example.com/file.zip"
+        description: "Limit download speed to 200KB/s"
+    risks:
+      - level: "medium"
+        description: "Downloading from untrusted sources may introduce malware"
+      - level: "low"
+        description: "Recursive downloads may consume significant disk space"
+    install_method: "Pre-installed on most Linux; download for Windows"
+    version_check: "wget --version"
+
+  - name: "httpie"
+    description: "User-friendly HTTP client"
+    category: "Network Tools"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "http [method] URL [items]"
+    examples:
+      - command: "http GET https://api.example.com/users"
+        description: "GET request"
+      - command: "http POST https://api.example.com/users name=John"
+        description: "POST with JSON data"
+      - command: "http PUT https://api.example.com/users/1 age:=25"
+        description: "PUT with typed JSON field"
+      - command: "http --auth user:pass https://api.example.com"
+        description: "Request with authentication"
+    risks:
+      - level: "medium"
+        description: "Credentials may be visible in command history"
+    install_method: "pip install httpie"
+    version_check: "http --version"
+
+  - name: "ab"
+    description: "Apache HTTP server benchmarking tool"
+    category: "Network Tools"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "ab [options] URL"
+    options:
+      - flag: "-n"
+        description: "Number of requests"
+      - flag: "-c"
+        description: "Number of concurrent requests"
+      - flag: "-t"
+        description: "Maximum time for benchmarking"
+      - flag: "-k"
+        description: "Enable HTTP KeepAlive"
+    examples:
+      - command: "ab -n 1000 -c 10 http://example.com/"
+        description: "Send 1000 requests with 10 concurrent"
+      - command: "ab -t 30 -c 50 http://example.com/"
+        description: "Benchmark for 30 seconds with 50 concurrent"
+    risks:
+      - level: "high"
+        description: "High load testing may overwhelm target server"
+      - level: "medium"
+        description: "Only use on servers you have permission to test"
+    install_method: "Install apache2-utils (Linux) or httpd (Mac)"
+    version_check: "ab -V"
+
+  - name: "postman"
+    description: "API development and testing platform (CLI)"
+    category: "Network Tools"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "newman run <collection>"
+    examples:
+      - command: "newman run api-collection.json"
+        description: "Run Postman collection"
+      - command: "newman run collection.json -e environment.json"
+        description: "Run with environment variables"
+    risks:
+      - level: "low"
+        description: "API calls may modify data on target system"
+    install_method: "npm install -g newman"
+    version_check: "newman --version"
+
+  - name: "siege"
+    description: "HTTP load testing and benchmarking utility"
+    category: "Network Tools"
+    platforms:
+      - "linux"
+      - "darwin"
+    usage:
+      - "siege [options] URL"
+    options:
+      - flag: "-c"
+        description: "Number of concurrent users"
+      - flag: "-t"
+        description: "Time to run test (e.g., 1M for 1 minute)"
+      - flag: "-r"
+        description: "Number of repetitions"
+    examples:
+      - command: "siege -c 25 -t 1M http://example.com"
+        description: "Test with 25 users for 1 minute"
+      - command: "siege -c 50 -r 100 http://example.com"
+        description: "50 users making 100 requests each"
+    risks:
+      - level: "high"
+        description: "Load testing may overwhelm target server"
+    install_method: "Install siege package"
+    version_check: "siege --version"

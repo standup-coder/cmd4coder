@@ -1,0 +1,161 @@
+version: "1.0.0"
+updated_at: "2025-12-14"
+description: "cmd4coder 命令行工具大全数据文件"
+
+categories:
+  os_ubuntu:
+    id: os_ubuntu
+    name: "操作系统/Ubuntu系统命令"
+    description: "Ubuntu Linux系统自带命令"
+    parent: ""
+    order: 1
+  os_centos:
+    id: os_centos
+    name: "操作系统/CentOS系统命令"
+    description: "CentOS/RHEL系统自带命令"
+    parent: ""
+    order: 2
+  os_common:
+    id: os_common
+    name: "操作系统/通用Linux命令"
+    description: "各Linux发行版通用的基础命令"
+    parent: ""
+    order: 3
+  lang_java:
+    id: lang_java
+    name: "编程语言/Java工具链"
+    description: "JDK自带工具"
+    parent: ""
+    order: 10
+  lang_go:
+    id: lang_go
+    name: "编程语言/Go工具链"
+    description: "Go语言工具链"
+    parent: ""
+    order: 11
+  lang_python:
+    id: lang_python
+    name: "编程语言/Python工具链"
+    description: "Python相关工具"
+    parent: ""
+    order: 12
+  lang_nodejs:
+    id: lang_nodejs
+    name: "编程语言/Node.js工具链"
+    description: "Node.js和npm相关工具"
+    parent: ""
+    order: 13
+  diagnostic_java:
+    id: diagnostic_java
+    name: "诊断工具/Java诊断"
+    description: "Java应用诊断工具"
+    parent: ""
+    order: 20
+  diagnostic_system:
+    id: diagnostic_system
+    name: "诊断工具/系统诊断"
+    description: "系统性能诊断工具"
+    parent: ""
+    order: 21
+  network_dns:
+    id: network_dns
+    name: "网络工具/DNS工具"
+    description: "DNS查询工具"
+    parent: ""
+    order: 30
+  network_diagnostic:
+    id: network_diagnostic
+    name: "网络工具/网络诊断"
+    description: "网络诊断工具"
+    parent: ""
+    order: 31
+  network_http:
+    id: network_http
+    name: "网络工具/HTTP工具"
+    description: "HTTP客户端工具"
+    parent: ""
+    order: 32
+  container_docker:
+    id: container_docker
+    name: "容器编排/Docker命令"
+    description: "Docker容器管理命令"
+    parent: ""
+    order: 40
+  container_k8s:
+    id: container_k8s
+    name: "容器编排/Kubernetes命令"
+    description: "Kubernetes管理命令"
+    parent: ""
+    order: 41
+  database_mysql:
+    id: database_mysql
+    name: "数据库工具/MySQL工具"
+    description: "MySQL客户端工具"
+    parent: ""
+    order: 50
+  database_redis:
+    id: database_redis
+    name: "数据库工具/Redis工具"
+    description: "Redis客户端工具"
+    parent: ""
+    order: 51
+  database_postgresql:
+    id: database_postgresql
+    name: "数据库工具/PostgreSQL工具"
+    description: "PostgreSQL客户端工具"
+    parent: ""
+    order: 52
+  vcs_git:
+    id: vcs_git
+    name: "版本控制/Git命令"
+    description: "Git版本控制命令"
+    parent: ""
+    order: 60
+  vcs_svn:
+    id: vcs_svn
+    name: "版本控制/SVN命令"
+    description: "SVN版本控制命令"
+    parent: ""
+    order: 61
+  build_maven:
+    id: build_maven
+    name: "构建工具/Maven"
+    description: "Maven构建工具命令"
+    parent: ""
+    order: 70
+  build_gradle:
+    id: build_gradle
+    name: "构建工具/Gradle"
+    description: "Gradle构建工具命令"
+    parent: ""
+    order: 71
+  build_make:
+    id: build_make
+    name: "构建工具/Make"
+    description: "Make构建工具命令"
+    parent: ""
+    order: 72
+
+data_files:
+  - "os/common.yaml"
+  - "os/ubuntu.yaml"
+  - "os/centos.yaml"
+  - "lang/java.yaml"
+  - "lang/go.yaml"
+  - "lang/python.yaml"
+  - "lang/nodejs.yaml"
+  - "diagnostic/arthas.yaml"
+  - "diagnostic/tsar.yaml"
+  - "network/dns.yaml"
+  - "network/diagnostic.yaml"
+  - "network/http.yaml"
+  - "container/docker.yaml"
+  - "container/kubernetes.yaml"
+  - "database/mysql.yaml"
+  - "database/redis.yaml"
+  - "database/postgresql.yaml"
+  - "vcs/git.yaml"
+  - "vcs/svn.yaml"
+  - "build/maven.yaml"
+  - "build/gradle.yaml"
+  - "build/make.yaml"

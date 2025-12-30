@@ -1,0 +1,136 @@
+/* 响应式样式 */
+
+/* 平板设备 (768px - 1024px) */
+@media (max-width: 1024px) {
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .download-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 移动设备 (< 768px) */
+@media (max-width: 768px) {
+    /* 章节间距缩小 */
+    section {
+        padding: var(--spacing-xl) 0;
+    }
+    
+    /* Hero 调整 */
+    .hero {
+        min-height: auto;
+        padding: var(--spacing-xxl) 0;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero .subtitle {
+        font-size: 1.25rem;
+    }
+    
+    /* 特性网格单列 */
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* 快速开始单列 */
+    .quick-start-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    /* 文档网格单列 */
+    .doc-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* 下载网格单列 */
+    .download-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* 按钮组堆叠 */
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    /* 代码块调整 */
+    .code-block pre {
+        font-size: 0.75rem;
+        padding: var(--spacing-sm);
+    }
+    
+    /* Footer 调整 */
+    .footer-links {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    /* 返回顶部按钮位置调整 */
+    .back-to-top {
+        bottom: var(--spacing-md);
+        right: var(--spacing-md);
+        width: 40px;
+        height: 40px;
+    }
+    
+    .back-to-top svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* 小屏手机 (< 480px) */
+@media (max-width: 480px) {
+    :root {
+        --container-padding: 12px;
+    }
+    
+    .hero h1 {
+        font-size: 1.75rem;
+    }
+    
+    .hero .subtitle {
+        font-size: 1.125rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .card {
+        padding: var(--spacing-sm);
+    }
+}
+
+/* 打印样式 */
+@media print {
+    header,
+    footer,
+    .back-to-top,
+    .copy-btn,
+    .hamburger {
+        display: none;
+    }
+    
+    main {
+        margin-top: 0;
+    }
+    
+    section {
+        page-break-inside: avoid;
+    }
+    
+    .card {
+        border: 1px solid #000;
+    }
+}

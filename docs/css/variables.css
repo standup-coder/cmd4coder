@@ -1,0 +1,52 @@
+/* CSS 变量定义 - 极简黑白配色 */
+:root {
+    /* 颜色变量 */
+    --color-text-primary: #000000;
+    --color-text-secondary: #666666;
+    --color-text-tertiary: #999999;
+    --color-bg-primary: #FFFFFF;
+    --color-bg-secondary: #F5F5F5;
+    --color-border: #E0E0E0;
+    --color-divider: #CCCCCC;
+    --color-emphasis: #000000;
+    --color-hover: #333333;
+    --color-code-bg: #1E1E1E;
+    --color-code-text: #D4D4D4;
+    
+    /* 字体大小 */
+    --font-size-h1: 3rem;        /* 48px */
+    --font-size-h2: 2rem;        /* 32px */
+    --font-size-h3: 1.5rem;      /* 24px */
+    --font-size-body: 1rem;      /* 16px */
+    --font-size-small: 0.875rem; /* 14px */
+    
+    /* 间距 */
+    --spacing-xs: 8px;
+    --spacing-sm: 16px;
+    --spacing-md: 24px;
+    --spacing-lg: 32px;
+    --spacing-xl: 48px;
+    --spacing-xxl: 64px;
+    
+    /* 容器 */
+    --container-max-width: 1200px;
+    --container-padding: 24px;
+    
+    /* 圆角 */
+    --border-radius-sm: 2px;
+    --border-radius-md: 4px;
+    
+    /* 过渡 */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+}
+
+/* 移动端变量覆盖 */
+@media (max-width: 768px) {
+    :root {
+        --font-size-h1: 2rem;        /* 32px */
+        --font-size-h2: 1.5rem;      /* 24px */
+        --font-size-h3: 1.25rem;     /* 20px */
+        --container-padding: 16px;
+    }
+}

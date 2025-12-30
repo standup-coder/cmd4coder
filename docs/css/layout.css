@@ -1,0 +1,247 @@
+/* 布局样式 */
+
+/* 容器 */
+.container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+}
+
+/* Header - 固定顶部导航 */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--color-bg-primary);
+    border-bottom: 1px solid var(--color-border);
+    z-index: 1000;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+}
+
+.logo {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+nav ul {
+    display: flex;
+    gap: var(--spacing-lg);
+}
+
+nav a {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-small);
+    transition: color var(--transition-fast);
+}
+
+nav a:hover,
+nav a.active {
+    color: var(--color-text-primary);
+    text-decoration: underline;
+}
+
+/* 汉堡菜单（移动端） */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    width: 24px;
+    height: 24px;
+}
+
+.hamburger span {
+    width: 100%;
+    height: 2px;
+    background: var(--color-text-primary);
+    transition: all var(--transition-normal);
+}
+
+/* Main Content */
+main {
+    margin-top: 64px;
+}
+
+section {
+    padding: var(--spacing-xxl) 0;
+}
+
+section:nth-child(even) {
+    background: var(--color-bg-secondary);
+}
+
+/* Hero Section */
+.hero {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--spacing-xxl) 0;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero h1 {
+    font-size: var(--font-size-h1);
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-primary);
+}
+
+.hero .subtitle {
+    font-size: var(--font-size-h3);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-md);
+    font-weight: 400;
+}
+
+.hero .description {
+    font-size: var(--font-size-body);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.8;
+}
+
+.hero .version {
+    display: inline-block;
+    font-size: var(--font-size-small);
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--spacing-lg);
+    padding: 4px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+}
+
+/* Section Header */
+.section-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-header h2 {
+    font-size: var(--font-size-h2);
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-primary);
+}
+
+.section-header p {
+    font-size: var(--font-size-body);
+    color: var(--color-text-secondary);
+}
+
+/* Features Grid */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+}
+
+/* Quick Start Layout */
+.quick-start-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
+/* Documentation Grid */
+.doc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+}
+
+/* Download Grid */
+.download-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+/* Footer */
+footer {
+    background: var(--color-bg-primary);
+    border-top: 1px solid var(--color-border);
+    padding: var(--spacing-xl) 0;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.footer-links {
+    display: flex;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-links a {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-small);
+    transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+    color: var(--color-text-primary);
+    text-decoration: underline;
+}
+
+.copyright {
+    font-size: var(--font-size-small);
+    color: var(--color-text-tertiary);
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    
+    nav {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: var(--color-bg-primary);
+        border-bottom: 1px solid var(--color-border);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height var(--transition-normal);
+    }
+    
+    nav.open {
+        max-height: 300px;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        padding: var(--spacing-md);
+        gap: var(--spacing-sm);
+    }
+    
+    .quick-start-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero {
+        min-height: calc(100vh - 64px);
+        padding: var(--spacing-xl) 0;
+    }
+}

@@ -1,0 +1,341 @@
+category: "操作系统/通用Linux命令"
+description: "各Linux发行版通用的基础命令"
+updated_at: 2025-12-14T00:00:00Z
+
+commands:
+  - name: ls
+    category: "操作系统/通用Linux命令"
+    install_required: false
+    description: "列出目录内容"
+    usage:
+      - "ls [选项] [文件或目录]"
+    options:
+      - flag: "-l"
+        description: "使用长格式列表"
+      - flag: "-a"
+        description: "显示所有文件（包括隐藏文件）"
+      - flag: "-h"
+        description: "以人类可读的格式显示文件大小"
+      - flag: "-R"
+        description: "递归列出子目录"
+      - flag: "-t"
+        description: "按修改时间排序"
+      - flag: "-r"
+        description: "反向排序"
+    examples:
+      - command: "ls -la"
+        description: "以长格式列出所有文件，包括隐藏文件"
+      - command: "ls -lh /var/log"
+        description: "以人类可读格式列出/var/log目录"
+      - command: "ls -ltr"
+        description: "按时间反向排序列出文件"
+    notes:
+      - "默认不显示以.开头的隐藏文件"
+      - "颜色输出取决于LS_COLORS环境变量"
+    platforms:
+      - "linux"
+      - "macos"
+      - "unix"
+    references:
+      - "https://man7.org/linux/man-pages/man1/ls.1.html"
+
+  - name: grep
+    category: "操作系统/通用Linux命令"
+    install_required: false
+    description: "在文件中搜索文本模式"
+    usage:
+      - "grep [选项] 模式 [文件...]"
+    options:
+      - flag: "-i"
+        description: "忽略大小写"
+      - flag: "-r, -R"
+        description: "递归搜索目录"
+      - flag: "-n"
+        description: "显示行号"
+      - flag: "-v"
+        description: "反向匹配（显示不匹配的行）"
+      - flag: "-E"
+        description: "使用扩展正则表达式"
+      - flag: "-w"
+        description: "匹配整个单词"
+      - flag: "-c"
+        description: "只显示匹配的行数"
+      - flag: "-l"
+        description: "只显示匹配的文件名"
+    examples:
+      - command: "grep 'error' /var/log/syslog"
+        description: "在系统日志中搜索包含error的行"
+      - command: "grep -ri 'TODO' ."
+        description: "递归搜索当前目录下所有包含TODO的文件（忽略大小写）"
+      - command: "grep -E '192\\.168\\.[0-9]+\\.[0-9]+' access.log"
+        description: "使用正则表达式搜索IP地址"
+    notes:
+      - "支持基本正则表达式和扩展正则表达式"
+      - "可以通过管道与其他命令组合使用"
+    platforms:
+      - "linux"
+      - "macos"
+      - "unix"
+    related_commands:
+      - "egrep"
+      - "fgrep"
+      - "awk"
+      - "sed"
+    references:
+      - "https://www.gnu.org/software/grep/manual/"
+
+  - name: find
+    category: "操作系统/通用Linux命令"
+    install_required: false
+    description: "在目录树中搜索文件"
+    usage:
+      - "find [路径...] [表达式]"
+    options:
+      - flag: "-name pattern"
+        description: "按文件名搜索"
+      - flag: "-type [f|d|l]"
+        description: "按类型搜索（f:文件, d:目录, l:符号链接）"
+      - flag: "-mtime n"
+        description: "按修改时间搜索（n天前）"
+      - flag: "-size n"
+        description: "按文件大小搜索"
+      - flag: "-exec command {} \\;"
+        description: "对找到的文件执行命令"
+      - flag: "-delete"
+        description: "删除找到的文件"
+    examples:
+      - command: "find . -name '*.log'"
+        description: "在当前目录下查找所有.log文件"
+      - command: "find /tmp -type f -mtime +7 -delete"
+        description: "删除/tmp下7天前的文件"
+        output: "已删除的文件数量"
+      - command: "find . -type f -size +100M"
+        description: "查找大于100MB的文件"
+    notes:
+      - "find命令功能强大但要小心使用-delete选项"
+      - "使用-exec时，{}代表找到的文件名"
+    risks:
+      - level: high
+        description: "使用-delete选项可能误删重要文件，建议先用-print预览"
+      - level: medium
+        description: "在大目录树中搜索可能消耗大量系统资源"
+    platforms:
+      - "linux"
+      - "macos"
+      - "unix"
+    related_commands:
+      - "locate"
+      - "which"
+      - "whereis"
+    references:
+      - "https://man7.org/linux/man-pages/man1/find.1.html"
+
+  - name: rm
+    category: "操作系统/通用Linux命令"
+    install_required: false
+    description: "删除文件或目录"
+    usage:
+      - "rm [选项] 文件或目录..."
+    options:
+      - flag: "-r, -R"
+        description: "递归删除目录及其内容"
+      - flag: "-f"
+        description: "强制删除，忽略不存在的文件，不提示确认"
+      - flag: "-i"
+        description: "删除前提示确认"
+      - flag: "-v"
+        description: "显示详细信息"
+    examples:
+      - command: "rm file.txt"
+        description: "删除单个文件"
+      - command: "rm -rf /tmp/test"
+        description: "强制递归删除目录"
+      - command: "rm -i *.log"
+        description: "交互式删除所有.log文件"
+    notes:
+      - "删除的文件无法恢复，使用前务必确认"
+      - "不要在根目录(/)使用rm -rf命令"
+      - "建议使用-i选项进行确认"
+    risks:
+      - level: critical
+        description: "rm -rf可能导致数据永久丢失，使用前必须仔细确认路径"
+      - level: critical
+        description: "绝对不要执行'rm -rf /'命令，会删除整个系统"
+      - level: high
+        description: "使用通配符时要格外小心，可能匹配到不想删除的文件"
+    platforms:
+      - "linux"
+      - "macos"
+      - "unix"
+    related_commands:
+      - "rmdir"
+      - "trash"
+      - "mv"
+    references:
+      - "https://man7.org/linux/man-pages/man1/rm.1.html"
+
+  - name: cat
+    category: "操作系统/通用Linux命令"
+    install_required: false
+    description: "连接文件并输出到标准输出"
+    usage:
+      - "cat [选项] [文件...]"
+    options:
+      - flag: "-n"
+        description: "对输出的所有行编号"
+      - flag: "-b"
+        description: "对非空行编号"
+      - flag: "-s"
+        description: "压缩连续的空行为一行"
+      - flag: "-E"
+        description: "在每行末尾显示$符号"
+      - flag: "-T"
+        description: "将TAB字符显示为^I"
+    examples:
+      - command: "cat file.txt"
+        description: "显示文件内容"
+      - command: "cat file1.txt file2.txt > combined.txt"
+        description: "合并多个文件"
+      - command: "cat -n script.sh"
+        description: "显示文件内容并添加行号"
+    notes:
+      - "适合查看小文件，大文件建议使用less或more"
+      - "可以通过重定向创建文件: cat > file.txt"
+    platforms:
+      - "linux"
+      - "macos"
+      - "unix"
+    related_commands:
+      - "less"
+      - "more"
+      - "head"
+      - "tail"
+    references:
+      - "https://man7.org/linux/man-pages/man1/cat.1.html"
+
+  - name: cd
+    category: "操作系统/通用Linux命令"
+    install_required: false
+    description: "切换当前工作目录"
+    usage:
+      - "cd [目录]"
+    options:
+      - flag: "-"
+        description: "切换到上一个工作目录"
+      - flag: "~"
+        description: "切换到用户主目录"
+    examples:
+      - command: "cd /var/log"
+        description: "切换到/var/log目录"
+      - command: "cd ~"
+        description: "切换到用户主目录"
+      - command: "cd -"
+        description: "切换回上一个目录"
+    notes:
+      - "cd是shell内置命令"
+      - "不带参数时默认切换到主目录"
+    platforms:
+      - "linux"
+      - "macos"
+      - "unix"
+
+  - name: pwd
+    category: "操作系统/通用Linux命令"
+    install_required: false
+    description: "显示当前工作目录的完整路径"
+    usage:
+      - "pwd [选项]"
+    options:
+      - flag: "-L"
+        description: "显示逻辑路径（默认）"
+      - flag: "-P"
+        description: "显示物理路径（解析符号链接）"
+    examples:
+      - command: "pwd"
+        description: "显示当前目录"
+        output: "/home/user/documents"
+    platforms:
+      - "linux"
+      - "macos"
+      - "unix"
+    references:
+      - "https://man7.org/linux/man-pages/man1/pwd.1.html"
+
+  - name: cp
+    category: "操作系统/通用Linux命令"
+    install_required: false
+    description: "复制文件或目录"
+    usage:
+      - "cp [选项] 源文件 目标文件"
+      - "cp [选项] 源文件... 目标目录"
+    options:
+      - flag: "-r, -R"
+        description: "递归复制目录"
+      - flag: "-i"
+        description: "覆盖前提示确认"
+      - flag: "-f"
+        description: "强制覆盖"
+      - flag: "-p"
+        description: "保留文件属性"
+      - flag: "-a"
+        description: "归档模式，等同于-dpR"
+      - flag: "-v"
+        description: "显示详细信息"
+    examples:
+      - command: "cp file1.txt file2.txt"
+        description: "复制文件"
+      - command: "cp -r dir1 dir2"
+        description: "递归复制目录"
+      - command: "cp -a /source/* /backup/"
+        description: "归档复制，保留所有属性"
+    notes:
+      - "复制目录必须使用-r选项"
+      - "默认不会覆盖只读文件"
+    risks:
+      - level: medium
+        description: "使用-f可能意外覆盖重要文件"
+    platforms:
+      - "linux"
+      - "macos"
+      - "unix"
+    related_commands:
+      - "mv"
+      - "rsync"
+    references:
+      - "https://man7.org/linux/man-pages/man1/cp.1.html"
+
+  - name: mv
+    category: "操作系统/通用Linux命令"
+    install_required: false
+    description: "移动或重命名文件和目录"
+    usage:
+      - "mv [选项] 源文件 目标文件"
+      - "mv [选项] 源文件... 目标目录"
+    options:
+      - flag: "-i"
+        description: "覆盖前提示确认"
+      - flag: "-f"
+        description: "强制覆盖"
+      - flag: "-n"
+        description: "不覆盖已存在的文件"
+      - flag: "-v"
+        description: "显示详细信息"
+    examples:
+      - command: "mv oldname.txt newname.txt"
+        description: "重命名文件"
+      - command: "mv file.txt /tmp/"
+        description: "移动文件到/tmp目录"
+      - command: "mv -i *.txt /backup/"
+        description: "交互式移动所有txt文件"
+    risks:
+      - level: medium
+        description: "移动文件会改变文件位置，可能导致依赖该路径的程序出错"
+    platforms:
+      - "linux"
+      - "macos"
+      - "unix"
+    related_commands:
+      - "cp"
+      - "rename"
+    references:
+      - "https://man7.org/linux/man-pages/man1/mv.1.html"

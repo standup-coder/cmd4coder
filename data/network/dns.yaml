@@ -1,0 +1,83 @@
+category: "网络工具/DNS工具"
+description: "DNS查询和诊断工具"
+commands:
+  - name: dig
+    category: "网络工具/DNS工具"
+    install_required: true
+    install_method: "apt install dnsutils (Ubuntu) 或 yum install bind-utils (CentOS)"
+    description: "DNS查询工具"
+    usage:
+      - "dig [@server] name [type]"
+    options:
+      - flag: "+short"
+        description: "简洁输出"
+      - flag: "+trace"
+        description: "跟踪DNS解析过程"
+      - flag: "-x <ip>"
+        description: "反向DNS查询"
+      - flag: "@<server>"
+        description: "指定DNS服务器"
+    examples:
+      - command: "dig example.com"
+        description: "查询域名A记录"
+      - command: "dig example.com MX"
+        description: "查询MX记录"
+      - command: "dig @8.8.8.8 example.com +short"
+        description: "使用指定DNS服务器简洁查询"
+      - command: "dig -x 8.8.8.8"
+        description: "反向DNS查询"
+    platforms:
+      - "linux"
+      - "macos"
+      - "unix"
+    related_commands:
+      - "nslookup"
+      - "host"
+    references:
+      - "https://linux.die.net/man/1/dig"
+
+  - name: nslookup
+    category: "网络工具/DNS工具"
+    install_required: false
+    description: "查询DNS信息"
+    usage:
+      - "nslookup [name] [server]"
+    examples:
+      - command: "nslookup example.com"
+        description: "查询域名"
+      - command: "nslookup example.com 8.8.8.8"
+        description: "使用指定DNS服务器查询"
+    notes:
+      - "nslookup已被弃用，建议使用dig或host"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    related_commands:
+      - "dig"
+      - "host"
+
+  - name: host
+    category: "网络工具/DNS工具"
+    install_required: true
+    install_method: "apt install bind9-host (Ubuntu)"
+    description: "简单的DNS查询工具"
+    usage:
+      - "host [options] name [server]"
+    options:
+      - flag: "-t <type>"
+        description: "指定查询类型"
+      - flag: "-a"
+        description: "详细查询"
+    examples:
+      - command: "host example.com"
+        description: "查询域名"
+      - command: "host -t MX example.com"
+        description: "查询MX记录"
+    platforms:
+      - "linux"
+      - "macos"
+      - "unix"
+    related_commands:
+      - "dig"
+      - "nslookup"

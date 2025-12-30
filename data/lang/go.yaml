@@ -1,0 +1,154 @@
+category: "编程语言/Go工具链"
+description: "Go语言工具链命令"
+commands:
+  - name: go build
+    category: "编程语言/Go工具链"
+    install_required: true
+    install_method: "https://go.dev/dl/"
+    description: "编译Go包和依赖"
+    usage:
+      - "go build [packages]"
+    options:
+      - flag: "-o <file>"
+        description: "指定输出文件名"
+      - flag: "-v"
+        description: "显示编译的包名"
+      - flag: "-ldflags"
+        description: "传递链接标志"
+    examples:
+      - command: "go build"
+        description: "编译当前包"
+      - command: "go build -o myapp"
+        description: "编译并指定输出文件名"
+      - command: "go build -v ./..."
+        description: "编译所有包并显示详细信息"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    related_commands:
+      - "go run"
+      - "go install"
+
+  - name: go run
+    category: "编程语言/Go工具链"
+    install_required: true
+    install_method: "https://go.dev/dl/"
+    description: "编译并运行Go程序"
+    usage:
+      - "go run [files]"
+    examples:
+      - command: "go run main.go"
+        description: "运行main.go"
+      - command: "go run ."
+        description: "运行当前目录的包"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: go test
+    category: "编程语言/Go工具链"
+    install_required: true
+    install_method: "https://go.dev/dl/"
+    description: "运行测试"
+    usage:
+      - "go test [packages]"
+    options:
+      - flag: "-v"
+        description: "显示详细输出"
+      - flag: "-cover"
+        description: "显示测试覆盖率"
+      - flag: "-run <pattern>"
+        description: "运行匹配的测试"
+      - flag: "-bench <pattern>"
+        description: "运行性能测试"
+    examples:
+      - command: "go test"
+        description: "运行当前包的测试"
+      - command: "go test -v ./..."
+        description: "运行所有包的测试"
+      - command: "go test -cover"
+        description: "运行测试并显示覆盖率"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: go mod
+    category: "编程语言/Go工具链"
+    install_required: true
+    install_method: "https://go.dev/dl/"
+    description: "模块维护"
+    usage:
+      - "go mod <command>"
+    options:
+      - flag: "init"
+        description: "初始化新模块"
+      - flag: "tidy"
+        description: "整理依赖"
+      - flag: "download"
+        description: "下载依赖"
+      - flag: "verify"
+        description: "验证依赖"
+    examples:
+      - command: "go mod init example.com/myapp"
+        description: "初始化模块"
+      - command: "go mod tidy"
+        description: "整理依赖"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: go get
+    category: "编程语言/Go工具链"
+    install_required: true
+    install_method: "https://go.dev/dl/"
+    description: "添加依赖到当前模块"
+    usage:
+      - "go get [packages]"
+    options:
+      - flag: "-u"
+        description: "更新依赖"
+      - flag: "-d"
+        description: "只下载不安装"
+    examples:
+      - command: "go get github.com/gin-gonic/gin"
+        description: "添加gin框架"
+      - command: "go get -u ./..."
+        description: "更新所有依赖"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: go fmt
+    category: "编程语言/Go工具链"
+    install_required: true
+    install_method: "https://go.dev/dl/"
+    description: "格式化Go代码"
+    usage:
+      - "go fmt [packages]"
+    examples:
+      - command: "go fmt ./..."
+        description: "格式化所有Go文件"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: go vet
+    category: "编程语言/Go工具链"
+    install_required: true
+    install_method: "https://go.dev/dl/"
+    description: "检查Go代码中的常见错误"
+    usage:
+      - "go vet [packages]"
+    examples:
+      - command: "go vet ./..."
+        description: "检查所有包"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"

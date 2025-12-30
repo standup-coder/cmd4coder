@@ -1,0 +1,293 @@
+category: "Operating System"
+description: "CentOS/RHEL specific system commands and package management"
+commands:
+  - name: "yum update"
+    description: "Update all installed packages"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo yum update"
+    options:
+      - flag: "-y"
+        description: "Automatic yes to prompts"
+    examples:
+      - command: "sudo yum update"
+        description: "Update all packages"
+      - command: "sudo yum update -y"
+        description: "Update without prompts"
+    risks:
+      - level: "medium"
+        description: "May break compatibility; test in non-production first"
+    install_method: "Pre-installed on CentOS/RHEL"
+    version_check: "yum --version"
+
+  - name: "yum install"
+    description: "Install new packages"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo yum install <package>"
+    options:
+      - flag: "-y"
+        description: "Automatic yes to prompts"
+    examples:
+      - command: "sudo yum install nginx"
+        description: "Install nginx web server"
+      - command: "sudo yum install vim git wget -y"
+        description: "Install multiple packages"
+    risks:
+      - level: "medium"
+        description: "Installing from untrusted repositories may introduce security risks"
+    install_method: "Pre-installed on CentOS/RHEL"
+    version_check: "yum --version"
+
+  - name: "yum remove"
+    description: "Remove installed packages"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo yum remove <package>"
+    examples:
+      - command: "sudo yum remove nginx"
+        description: "Remove nginx package"
+    risks:
+      - level: "high"
+        description: "Removing system packages may break system"
+    install_method: "Pre-installed on CentOS/RHEL"
+    version_check: "yum --version"
+
+  - name: "yum search"
+    description: "Search for packages"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "yum search <keyword>"
+    examples:
+      - command: "yum search nginx"
+        description: "Search for nginx packages"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on CentOS/RHEL"
+    version_check: "yum --version"
+
+  - name: "yum info"
+    description: "Show package information"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "yum info <package>"
+    examples:
+      - command: "yum info nginx"
+        description: "Show nginx package details"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on CentOS/RHEL"
+    version_check: "yum --version"
+
+  - name: "yum list installed"
+    description: "List all installed packages"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "yum list installed"
+    examples:
+      - command: "yum list installed"
+        description: "Show all installed packages"
+      - command: "yum list installed | grep nginx"
+        description: "Find nginx-related packages"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on CentOS/RHEL"
+    version_check: "yum --version"
+
+  - name: "rpm -i"
+    description: "Install RPM package file"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo rpm -i <package.rpm>"
+    options:
+      - flag: "-v"
+        description: "Verbose output"
+      - flag: "-h"
+        description: "Print hash marks during installation"
+    examples:
+      - command: "sudo rpm -ivh package.rpm"
+        description: "Install RPM with progress"
+    risks:
+      - level: "high"
+        description: "Installing untrusted RPM files may compromise system"
+    install_method: "Pre-installed on CentOS/RHEL"
+    version_check: "rpm --version"
+
+  - name: "rpm -qa"
+    description: "Query all installed packages"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "rpm -qa [pattern]"
+    examples:
+      - command: "rpm -qa"
+        description: "List all installed RPM packages"
+      - command: "rpm -qa | grep nginx"
+        description: "Find nginx-related packages"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on CentOS/RHEL"
+    version_check: "rpm --version"
+
+  - name: "rpm -e"
+    description: "Erase (remove) installed package"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo rpm -e <package>"
+    examples:
+      - command: "sudo rpm -e nginx"
+        description: "Remove nginx package"
+    risks:
+      - level: "high"
+        description: "May break dependencies; use yum remove instead"
+    install_method: "Pre-installed on CentOS/RHEL"
+    version_check: "rpm --version"
+
+  - name: "rpm -qi"
+    description: "Query package information"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "rpm -qi <package>"
+    examples:
+      - command: "rpm -qi nginx"
+        description: "Show nginx package info"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on CentOS/RHEL"
+    version_check: "rpm --version"
+
+  - name: "dnf install"
+    description: "Install packages (newer package manager for CentOS 8+)"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo dnf install <package>"
+    options:
+      - flag: "-y"
+        description: "Automatic yes to prompts"
+    examples:
+      - command: "sudo dnf install nginx"
+        description: "Install nginx"
+      - command: "sudo dnf install -y vim git"
+        description: "Install multiple packages without prompts"
+    risks:
+      - level: "medium"
+        description: "Installing from untrusted sources may introduce risks"
+    install_method: "Pre-installed on CentOS 8+/RHEL 8+"
+    version_check: "dnf --version"
+
+  - name: "firewall-cmd --add-port"
+    description: "Open firewall port"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo firewall-cmd --add-port=<port>/<protocol>"
+    options:
+      - flag: "--permanent"
+        description: "Make rule persistent across reboots"
+      - flag: "--zone"
+        description: "Specify firewall zone"
+    examples:
+      - command: "sudo firewall-cmd --add-port=80/tcp"
+        description: "Open HTTP port temporarily"
+      - command: "sudo firewall-cmd --permanent --add-port=443/tcp"
+        description: "Permanently open HTTPS port"
+      - command: "sudo firewall-cmd --reload"
+        description: "Reload firewall rules"
+    risks:
+      - level: "medium"
+        description: "Opening ports may expose services to network"
+    install_method: "Pre-installed on CentOS/RHEL 7+"
+    version_check: "firewall-cmd --version"
+
+  - name: "firewall-cmd --list-all"
+    description: "List all firewall rules"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo firewall-cmd --list-all"
+    examples:
+      - command: "sudo firewall-cmd --list-all"
+        description: "Show all firewall settings"
+      - command: "sudo firewall-cmd --zone=public --list-ports"
+        description: "List open ports in public zone"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on CentOS/RHEL 7+"
+    version_check: "firewall-cmd --version"
+
+  - name: "setenforce"
+    description: "Change SELinux mode temporarily"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sudo setenforce <0|1>"
+    examples:
+      - command: "sudo setenforce 0"
+        description: "Set SELinux to permissive mode"
+      - command: "sudo setenforce 1"
+        description: "Set SELinux to enforcing mode"
+    risks:
+      - level: "high"
+        description: "Disabling SELinux reduces system security"
+    install_method: "Pre-installed on CentOS/RHEL"
+    version_check: "getenforce"
+
+  - name: "getenforce"
+    description: "Get current SELinux mode"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "getenforce"
+    examples:
+      - command: "getenforce"
+        description: "Show current SELinux mode"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on CentOS/RHEL"
+
+  - name: "sestatus"
+    description: "Display SELinux status"
+    category: "Operating System"
+    platforms:
+      - "linux"
+    usage:
+      - "sestatus"
+    examples:
+      - command: "sestatus"
+        description: "Show detailed SELinux status"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Pre-installed on CentOS/RHEL"

@@ -1,0 +1,322 @@
+category: "Version Control"
+description: "Apache Subversion version control system"
+commands:
+  - name: "svn checkout"
+    description: "Check out a working copy from a repository"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn checkout URL [PATH]"
+    examples:
+      - command: "svn checkout https://svn.example.com/repo/trunk myproject"
+        description: "Checkout repository to local directory"
+      - command: "svn co https://svn.example.com/repo/tags/v1.0"
+        description: "Checkout specific tag (co is shorthand)"
+    risks:
+      - level: "low"
+        description: "Downloads repository content; ensure trusted source"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn update"
+    description: "Update working copy to latest revision"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn update [PATH]"
+    options:
+      - flag: "-r"
+        description: "Update to specific revision"
+    examples:
+      - command: "svn update"
+        description: "Update to HEAD revision"
+      - command: "svn update -r 1234"
+        description: "Update to specific revision"
+      - command: "svn up file.txt"
+        description: "Update specific file (up is shorthand)"
+    risks:
+      - level: "medium"
+        description: "May overwrite local uncommitted changes"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn commit"
+    description: "Send changes to repository"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn commit [PATH] -m 'message'"
+    options:
+      - flag: "-m"
+        description: "Commit message"
+      - flag: "-F"
+        description: "Read commit message from file"
+    examples:
+      - command: "svn commit -m 'Fix bug in login'"
+        description: "Commit all changes with message"
+      - command: "svn commit file.txt -m 'Update file'"
+        description: "Commit specific file"
+      - command: "svn ci -m 'Add feature'"
+        description: "Commit using shorthand"
+    risks:
+      - level: "medium"
+        description: "Permanently records changes to repository"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn add"
+    description: "Add files to version control"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn add PATH"
+    examples:
+      - command: "svn add newfile.txt"
+        description: "Add single file"
+      - command: "svn add *.java"
+        description: "Add multiple files by pattern"
+      - command: "svn add --force ."
+        description: "Recursively add all unversioned files"
+    risks:
+      - level: "low"
+        description: "Only schedules for addition; not committed until svn commit"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn delete"
+    description: "Remove files from version control"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn delete PATH"
+    examples:
+      - command: "svn delete oldfile.txt"
+        description: "Delete file from version control"
+      - command: "svn del obsolete/"
+        description: "Delete directory (del is shorthand)"
+    risks:
+      - level: "high"
+        description: "Schedules deletion; file removed from repository after commit"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn status"
+    description: "Show working copy status"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn status [PATH]"
+    options:
+      - flag: "-u"
+        description: "Show update information"
+      - flag: "-v"
+        description: "Verbose output"
+    examples:
+      - command: "svn status"
+        description: "Show local changes"
+      - command: "svn st -u"
+        description: "Show status with update info (st is shorthand)"
+      - command: "svn status -v"
+        description: "Show detailed status"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_subversion: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn diff"
+    description: "Show differences between revisions"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn diff [PATH]"
+    options:
+      - flag: "-r"
+        description: "Compare specific revisions"
+    examples:
+      - command: "svn diff"
+        description: "Show uncommitted changes"
+      - command: "svn diff -r 1234:1235"
+        description: "Compare two revisions"
+      - command: "svn diff file.txt"
+        description: "Show changes in specific file"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn log"
+    description: "Show commit log messages"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn log [PATH]"
+    options:
+      - flag: "-r"
+        description: "Show specific revision range"
+      - flag: "-v"
+        description: "Verbose output (show changed paths)"
+      - flag: "-l"
+        description: "Limit number of log entries"
+    examples:
+      - command: "svn log"
+        description: "Show all commit history"
+      - command: "svn log -l 10"
+        description: "Show last 10 commits"
+      - command: "svn log -r 1234:1240"
+        description: "Show commits in revision range"
+      - command: "svn log -v file.txt"
+        description: "Show detailed history for file"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn revert"
+    description: "Undo local changes"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn revert PATH"
+    options:
+      - flag: "-R"
+        description: "Recursive revert"
+    examples:
+      - command: "svn revert file.txt"
+        description: "Revert changes to file"
+      - command: "svn revert -R ."
+        description: "Revert all changes recursively"
+    risks:
+      - level: "high"
+        description: "Permanently discards uncommitted changes; cannot be undone"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn merge"
+    description: "Merge changes from another branch"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn merge SOURCE[@REV] [TARGET]"
+    examples:
+      - command: "svn merge ^/branches/feature"
+        description: "Merge feature branch to current branch"
+      - command: "svn merge -r 1234:1240 ^/trunk"
+        description: "Merge specific revisions"
+    risks:
+      - level: "high"
+        description: "May cause conflicts; review changes before committing"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn copy"
+    description: "Create a copy (branch/tag) in repository"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn copy SRC DST -m 'message'"
+    examples:
+      - command: "svn copy ^/trunk ^/branches/feature -m 'Create feature branch'"
+        description: "Create branch from trunk"
+      - command: "svn copy ^/trunk ^/tags/v1.0 -m 'Tag version 1.0'"
+        description: "Create tag"
+    risks:
+      - level: "medium"
+        description: "Creates permanent copy in repository"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn switch"
+    description: "Switch working copy to different URL"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn switch URL [PATH]"
+    examples:
+      - command: "svn switch ^/branches/feature"
+        description: "Switch to feature branch"
+      - command: "svn sw ^/trunk"
+        description: "Switch back to trunk (sw is shorthand)"
+    risks:
+      - level: "medium"
+        description: "Changes working copy location; uncommitted changes may be lost"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn info"
+    description: "Display information about working copy or repository"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn info [PATH]"
+    examples:
+      - command: "svn info"
+        description: "Show working copy information"
+      - command: "svn info https://svn.example.com/repo"
+        description: "Show repository information"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"
+
+  - name: "svn cleanup"
+    description: "Clean up working copy (remove locks, fix interrupted operations)"
+    category: "Version Control"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "svn cleanup [PATH]"
+    examples:
+      - command: "svn cleanup"
+        description: "Clean up current directory"
+      - command: "svn cleanup /path/to/workingcopy"
+        description: "Clean up specific working copy"
+    risks:
+      - level: "low"
+        description: "Safe maintenance operation"
+    install_method: "Install Subversion package"
+    version_check: "svn --version"

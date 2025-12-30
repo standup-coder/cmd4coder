@@ -1,0 +1,234 @@
+category: "Java Diagnostic"
+description: "Alibaba Arthas - Java application diagnostic tool"
+commands:
+  - name: "arthas"
+    description: "Start Arthas and attach to Java process"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "arthas [pid]"
+      - "java -jar arthas-boot.jar [pid]"
+    examples:
+      - command: "java -jar arthas-boot.jar"
+        description: "Start Arthas and select process interactively"
+      - command: "java -jar arthas-boot.jar 12345"
+        description: "Attach to specific Java process"
+    risks:
+      - level: "medium"
+        description: "Attaches to running JVM; may impact performance"
+    install_method: "Download from https://arthas.aliyun.com/"
+    version_check: "Check within Arthas console"
+
+  - name: "dashboard"
+    description: "Display real-time dashboard of JVM metrics"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "dashboard"
+    examples:
+      - command: "dashboard"
+        description: "Show JVM dashboard (use in Arthas console)"
+      - command: "dashboard -i 5000"
+        description: "Refresh every 5 seconds"
+    risks:
+      - level: "low"
+        description: "Read-only monitoring; minimal impact"
+    install_method: "Arthas built-in command"
+
+  - name: "thread"
+    description: "Display thread information"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "thread [id]"
+    examples:
+      - command: "thread"
+        description: "List all threads"
+      - command: "thread 1"
+        description: "Show specific thread details"
+      - command: "thread -b"
+        description: "Find blocked threads"
+      - command: "thread -n 3"
+        description: "Show top 3 busy threads"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Arthas built-in command"
+
+  - name: "jad"
+    description: "Decompile Java class files"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "jad <classname>"
+    examples:
+      - command: "jad com.example.MyClass"
+        description: "Decompile class"
+      - command: "jad com.example.MyClass myMethod"
+        description: "Decompile specific method"
+    risks:
+      - level: "low"
+        description: "Read-only decompilation; no risks"
+    install_method: "Arthas built-in command"
+
+  - name: "watch"
+    description: "Watch method invocation in real-time"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "watch <class-pattern> <method-pattern> <expression>"
+    examples:
+      - command: "watch com.example.Service doSomething returnObj"
+        description: "Watch method return value"
+      - command: "watch com.example.Service * '{params,returnObj}' -x 2"
+        description: "Watch all methods with params and return"
+    risks:
+      - level: "medium"
+        description: "May impact performance if used on high-traffic methods"
+    install_method: "Arthas built-in command"
+
+  - name: "trace"
+    description: "Trace method execution time"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "trace <class-pattern> <method-pattern>"
+    examples:
+      - command: "trace com.example.Service doSomething"
+        description: "Trace method execution"
+      - command: "trace com.example.Service doSomething '#cost > 100'"
+        description: "Trace only if execution time > 100ms"
+    risks:
+      - level: "medium"
+        description: "May impact performance on traced methods"
+    install_method: "Arthas built-in command"
+
+  - name: "stack"
+    description: "Display method call stack"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "stack <class-pattern> <method-pattern>"
+    examples:
+      - command: "stack com.example.Service doSomething"
+        description: "Show call stack when method is invoked"
+    risks:
+      - level: "low"
+        description: "Read-only stack trace; minimal impact"
+    install_method: "Arthas built-in command"
+
+  - name: "heapdump"
+    description: "Dump Java heap to file"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "heapdump [file]"
+    examples:
+      - command: "heapdump /tmp/heap.hprof"
+        description: "Dump heap to file"
+      - command: "heapdump --live /tmp/heap.hprof"
+        description: "Dump only live objects"
+    risks:
+      - level: "high"
+        description: "May pause application; large dump files"
+    install_method: "Arthas built-in command"
+
+  - name: "sc"
+    description: "Search loaded classes"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "sc <class-pattern>"
+    examples:
+      - command: "sc *Service"
+        description: "Find all Service classes"
+      - command: "sc -d com.example.MyClass"
+        description: "Show class details"
+    risks:
+      - level: "low"
+        description: "Read-only class search; no risks"
+    install_method: "Arthas built-in command"
+
+  - name: "sm"
+    description: "Search methods in classes"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "sm <class-pattern> <method-pattern>"
+    examples:
+      - command: "sm com.example.MyClass"
+        description: "List all methods in class"
+      - command: "sm com.example.MyClass get*"
+        description: "Find getter methods"
+    risks:
+      - level: "low"
+        description: "Read-only method search; no risks"
+    install_method: "Arthas built-in command"
+
+  - name: "classloader"
+    description: "Display classloader information"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "classloader"
+    examples:
+      - command: "classloader"
+        description: "List all classloaders"
+      - command: "classloader -t"
+        description: "Show classloader hierarchy tree"
+    risks:
+      - level: "low"
+        description: "Read-only information; no risks"
+    install_method: "Arthas built-in command"
+
+  - name: "logger"
+    description: "View or modify logger settings"
+    category: "Java Diagnostic"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "logger [options]"
+    examples:
+      - command: "logger"
+        description: "List all loggers"
+      - command: "logger -n com.example --level debug"
+        description: "Change logger level to debug"
+    risks:
+      - level: "medium"
+        description: "Changing log levels affects application logging"
+    install_method: "Arthas built-in command"

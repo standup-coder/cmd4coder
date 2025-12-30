@@ -1,0 +1,164 @@
+category: "网络工具/网络诊断"
+description: "网络诊断和故障排查工具"
+commands:
+  - name: ping
+    category: "网络工具/网络诊断"
+    install_required: false
+    description: "测试网络连通性"
+    usage:
+      - "ping [options] <host>"
+    options:
+      - flag: "-c <count>"
+        description: "发送指定数量的包"
+      - flag: "-i <interval>"
+        description: "发送间隔(秒)"
+      - flag: "-t <ttl>"
+        description: "设置TTL值"
+    examples:
+      - command: "ping google.com"
+        description: "ping域名"
+      - command: "ping -c 4 192.168.1.1"
+        description: "发送4个包"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: netstat
+    category: "网络工具/网络诊断"
+    install_required: false
+    description: "显示网络连接和路由表"
+    usage:
+      - "netstat [options]"
+    options:
+      - flag: "-a"
+        description: "显示所有连接和监听端口"
+      - flag: "-n"
+        description: "以数字形式显示地址"
+      - flag: "-t"
+        description: "显示TCP连接"
+      - flag: "-u"
+        description: "显示UDP连接"
+      - flag: "-p"
+        description: "显示进程/程序ID"
+    examples:
+      - command: "netstat -an"
+        description: "显示所有连接"
+      - command: "netstat -tunlp"
+        description: "显示监听端口和进程"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+
+  - name: ss
+    category: "网络工具/网络诊断"
+    install_required: false
+    description: "socket统计信息(替代netstat)"
+    usage:
+      - "ss [options]"
+    options:
+      - flag: "-a"
+        description: "显示所有socket"
+      - flag: "-t"
+        description: "显示TCP socket"
+      - flag: "-u"
+        description: "显示UDP socket"
+      - flag: "-l"
+        description: "显示监听socket"
+      - flag: "-n"
+        description: "不解析服务名"
+      - flag: "-p"
+        description: "显示进程信息"
+    examples:
+      - command: "ss -tunlp"
+        description: "显示监听TCP/UDP端口"
+      - command: "ss -s"
+        description: "显示统计信息"
+    platforms:
+      - "linux"
+
+  - name: tcpdump
+    category: "网络工具/网络诊断"
+    install_required: true
+    install_method: "apt install tcpdump (Ubuntu) 或 yum install tcpdump (CentOS)"
+    description: "抓取和分析网络包"
+    usage:
+      - "tcpdump [options]"
+    options:
+      - flag: "-i <interface>"
+        description: "指定网络接口"
+      - flag: "-n"
+        description: "不解析主机名"
+      - flag: "-c <count>"
+        description: "抓取指定数量的包"
+      - flag: "-w <file>"
+        description: "写入文件"
+    examples:
+      - command: "tcpdump -i eth0"
+        description: "抓取eth0网卡的包"
+      - command: "tcpdump -i eth0 port 80"
+        description: "抓取80端口的包"
+      - command: "tcpdump -i eth0 -w capture.pcap"
+        description: "保存到文件"
+    notes:
+      - "需要root权限"
+    risks:
+      - level: medium
+        description: "可能捕获敏感信息，注意数据安全"
+    platforms:
+      - "linux"
+      - "macos"
+
+  - name: traceroute
+    category: "网络工具/网络诊断"
+    install_required: true
+    install_method: "apt install traceroute (Ubuntu)"
+    description: "跟踪数据包的路由路径"
+    usage:
+      - "traceroute [options] <host>"
+    options:
+      - flag: "-n"
+        description: "不解析IP地址"
+      - flag: "-m <hops>"
+        description: "最大跳数"
+    examples:
+      - command: "traceroute google.com"
+        description: "跟踪路由"
+      - command: "traceroute -n 8.8.8.8"
+        description: "跟踪路由不解析域名"
+    platforms:
+      - "linux"
+      - "macos"
+
+  - name: curl
+    category: "网络工具/网络诊断"
+    install_required: true
+    install_method: "apt install curl (Ubuntu)"
+    description: "命令行HTTP客户端"
+    usage:
+      - "curl [options] <URL>"
+    options:
+      - flag: "-X <method>"
+        description: "指定HTTP方法"
+      - flag: "-H <header>"
+        description: "添加请求头"
+      - flag: "-d <data>"
+        description: "发送POST数据"
+      - flag: "-o <file>"
+        description: "保存到文件"
+      - flag: "-v"
+        description: "详细输出"
+    examples:
+      - command: "curl https://api.github.com"
+        description: "发送GET请求"
+      - command: "curl -X POST -d 'key=value' https://example.com"
+        description: "发送POST请求"
+      - command: "curl -o file.zip https://example.com/file.zip"
+        description: "下载文件"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    related_commands:
+      - "wget"

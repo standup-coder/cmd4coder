@@ -1,0 +1,258 @@
+category: "Programming Language"
+description: "Node.js runtime and npm package manager tools"
+commands:
+  - name: "node"
+    description: "Execute JavaScript code using Node.js runtime"
+    category: "Programming Language"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "node [options] [script.js] [arguments]"
+    options:
+      - flag: "-v"
+        description: "Print Node.js version"
+      - flag: "-e"
+        description: "Evaluate script from command line"
+      - flag: "--inspect"
+        description: "Enable inspector for debugging"
+      - flag: "--max-old-space-size"
+        description: "Set maximum old space size (MB)"
+    examples:
+      - command: "node app.js"
+        description: "Run JavaScript file"
+      - command: "node -v"
+        description: "Check Node.js version"
+      - command: "node -e 'console.log(\"Hello\")'"
+        description: "Execute inline JavaScript"
+      - command: "node --inspect app.js"
+        description: "Run with debugger enabled"
+    risks:
+      - level: "medium"
+        description: "Running untrusted scripts can execute malicious code"
+    install_method: "Download from https://nodejs.org/"
+    version_check: "node --version"
+
+  - name: "npm install"
+    description: "Install package dependencies"
+    category: "Programming Language"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "npm install [package]"
+    options:
+      - flag: "-g"
+        description: "Install globally"
+      - flag: "--save"
+        description: "Save to dependencies"
+      - flag: "--save-dev"
+        description: "Save to devDependencies"
+      - flag: "--production"
+        description: "Skip devDependencies"
+    examples:
+      - command: "npm install"
+        description: "Install all dependencies from package.json"
+      - command: "npm install express"
+        description: "Install express package"
+      - command: "npm install -g typescript"
+        description: "Install TypeScript globally"
+      - command: "npm install --production"
+        description: "Install only production dependencies"
+    risks:
+      - level: "medium"
+        description: "Installing packages from untrusted sources may introduce vulnerabilities"
+      - level: "low"
+        description: "Global installations may conflict with other versions"
+    install_method: "Included with Node.js"
+    version_check: "npm --version"
+
+  - name: "npm start"
+    description: "Run the start script defined in package.json"
+    category: "Programming Language"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "npm start"
+    examples:
+      - command: "npm start"
+        description: "Start the application"
+    risks:
+      - level: "medium"
+        description: "Starts application server; may bind to network ports"
+    install_method: "Included with Node.js"
+    version_check: "npm --version"
+
+  - name: "npm test"
+    description: "Run the test script defined in package.json"
+    category: "Programming Language"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "npm test"
+    examples:
+      - command: "npm test"
+        description: "Run all tests"
+      - command: "npm test -- --coverage"
+        description: "Run tests with coverage report"
+    risks:
+      - level: "low"
+        description: "Tests may modify test databases or external resources"
+    install_method: "Included with Node.js"
+    version_check: "npm --version"
+
+  - name: "npm run"
+    description: "Run arbitrary package scripts"
+    category: "Programming Language"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "npm run <script>"
+    examples:
+      - command: "npm run build"
+        description: "Run build script"
+      - command: "npm run dev"
+        description: "Run development script"
+      - command: "npm run lint"
+        description: "Run linting script"
+    risks:
+      - level: "medium"
+        description: "Scripts can execute arbitrary commands"
+    install_method: "Included with Node.js"
+    version_check: "npm --version"
+
+  - name: "npx"
+    description: "Execute npm package binaries"
+    category: "Programming Language"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "npx <command>"
+    options:
+      - flag: "-p"
+        description: "Install package if not found"
+      - flag: "--no-install"
+        description: "Skip auto-installation"
+    examples:
+      - command: "npx create-react-app myapp"
+        description: "Create React app without global install"
+      - command: "npx eslint ."
+        description: "Run ESLint from local or remote package"
+      - command: "npx -p @angular/cli ng new myapp"
+        description: "Use specific package version"
+    risks:
+      - level: "medium"
+        description: "Downloads and executes code from npm registry"
+    install_method: "Included with npm 5.2+"
+    version_check: "npx --version"
+
+  - name: "npm update"
+    description: "Update packages to their latest versions"
+    category: "Programming Language"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "npm update [package]"
+    options:
+      - flag: "-g"
+        description: "Update global packages"
+    examples:
+      - command: "npm update"
+        description: "Update all packages"
+      - command: "npm update express"
+        description: "Update specific package"
+      - command: "npm update -g"
+        description: "Update all global packages"
+    risks:
+      - level: "medium"
+        description: "Updates may introduce breaking changes"
+    install_method: "Included with Node.js"
+    version_check: "npm --version"
+
+  - name: "npm outdated"
+    description: "Check for outdated packages"
+    category: "Programming Language"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "npm outdated"
+    examples:
+      - command: "npm outdated"
+        description: "List outdated dependencies"
+      - command: "npm outdated -g"
+        description: "List outdated global packages"
+    risks:
+      - level: "low"
+        description: "Read-only operation; no risks"
+    install_method: "Included with Node.js"
+    version_check: "npm --version"
+
+  - name: "npm audit"
+    description: "Check for security vulnerabilities"
+    category: "Programming Language"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "npm audit [fix]"
+    options:
+      - flag: "fix"
+        description: "Automatically fix vulnerabilities"
+      - flag: "--force"
+        description: "Apply fixes even with breaking changes"
+    examples:
+      - command: "npm audit"
+        description: "Scan for vulnerabilities"
+      - command: "npm audit fix"
+        description: "Fix vulnerabilities automatically"
+      - command: "npm audit fix --force"
+        description: "Force fix all vulnerabilities"
+    risks:
+      - level: "medium"
+        description: "Auto-fix may introduce breaking changes"
+    install_method: "Included with Node.js"
+    version_check: "npm --version"
+
+  - name: "npm publish"
+    description: "Publish package to npm registry"
+    category: "Programming Language"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "npm publish [tarball|folder]"
+    options:
+      - flag: "--access"
+        description: "Set package access (public|restricted)"
+      - flag: "--tag"
+        description: "Register with given tag"
+    examples:
+      - command: "npm publish"
+        description: "Publish current package"
+      - command: "npm publish --access public"
+        description: "Publish as public package"
+      - command: "npm publish --tag beta"
+        description: "Publish with beta tag"
+    risks:
+      - level: "high"
+        description: "Publishes package publicly; cannot be easily undone"
+      - level: "medium"
+        description: "Ensure no sensitive data in published package"
+    install_method: "Included with Node.js"
+    version_check: "npm --version"

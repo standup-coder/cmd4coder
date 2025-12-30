@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="cmd4coder 是一个面向运维工程师和开发者的命令行工具大全，提供 220+ 精选命令，支持 CLI 和 TUI 双模式交互，跨平台支持。">
+    <meta name="keywords" content="命令行工具,CLI,TUI,运维工具,开发者工具,Linux命令,Docker,Kubernetes,Go语言">
+    <meta name="author" content="cmd4coder">
+    
+    <!-- Open Graph / 社交媒体 -->
+    <meta property="og:title" content="cmd4coder - 命令行工具大全">
+    <meta property="og:description" content="面向运维工程师和开发者的命令行工具大全，220+ 精选命令，双模式交互">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cmd4coder.github.io/cmd4coder/">
+    
+    <title>cmd4coder - 命令行工具大全 | 面向运维和开发者</title>
+    
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- SVG 图标 -->
+    <div style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg">
+            <symbol id="icon-arrow-up" viewBox="0 0 24 24">
+                <polyline points="18 15 12 9 6 15"></polyline>
+            </symbol>
+            <symbol id="icon-database" viewBox="0 0 24 24">
+                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+            </symbol>
+            <symbol id="icon-search" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </symbol>
+            <symbol id="icon-zap" viewBox="0 0 24 24">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </symbol>
+            <symbol id="icon-file-text" viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+            </symbol>
+            <symbol id="icon-terminal" viewBox="0 0 24 24">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+            </symbol>
+            <symbol id="icon-settings" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6"></path>
+            </symbol>
+            <symbol id="icon-download" viewBox="0 0 24 24">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </symbol>
+            <symbol id="icon-globe" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </symbol>
+            <symbol id="icon-book" viewBox="0 0 24 24">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </symbol>
+            <symbol id="icon-github" viewBox="0 0 24 24">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </symbol>
+            <symbol id="icon-package" viewBox="0 0 24 24">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </symbol>
+            <symbol id="icon-layers" viewBox="0 0 24 24">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+            </symbol>
+        </svg>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">cmd4coder</div>
+            <nav>
+                <ul>
+                    <li><a href="#features">特性</a></li>
+                    <li><a href="#quick-start">快速开始</a></li>
+                    <li><a href="#documentation">文档</a></li>
+                    <li><a href="#download">下载</a></li>
+                    <li><a href="https://github.com/cmd4coder/cmd4coder" target="_blank" rel="noopener">GitHub</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger" aria-label="菜单" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <span class="version">v1.0.0</span>
+                    <h1>cmd4coder</h1>
+                    <p class="subtitle">命令行工具大全</p>
+                    <p class="description">面向运维工程师和开发者的专业命令行工具集合，涵盖 20+ 分类、220+ 精选命令，支持 CLI 和 TUI 双模式交互，助力高效开发运维。</p>
+                    <div class="btn-group">
+                        <a href="#download" class="btn btn-primary">立即下载</a>
+                        <a href="https://github.com/cmd4coder/cmd4coder#readme" target="_blank" rel="noopener" class="btn btn-secondary">查看文档</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2>核心特性</h2>
+                    <p>强大的功能，简洁的设计，高效的体验</p>
+                </div>
+                <div class="features-grid">
+                    <div class="card feature-card">
+                        <div class="card-icon">
+                            <svg><use href="#icon-database"></use></svg>
+                        </div>
+                        <h3>全面的命令清单</h3>
+                        <p>涵盖 20+ 分类、220+ 精选命令，包括操作系统、编程语言、容器编排、数据库等常用工具</p>
+                    </div>
+                    
+                    <div class="card feature-card">
+                        <div class="card-icon">
+                            <svg><use href="#icon-search"></use></svg>
+                        </div>
+                        <h3>强大的搜索功能</h3>
+                        <p>4 级优先级匹配算法，支持精确匹配、前缀匹配、包含匹配和关键词匹配，快速定位所需命令</p>
+                    </div>
+                    
+                    <div class="card feature-card">
+                        <div class="card-icon">
+                            <svg><use href="#icon-zap"></use></svg>
+                        </div>
+                        <h3>快速查询响应</h3>
+                        <p>LRU 缓存优化，本地化存储，无需网络，毫秒级响应，提供流畅的使用体验</p>
+                    </div>
+                    
+                    <div class="card feature-card">
+                        <div class="card-icon">
+                            <svg><use href="#icon-file-text"></use></svg>
+                        </div>
+                        <h3>详细的命令说明</h3>
+                        <p>包含完整的用法、选项、示例、注意事项和风险提示，帮助你正确使用每个命令</p>
+                    </div>
+                    
+                    <div class="card feature-card">
+                        <div class="card-icon">
+                            <svg><use href="#icon-terminal"></use></svg>
+                        </div>
+                        <h3>双模式交互</h3>
+                        <p>支持传统 CLI 命令行模式和交互式 TUI 界面模式，满足不同使用场景需求</p>
+                    </div>
+                    
+                    <div class="card feature-card">
+                        <div class="card-icon">
+                            <svg><use href="#icon-settings"></use></svg>
+                        </div>
+                        <h3>配置管理</h3>
+                        <p>支持命令收藏、历史记录、自定义配置，打造个性化的使用体验</p>
+                    </div>
+                    
+                    <div class="card feature-card">
+                        <div class="card-icon">
+                            <svg><use href="#icon-download"></use></svg>
+                        </div>
+                        <h3>导出功能</h3>
+                        <p>支持 Markdown 和 JSON 格式导出，方便命令文档整理和分享</p>
+                    </div>
+                    
+                    <div class="card feature-card">
+                        <div class="card-icon">
+                            <svg><use href="#icon-globe"></use></svg>
+                        </div>
+                        <h3>跨平台支持</h3>
+                        <p>完美支持 Linux、macOS 和 Windows 系统，提供一致的使用体验</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Start Section -->
+        <section id="quick-start">
+            <div class="container">
+                <div class="section-header">
+                    <h2>快速开始</h2>
+                    <p>三步即可开始使用 cmd4coder</p>
+                </div>
+                <div class="quick-start-content">
+                    <div class="install-steps">
+                        <h3>安装方式</h3>
+                        <ol class="steps">
+                            <li>
+                                <strong>下载预编译版本（推荐）</strong>
+                                <p>从 GitHub Releases 页面下载对应平台的可执行文件，解压后即可使用</p>
+                                <ul class="platform-list">
+                                    <li>Linux (amd64)</li>
+                                    <li>macOS (amd64 / arm64)</li>
+                                    <li>Windows (amd64)</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>从源码构建</strong>
+                                <p>需要 Go 1.19+ 环境，克隆仓库后运行构建脚本</p>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="code-examples">
+                        <h3>使用示例</h3>
+                        
+                        <div class="code-block">
+                            <button class="copy-btn">复制</button>
+                            <pre><code># 从源码构建
+git clone https://github.com/cmd4coder/cmd4coder.git
+cd cmd4coder
+go build -o bin/cmd4coder ./cmd/cli</code></pre>
+                        </div>
+                        
+                        <div class="code-block">
+                            <button class="copy-btn">复制</button>
+                            <pre><code># CLI 模式 - 列出所有命令
+go run ./cmd/cli list -d ./data
+
+# 搜索命令
+go run ./cmd/cli search file -d ./data
+
+# 查看命令详情
+go run ./cmd/cli show ls -d ./data</code></pre>
+                        </div>
+                        
+                        <div class="code-block">
+                            <button class="copy-btn">复制</button>
+                            <pre><code># TUI 模式 - 启动交互式界面
+go run ./cmd/cli -d ./data</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation Section -->
+        <section id="documentation">
+            <div class="container">
+                <div class="section-header">
+                    <h2>文档资源</h2>
+                    <p>完善的文档帮助你快速上手</p>
+                </div>
+                <div class="doc-grid">
+                    <a href="https://github.com/cmd4coder/cmd4coder#readme" target="_blank" rel="noopener" class="card doc-card">
+                        <h3>
+                            <svg width="20" height="20"><use href="#icon-book"></use></svg>
+                            README
+                        </h3>
+                        <p>项目介绍和完整使用指南，包含安装、配置和基本使用说明</p>
+                    </a>
+                    
+                    <a href="https://github.com/cmd4coder/cmd4coder/blob/main/ARCHITECTURE.md" target="_blank" rel="noopener" class="card doc-card">
+                        <h3>
+                            <svg width="20" height="20"><use href="#icon-layers"></use></svg>
+                            系统架构
+                        </h3>
+                        <p>详细的系统架构文档，了解项目的设计理念和技术实现</p>
+                    </a>
+                    
+                    <a href="https://github.com/cmd4coder/cmd4coder/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" class="card doc-card">
+                        <h3>
+                            <svg width="20" height="20"><use href="#icon-github"></use></svg>
+                            贡献指南
+                        </h3>
+                        <p>了解如何为项目做出贡献，包括代码规范和提交流程</p>
+                    </a>
+                    
+                    <a href="https://github.com/cmd4coder/cmd4coder" target="_blank" rel="noopener" class="card doc-card">
+                        <h3>
+                            <svg width="20" height="20"><use href="#icon-package"></use></svg>
+                            完整文档
+                        </h3>
+                        <p>访问 GitHub 仓库查看所有文档、源码和最新动态</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section id="download">
+            <div class="container">
+                <div class="section-header">
+                    <h2>下载 cmd4coder</h2>
+                    <div class="version-badge">
+                        <span class="label">最新版本</span>
+                        <span class="version">v1.0.0</span>
+                    </div>
+                </div>
+                <div class="download-grid">
+                    <div class="card download-card" data-platform="linux">
+                        <div class="platform-icon">
+                            <svg><use href="#icon-terminal"></use></svg>
+                        </div>
+                        <h3>Linux</h3>
+                        <p class="arch">amd64</p>
+                        <a href="https://github.com/cmd4coder/cmd4coder/releases" target="_blank" rel="noopener" class="btn btn-primary">下载</a>
+                    </div>
+                    
+                    <div class="card download-card" data-platform="macos-amd64">
+                        <div class="platform-icon">
+                            <svg><use href="#icon-terminal"></use></svg>
+                        </div>
+                        <h3>macOS</h3>
+                        <p class="arch">Intel (amd64)</p>
+                        <a href="https://github.com/cmd4coder/cmd4coder/releases" target="_blank" rel="noopener" class="btn btn-primary">下载</a>
+                    </div>
+                    
+                    <div class="card download-card" data-platform="macos-arm64">
+                        <div class="platform-icon">
+                            <svg><use href="#icon-terminal"></use></svg>
+                        </div>
+                        <h3>macOS</h3>
+                        <p class="arch">Apple Silicon (arm64)</p>
+                        <a href="https://github.com/cmd4coder/cmd4coder/releases" target="_blank" rel="noopener" class="btn btn-primary">下载</a>
+                    </div>
+                    
+                    <div class="card download-card" data-platform="windows">
+                        <div class="platform-icon">
+                            <svg><use href="#icon-terminal"></use></svg>
+                        </div>
+                        <h3>Windows</h3>
+                        <p class="arch">amd64</p>
+                        <a href="https://github.com/cmd4coder/cmd4coder/releases" target="_blank" rel="noopener" class="btn btn-primary">下载</a>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 2rem; color: var(--color-text-secondary);">
+                    查看 <a href="https://github.com/cmd4coder/cmd4coder/releases" target="_blank" rel="noopener" style="text-decoration: underline;">所有版本</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="https://github.com/cmd4coder/cmd4coder" target="_blank" rel="noopener">GitHub</a>
+                    <a href="https://github.com/cmd4coder/cmd4coder/issues" target="_blank" rel="noopener">问题反馈</a>
+                    <a href="https://github.com/cmd4coder/cmd4coder/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+                </div>
+                <p class="copyright">© 2024 cmd4coder. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" aria-label="返回顶部">
+        <svg><use href="#icon-arrow-up"></use></svg>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="js/main.js" defer></script>
+</body>
+</html>
