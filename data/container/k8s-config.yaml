@@ -1,0 +1,211 @@
+category: "Kubernetes Config Management"
+description: "Configuration management and Infrastructure as Code tools for Kubernetes"
+commands:
+  - name: "ansible-playbook"
+    description: "Execute Ansible playbook"
+    category: "Kubernetes Config Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "ansible-playbook [playbook.yml] [flags]"
+    options:
+      - flag: "-i"
+        description: "Inventory file path"
+      - flag: "--check"
+        description: "Dry run mode; don't make changes"
+      - flag: "-v"
+        description: "Verbose mode"
+      - flag: "--tags"
+        description: "Run only tasks with specific tags"
+    examples:
+      - command: "ansible-playbook playbook.yml -i inventory/hosts.yml"
+        description: "Run playbook with inventory"
+      - command: "ansible-playbook playbook.yml --check"
+        description: "Dry run to preview changes"
+      - command: "ansible-playbook playbook.yml --tags kubernetes"
+        description: "Run only Kubernetes-tagged tasks"
+      - command: "ansible-playbook cluster.yml -i inventory/mycluster/hosts.yaml"
+        description: "Deploy Kubernetes cluster with Kubespray"
+    risks:
+      - level: "high"
+        description: "Executes configuration changes on target hosts"
+      - level: "medium"
+        description: "Always test in staging environment first"
+    install_method: "pip install ansible"
+    version_check: "ansible-playbook --version"
+
+  - name: "ansible all -m ping"
+    description: "Test connectivity to all hosts in inventory"
+    category: "Kubernetes Config Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "ansible [hosts] -m [module] [flags]"
+    options:
+      - flag: "-i"
+        description: "Inventory file path"
+      - flag: "-m"
+        description: "Module name to execute"
+    examples:
+      - command: "ansible all -m ping"
+        description: "Ping all hosts in inventory"
+      - command: "ansible all -m ping -i inventory.yml"
+        description: "Ping with specific inventory"
+      - command: "ansible k8s-masters -m shell -a 'kubectl get nodes'"
+        description: "Execute command on Kubernetes master nodes"
+    risks:
+      - level: "low"
+        description: "Read-only connectivity test; no changes made"
+    install_method: "pip install ansible"
+    version_check: "ansible --version"
+
+  - name: "terraform init"
+    description: "Initialize Terraform working directory"
+    category: "Kubernetes Config Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "terraform init [flags]"
+    options:
+      - flag: "-upgrade"
+        description: "Upgrade provider plugins"
+      - flag: "-backend-config"
+        description: "Backend configuration"
+    examples:
+      - command: "terraform init"
+        description: "Initialize Terraform directory"
+      - command: "terraform init -upgrade"
+        description: "Initialize and upgrade providers"
+      - command: "terraform init -backend-config=backend.hcl"
+        description: "Initialize with backend configuration"
+    risks:
+      - level: "low"
+        description: "Local initialization only; no infrastructure changes"
+    install_method: "Download from https://www.terraform.io/downloads"
+    version_check: "terraform version"
+
+  - name: "terraform plan"
+    description: "Generate and show Terraform execution plan"
+    category: "Kubernetes Config Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "terraform plan [flags]"
+    options:
+      - flag: "-out"
+        description: "Save plan to file"
+      - flag: "-var-file"
+        description: "Variable file path"
+      - flag: "-target"
+        description: "Target specific resource"
+    examples:
+      - command: "terraform plan"
+        description: "Show execution plan"
+      - command: "terraform plan -out=tfplan"
+        description: "Save plan to file"
+      - command: "terraform plan -var-file=production.tfvars"
+        description: "Plan with variable file"
+    risks:
+      - level: "low"
+        description: "Read-only operation; previews changes only"
+    install_method: "Download from https://www.terraform.io/downloads"
+    version_check: "terraform version"
+
+  - name: "terraform apply"
+    description: "Apply Terraform configuration changes"
+    category: "Kubernetes Config Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "terraform apply [flags]"
+    options:
+      - flag: "-auto-approve"
+        description: "Skip approval prompt"
+      - flag: "-var-file"
+        description: "Variable file path"
+      - flag: "-target"
+        description: "Target specific resource"
+    examples:
+      - command: "terraform apply"
+        description: "Apply changes with confirmation"
+      - command: "terraform apply -auto-approve"
+        description: "Apply without confirmation prompt"
+      - command: "terraform apply -var-file=production.tfvars"
+        description: "Apply with variable file"
+      - command: "terraform apply tfplan"
+        description: "Apply saved plan file"
+    risks:
+      - level: "critical"
+        description: "Creates, modifies, or deletes infrastructure resources"
+      - level: "high"
+        description: "Always review plan before applying to production"
+    install_method: "Download from https://www.terraform.io/downloads"
+    version_check: "terraform version"
+
+  - name: "terraform destroy"
+    description: "Destroy Terraform-managed infrastructure"
+    category: "Kubernetes Config Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "terraform destroy [flags]"
+    options:
+      - flag: "-auto-approve"
+        description: "Skip approval prompt"
+      - flag: "-target"
+        description: "Destroy specific resource"
+    examples:
+      - command: "terraform destroy"
+        description: "Destroy all resources with confirmation"
+      - command: "terraform destroy -auto-approve"
+        description: "Destroy without confirmation"
+      - command: "terraform destroy -target=kubernetes_namespace.example"
+        description: "Destroy specific resource only"
+    risks:
+      - level: "critical"
+        description: "Permanently deletes all managed infrastructure"
+      - level: "critical"
+        description: "Cannot be undone; backup data before destroying"
+    install_method: "Download from https://www.terraform.io/downloads"
+    version_check: "terraform version"
+
+  - name: "terraform output"
+    description: "Display Terraform output values"
+    category: "Kubernetes Config Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "terraform output [flags]"
+    options:
+      - flag: "-json"
+        description: "Output in JSON format"
+      - flag: "-raw"
+        description: "Output raw value without quotes"
+    examples:
+      - command: "terraform output"
+        description: "Display all output values"
+      - command: "terraform output cluster_endpoint"
+        description: "Display specific output value"
+      - command: "terraform output -json"
+        description: "Display outputs in JSON format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; displays values only"
+      - level: "low"
+        description: "May contain sensitive data like passwords"
+    install_method: "Download from https://www.terraform.io/downloads"
+    version_check: "terraform version"

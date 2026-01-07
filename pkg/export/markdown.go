@@ -30,14 +30,14 @@ func ExportToMarkdown(commands []*model.Command, filename string) error {
 	// 遍历分类
 	for category, cmds := range categoryMap {
 		fmt.Fprintf(f, "## %s\n\n", category)
-		
+
 		for _, cmd := range cmds {
 			fmt.Fprintf(f, "### %s\n\n", cmd.Name)
 			fmt.Fprintf(f, "**描述**: %s\n\n", cmd.Description)
-			
+
 			// 平台
 			fmt.Fprintf(f, "**平台**: %s\n\n", strings.Join(cmd.Platforms, ", "))
-			
+
 			// 使用方式
 			if len(cmd.Usage) > 0 {
 				fmt.Fprintf(f, "**使用方式**:\n")
@@ -46,7 +46,7 @@ func ExportToMarkdown(commands []*model.Command, filename string) error {
 				}
 				fmt.Fprintf(f, "\n")
 			}
-			
+
 			// 选项
 			if len(cmd.Options) > 0 {
 				fmt.Fprintf(f, "**常用选项**:\n\n")
@@ -55,7 +55,7 @@ func ExportToMarkdown(commands []*model.Command, filename string) error {
 				}
 				fmt.Fprintf(f, "\n")
 			}
-			
+
 			// 示例
 			if len(cmd.Examples) > 0 {
 				fmt.Fprintf(f, "**使用示例**:\n\n")
@@ -68,7 +68,7 @@ func ExportToMarkdown(commands []*model.Command, filename string) error {
 				}
 				fmt.Fprintf(f, "\n")
 			}
-			
+
 			// 风险说明
 			if len(cmd.Risks) > 0 {
 				fmt.Fprintf(f, "**风险说明**:\n\n")
@@ -78,12 +78,12 @@ func ExportToMarkdown(commands []*model.Command, filename string) error {
 				}
 				fmt.Fprintf(f, "\n")
 			}
-			
+
 			// 安装方法
 			if cmd.InstallMethod != "" {
 				fmt.Fprintf(f, "**安装方法**: %s\n\n", cmd.InstallMethod)
 			}
-			
+
 			fmt.Fprintf(f, "---\n\n")
 		}
 	}

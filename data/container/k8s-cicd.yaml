@@ -1,0 +1,313 @@
+category: "Kubernetes CI/CD"
+description: "Kubernetes continuous integration and deployment tools"
+commands:
+  - name: "argocd login"
+    description: "Login to ArgoCD server"
+    category: "Kubernetes CI/CD"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "argocd login [server-address] [flags]"
+    options:
+      - flag: "--username"
+        description: "Username for authentication"
+      - flag: "--password"
+        description: "Password for authentication"
+      - flag: "--insecure"
+        description: "Skip server certificate verification"
+    examples:
+      - command: "argocd login argocd.example.com"
+        description: "Login to ArgoCD server"
+      - command: "argocd login argocd.example.com --username admin --password admin123"
+        description: "Login with credentials"
+      - command: "argocd login localhost:8080 --insecure"
+        description: "Login to local server without TLS verification"
+    risks:
+      - level: "low"
+        description: "Authentication only; no cluster modifications"
+    install_method: "Download from https://argo-cd.readthedocs.io/en/stable/cli_installation/"
+    version_check: "argocd version"
+
+  - name: "argocd app create"
+    description: "Create ArgoCD application"
+    category: "Kubernetes CI/CD"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "argocd app create [app-name] [flags]"
+    options:
+      - flag: "--repo"
+        description: "Git repository URL"
+      - flag: "--path"
+        description: "Path to manifests in repository"
+      - flag: "--dest-server"
+        description: "Destination Kubernetes server"
+      - flag: "--dest-namespace"
+        description: "Destination namespace"
+    examples:
+      - command: "argocd app create myapp --repo https://github.com/example/repo --path manifests --dest-server https://kubernetes.default.svc --dest-namespace default"
+        description: "Create application from Git repository"
+      - command: "argocd app create myapp --repo https://github.com/example/repo --path helm --dest-namespace production"
+        description: "Create application with Helm charts"
+    risks:
+      - level: "high"
+        description: "Creates application that will deploy resources to cluster"
+      - level: "medium"
+        description: "Verify repository and path before creating"
+    install_method: "Download from https://argo-cd.readthedocs.io/en/stable/cli_installation/"
+    version_check: "argocd version"
+
+  - name: "argocd app list"
+    description: "List ArgoCD applications"
+    category: "Kubernetes CI/CD"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "argocd app list [flags]"
+    options:
+      - flag: "-o"
+        description: "Output format: wide, json, yaml"
+    examples:
+      - command: "argocd app list"
+        description: "List all applications"
+      - command: "argocd app list -o wide"
+        description: "List with detailed information"
+      - command: "argocd app list -o json"
+        description: "List in JSON format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists applications only"
+    install_method: "Download from https://argo-cd.readthedocs.io/en/stable/cli_installation/"
+    version_check: "argocd version"
+
+  - name: "argocd app sync"
+    description: "Sync application state with Git repository"
+    category: "Kubernetes CI/CD"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "argocd app sync [app-name] [flags]"
+    options:
+      - flag: "--prune"
+        description: "Delete resources not in Git"
+      - flag: "--dry-run"
+        description: "Preview sync without applying"
+      - flag: "--force"
+        description: "Force sync even if no changes detected"
+    examples:
+      - command: "argocd app sync myapp"
+        description: "Sync application with Git repository"
+      - command: "argocd app sync myapp --prune"
+        description: "Sync and delete orphaned resources"
+      - command: "argocd app sync myapp --dry-run"
+        description: "Preview sync changes"
+    risks:
+      - level: "high"
+        description: "Applies changes to cluster; may affect running services"
+      - level: "medium"
+        description: "Prune option deletes resources not in Git"
+    install_method: "Download from https://argo-cd.readthedocs.io/en/stable/cli_installation/"
+    version_check: "argocd version"
+
+  - name: "argocd app delete"
+    description: "Delete ArgoCD application"
+    category: "Kubernetes CI/CD"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "argocd app delete [app-name] [flags]"
+    options:
+      - flag: "--cascade"
+        description: "Delete application resources from cluster"
+      - flag: "-y"
+        description: "Skip confirmation prompt"
+    examples:
+      - command: "argocd app delete myapp"
+        description: "Delete application with confirmation"
+      - command: "argocd app delete myapp -y"
+        description: "Delete without confirmation"
+      - command: "argocd app delete myapp --cascade"
+        description: "Delete application and all its resources"
+    risks:
+      - level: "critical"
+        description: "Cascade deletion removes all application resources from cluster"
+      - level: "high"
+        description: "Causes service downtime; backup before deleting"
+    install_method: "Download from https://argo-cd.readthedocs.io/en/stable/cli_installation/"
+    version_check: "argocd version"
+
+  - name: "flux bootstrap git"
+    description: "Bootstrap Flux to Git repository"
+    category: "Kubernetes CI/CD"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "flux bootstrap git [flags]"
+    options:
+      - flag: "--url"
+        description: "Git repository URL"
+      - flag: "--branch"
+        description: "Git branch"
+      - flag: "--path"
+        description: "Path in repository for Flux manifests"
+      - flag: "--token-auth"
+        description: "Use token authentication"
+    examples:
+      - command: "flux bootstrap git --url=https://github.com/example/repo --branch=main --path=clusters/production"
+        description: "Bootstrap Flux to Git repository"
+      - command: "flux bootstrap github --owner=myorg --repository=fleet --path=clusters/production --personal"
+        description: "Bootstrap to GitHub with personal access token"
+    risks:
+      - level: "high"
+        description: "Installs Flux components to cluster; modifies Git repository"
+      - level: "medium"
+        description: "Requires Git write access; creates initial commit"
+    install_method: "Download from https://fluxcd.io/flux/installation/"
+    version_check: "flux --version"
+
+  - name: "flux get kustomizations"
+    description: "List Flux Kustomization resources"
+    category: "Kubernetes CI/CD"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "flux get kustomizations [flags]"
+    options:
+      - flag: "-A"
+        description: "All namespaces"
+      - flag: "--watch"
+        description: "Watch for changes"
+    examples:
+      - command: "flux get kustomizations"
+        description: "List kustomizations in current namespace"
+      - command: "flux get kustomizations -A"
+        description: "List kustomizations in all namespaces"
+      - command: "flux get kustomizations --watch"
+        description: "Watch kustomization changes in real-time"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists resources only"
+    install_method: "Download from https://fluxcd.io/flux/installation/"
+    version_check: "flux --version"
+
+  - name: "flux reconcile source git"
+    description: "Manually trigger Git source reconciliation"
+    category: "Kubernetes CI/CD"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "flux reconcile source git [source-name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Source namespace"
+    examples:
+      - command: "flux reconcile source git flux-system"
+        description: "Trigger reconciliation of flux-system source"
+      - command: "flux reconcile source git myapp -n production"
+        description: "Reconcile source in production namespace"
+    risks:
+      - level: "medium"
+        description: "Triggers immediate sync from Git; may deploy changes"
+    install_method: "Download from https://fluxcd.io/flux/installation/"
+    version_check: "flux --version"
+
+  - name: "tkn pipeline list"
+    description: "List Tekton pipelines"
+    category: "Kubernetes CI/CD"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "tkn pipeline list [flags]"
+    options:
+      - flag: "-n"
+        description: "Filter by namespace"
+      - flag: "-A"
+        description: "List across all namespaces"
+    examples:
+      - command: "tkn pipeline list"
+        description: "List pipelines in current namespace"
+      - command: "tkn pipeline list -A"
+        description: "List pipelines in all namespaces"
+      - command: "tkn pipeline list -n cicd"
+        description: "List pipelines in cicd namespace"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists pipelines only"
+    install_method: "Download from https://tekton.dev/docs/cli/"
+    version_check: "tkn version"
+
+  - name: "tkn pipeline start"
+    description: "Start Tekton pipeline execution"
+    category: "Kubernetes CI/CD"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "tkn pipeline start [pipeline-name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Pipeline namespace"
+      - flag: "-p"
+        description: "Set pipeline parameter"
+      - flag: "--showlog"
+        description: "Show logs after starting"
+    examples:
+      - command: "tkn pipeline start build-pipeline"
+        description: "Start pipeline execution"
+      - command: "tkn pipeline start build-pipeline -p repo-url=https://github.com/example/repo"
+        description: "Start with parameter"
+      - command: "tkn pipeline start build-pipeline --showlog"
+        description: "Start and follow logs"
+    risks:
+      - level: "high"
+        description: "Executes pipeline which may build and deploy applications"
+      - level: "medium"
+        description: "Verify parameters before starting production pipelines"
+    install_method: "Download from https://tekton.dev/docs/cli/"
+    version_check: "tkn version"
+
+  - name: "tkn pipelinerun logs"
+    description: "View Tekton pipeline run logs"
+    category: "Kubernetes CI/CD"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "tkn pipelinerun logs [pipelinerun-name] [flags]"
+    options:
+      - flag: "-f"
+        description: "Follow logs in real-time"
+      - flag: "-n"
+        description: "Namespace"
+    examples:
+      - command: "tkn pipelinerun logs build-run-123"
+        description: "View pipeline run logs"
+      - command: "tkn pipelinerun logs build-run-123 -f"
+        description: "Follow pipeline run logs"
+      - command: "tkn pipelinerun logs -n cicd -f"
+        description: "Follow latest pipeline run in cicd namespace"
+    risks:
+      - level: "low"
+        description: "Read-only operation; views logs only"
+    install_method: "Download from https://tekton.dev/docs/cli/"
+    version_check: "tkn version"

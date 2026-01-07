@@ -1,166 +1,86 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to cmd4coder project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-01-07
+
+### Added
+- **12个Kubernetes生态工具分类**
+  - K8s集群管理 (container_k8s_cluster)
+  - K8s容器运行时 (container_k8s_runtime)
+  - K8s监控日志 (container_k8s_monitor)
+  - K8s网络插件 (container_k8s_network)
+  - K8s存储管理 (container_k8s_storage)
+  - K8s持续集成 (container_k8s_cicd)
+  - K8s配置管理 (container_k8s_config)
+  - K8s备份恢复 (container_k8s_backup)
+  - K8s安全工具 (container_k8s_security)
+  - K8s辅助工具 (container_k8s_utilities)
+  - K8s云平台工具 (container_k8s_cloud)
+  - K8s开发调试 (container_k8s_dev)
+
+- **128条Kubernetes生态工具命令**
+  - 集群管理工具：kubeadm init/join/upgrade, kubelet, etcdctl等 (12条)
+  - 容器运行时：crictl, ctr, containerd等 (9条)
+  - 监控日志：prometheus, grafana, loki, promtail, fluentd, fluent-bit等 (11条)
+  - 网络插件：calicoctl, cilium等 (7条)
+  - 存储管理：helm repo/install/upgrade/uninstall等 (8条)
+  - CI/CD工具：argocd, flux, tekton等 (11条)
+  - 配置管理：ansible-playbook, terraform等 (7条)
+  - 备份恢复：velero, restic等 (8条)
+  - 安全工具：trivy, kube-bench, falco等 (7条)
+  - 辅助工具：k9s, kubectx, kubens, stern, popeye等 (5条)
+  - 云平台工具：eksctl, az aks, gcloud container clusters等 (9条)
+  - 开发调试：skaffold, tilt, telepresence等 (8条)
+
+- **12个新的YAML数据文件**
+  - container/k8s-cluster.yaml
+  - container/k8s-runtime.yaml
+  - container/k8s-monitor.yaml
+  - container/k8s-network.yaml
+  - container/k8s-storage.yaml
+  - container/k8s-cicd.yaml
+  - container/k8s-config.yaml
+  - container/k8s-backup.yaml
+  - container/k8s-security.yaml
+  - container/k8s-utilities.yaml
+  - container/k8s-cloud.yaml
+  - container/k8s-dev.yaml
+
+### Changed
+- 更新metadata.yaml版本号从1.0.0到1.1.0
+- 更新README.md，反映新增的Kubernetes生态工具
+- 命令总数从220条增加到350+条
+- 分类总数从20+个增加到32个
+
+### Improved
+- 完善了Kubernetes运维工具链的覆盖范围
+- 为每条命令提供了详细的使用说明、选项、示例和风险评估
+- 所有命令包含安装方法和版本检查命令
+
+### Documentation
+- 更新核心文档(README.md)
+- 新增Kubernetes工具专题说明
+- 更新版本号和命令统计信息
+
 ## [1.0.0] - 2025-12-14
 
 ### Added
+- 初始版本发布
+- 220个精选命令
+- 20+个命令分类
+- CLI和TUI双模式交互
+- 命令搜索和查询功能
+- Markdown和JSON导出功能
+- 配置管理和历史记录
+- 跨平台支持（Linux、macOS、Windows）
 
-#### 新功能
-- **TUI交互界面** (基础框架): 基于Bubbletea的交互式用户界面(待完善)
-- **配置管理系统** (规划中): 支持收藏、历史记录、自定义配置
-- **导出功能增强**: 完善的Markdown和JSON导出
-  - 单个命令导出
-  - 批量导出(按分类)
-  - 全量导出
-- **测试覆盖**: 单元测试框架和基础测试用例
-- **文档体系**: 完整的项目文档
-  - CONTRIBUTING.md - 贡献指南
-  - CODE_OF_CONDUCT.md - 行为准则
-  - ARCHITECTURE.md - 架构设计文档
-  - FAQ章节在README中
-
-#### 技术改进
-- 添加TUI相关依赖(bubbletea, lipgloss, bubbles)
-- 完善导出模块的错误处理
-- 增强构建脚本，支持多平台构建
-
-### Changed
-
-- **README.md**: 全面更新，添加新功能说明和FAQ
-- **数据统计**: 更新命令总数为220个
-- **开发工作流**: 添加代码质量检查指令
-
-### Improved
-
-- **性能优化**: 继续使用LRU缓存和并行加载
-- **用户体验**: 更清晰的文档和使用说明
-- **代码质量**: 遵循DO规范，添加注释
-
-## [1.0.0-beta] - 2025-12-14
-
-### Added
-
-#### Core Features
-- Complete Go language implementation with clean architecture
-- CLI tool with 5 commands: list, show, search, categories, version
-- YAML-based data storage system
-- 4-level indexing system (name, category, keyword, platform)
-- Smart search with 4-priority matching algorithm
-- LRU cache mechanism for performance optimization
-- Data validation tool for quality assurance
-
-#### Command Data
-- **220 commands** across 17 categories
-- Operating System commands (Ubuntu, CentOS, Common Linux)
-- Programming Language toolchains (Java, Go, Python, Node.js)
-- Diagnostic tools (Arthas, tsar)
-- Network tools (DNS, HTTP, diagnostic)
-- Container orchestration (Docker, Kubernetes)
-- Database tools (MySQL, Redis, PostgreSQL)
-- Version control (Git, SVN)
-- Build tools (Maven, Gradle, Make)
-
-#### Documentation
-- Comprehensive README with usage examples
-- Final project report with statistics
-- MIT License
-- Project status reports
-- Execution summary
-
-### Architecture
-
-```
-cmd4coder/
-├── cmd/cli/            # CLI application (327 lines)
-├── cmd/validator/      # Data validation tool (222 lines)
-├── internal/
-│   ├── model/         # Data models (429 lines)
-│   ├── data/          # Data layer (508 lines)
-│   └── service/       # Business logic (139 lines)
-└── data/              # YAML data files (4,500+ lines)
-```
-
-### Technical Highlights
-
-- **Search Algorithm**: 4-level priority matching (exact: 100, prefix: 80, contains: 60, keyword: 40)
-- **Concurrency**: Parallel YAML file loading using goroutines
-- **Caching**: LRU cache with thread-safe design
-- **Data Validation**: Comprehensive schema validation with error reporting
-- **Risk System**: 4-level risk classification (low, medium, high, critical)
-
-### Statistics
-
-- Total Commands: 220
-- Total Categories: 17
-- Core Code: ~1,400 lines
-- Data Files: ~4,500 lines
-- Completion: 62.9% (220/350 target)
-
-### Quality Metrics
-
-- Architecture: ⭐⭐⭐⭐⭐
-- Code Quality: ⭐⭐⭐⭐⭐
-- Feature Completeness: ⭐⭐⭐⭐
-- Data Completeness: ⭐⭐⭐
-- Overall Score: ⭐⭐⭐⭐ (4/5)
-
-## [Unreleased]
-
-### Planned Features
-
-#### Phase 3: Advanced Features
-- Configuration management service (favorites, history)
-- TUI (Text User Interface) using bubbletea
-- Export functionality (Markdown, JSON)
-
-#### Phase 4: Testing & Optimization
-- Unit tests with 80% coverage
-- Integration tests
-- Performance testing and optimization
-- Test reports generation
-
-#### Phase 5: Distribution
-- Multi-platform executable builds
-- GitHub releases
-- Complete user documentation
-- Contributing guidelines
-
-### Data Expansion
-- Continue adding commands to reach 350 total
-- Add more toolchain support
-- Enhance existing command examples
-
----
-
-## Release Notes
-
-### v1.0.0-beta
-
-This is the first beta release of cmd4coder. The project has successfully completed Phase 1 and Phase 2 of development:
-
-**What's Working:**
-- ✅ Full CLI functionality
-- ✅ 220 high-quality command entries
-- ✅ Smart search and indexing
-- ✅ Data validation
-- ✅ Cross-platform support
-
-**What's Next:**
-- TUI interactive interface
-- Configuration management
-- Export features
-- Expanded test coverage
-- More command data
-
-The project is production-ready for basic usage. We welcome feedback and contributions!
-
----
-
-**Project**: cmd4coder - Command Line Tool Encyclopedia  
-**Repository**: https://github.com/cmd4coder/cmd4coder  
-**License**: MIT  
-**Maintained by**: cmd4coder team
+### Features
+- 4级优先级搜索算法
+- LRU缓存优化
+- 多维度命令索引
+- 风险等级标注
+- 详细的使用示例

@@ -11,16 +11,16 @@ import (
 type Index struct {
 	// 命令名称 -> 命令对象
 	nameIndex map[string]*model.Command
-	
+
 	// 分类 -> 命令列表
 	categoryIndex map[string][]*model.Command
-	
+
 	// 关键词 -> 命令列表（倒排索引）
 	keywordIndex map[string][]*model.Command
-	
+
 	// 平台 -> 命令列表
 	platformIndex map[string][]*model.Command
-	
+
 	mu sync.RWMutex
 }
 
@@ -101,7 +101,7 @@ func tokenize(text string) []string {
 	text = strings.ReplaceAll(text, "/", " ")
 	text = strings.ReplaceAll(text, "_", " ")
 	text = strings.ReplaceAll(text, "-", " ")
-	
+
 	words := strings.Fields(text)
 	var result []string
 	for _, word := range words {

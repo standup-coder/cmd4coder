@@ -12,12 +12,12 @@ import (
 
 // ValidationReport 验证报告
 type ValidationReport struct {
-	TotalFiles      int
-	TotalCommands   int
-	SuccessFiles    int
-	FailedFiles     int
-	Errors          []ValidationError
-	Warnings        []ValidationWarning
+	TotalFiles         int
+	TotalCommands      int
+	SuccessFiles       int
+	FailedFiles        int
+	Errors             []ValidationError
+	Warnings           []ValidationWarning
 	CommandsByCategory map[string]int
 }
 
@@ -47,7 +47,7 @@ func main() {
 
 	// 加载元数据
 	loader := data.NewLoader(*dataDir)
-	
+
 	metadata, err := loader.LoadMetadata()
 	if err != nil {
 		fmt.Printf("❌ 无法加载元数据: %v\n", err)
@@ -69,7 +69,7 @@ func main() {
 	for _, dataFile := range metadata.DataFiles {
 		report.TotalFiles++
 		filePath := filepath.Join(*dataDir, dataFile)
-		
+
 		cmdList, err := loader.LoadCommandList(filePath)
 		if err != nil {
 			report.FailedFiles++
@@ -148,7 +148,7 @@ func main() {
 	fmt.Printf("成功: %d\n", report.SuccessFiles)
 	fmt.Printf("失败: %d\n", report.FailedFiles)
 	fmt.Printf("总命令数: %d\n", report.TotalCommands)
-	
+
 	if len(report.Errors) > 0 {
 		fmt.Printf("\n❌ 错误 (%d):\n", len(report.Errors))
 		for i, e := range report.Errors {
@@ -183,10 +183,10 @@ func main() {
 	// 质量评分
 	fmt.Println("\n数据质量评分:")
 	fmt.Println("----------------------------------------")
-	
+
 	completeness := float64(report.TotalCommands) / 350.0 * 100
 	fmt.Printf("完整度: %.1f%% (%d/350)\n", completeness, report.TotalCommands)
-	
+
 	accuracy := float64(report.SuccessFiles) / float64(report.TotalFiles) * 100
 	fmt.Printf("准确率: %.1f%% (%d/%d 文件通过验证)\n", accuracy, report.SuccessFiles, report.TotalFiles)
 

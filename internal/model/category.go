@@ -2,12 +2,12 @@ package model
 
 // Category 分类信息
 type Category struct {
-	ID          string   `yaml:"id" json:"id"`                   // 分类ID
-	Name        string   `yaml:"name" json:"name"`               // 分类名称
-	Description string   `yaml:"description" json:"description"` // 分类描述
-	Parent      string   `yaml:"parent,omitempty" json:"parent,omitempty"` // 父分类ID（空表示顶级分类）
-	Order       int      `yaml:"order" json:"order"`             // 排序顺序
-	Icon        string   `yaml:"icon,omitempty" json:"icon,omitempty"` // 图标（用于TUI）
+	ID          string   `yaml:"id" json:"id"`                                 // 分类ID
+	Name        string   `yaml:"name" json:"name"`                             // 分类名称
+	Description string   `yaml:"description" json:"description"`               // 分类描述
+	Parent      string   `yaml:"parent,omitempty" json:"parent,omitempty"`     // 父分类ID（空表示顶级分类）
+	Order       int      `yaml:"order" json:"order"`                           // 排序顺序
+	Icon        string   `yaml:"icon,omitempty" json:"icon,omitempty"`         // 图标（用于TUI）
 	Children    []string `yaml:"children,omitempty" json:"children,omitempty"` // 子分类ID列表
 }
 

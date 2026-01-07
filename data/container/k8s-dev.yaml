@@ -1,0 +1,217 @@
+category: "Kubernetes Development"
+description: "Development and debugging tools for Kubernetes applications"
+commands:
+  - name: "skaffold dev"
+    description: "Start Skaffold continuous development mode"
+    category: "Kubernetes Development"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "skaffold dev [flags]"
+    options:
+      - flag: "--port-forward"
+        description: "Enable port forwarding"
+      - flag: "--namespace"
+        description: "Deploy to specific namespace"
+      - flag: "--cleanup"
+        description: "Cleanup deployments on exit"
+    examples:
+      - command: "skaffold dev"
+        description: "Start development with auto-reload"
+      - command: "skaffold dev --port-forward"
+        description: "Start with automatic port forwarding"
+      - command: "skaffold dev --namespace dev"
+        description: "Deploy to dev namespace"
+    risks:
+      - level: "medium"
+        description: "Deploys to cluster; automatically rebuilds on code changes"
+      - level: "low"
+        description: "Intended for development environments only"
+    install_method: "Download from https://skaffold.dev/docs/install/"
+    version_check: "skaffold version"
+
+  - name: "skaffold run"
+    description: "Build and deploy application once"
+    category: "Kubernetes Development"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "skaffold run [flags]"
+    options:
+      - flag: "--namespace"
+        description: "Deploy to specific namespace"
+      - flag: "--tail"
+        description: "Stream logs after deployment"
+    examples:
+      - command: "skaffold run"
+        description: "Build and deploy once"
+      - command: "skaffold run --namespace staging"
+        description: "Deploy to staging namespace"
+      - command: "skaffold run --tail"
+        description: "Deploy and stream logs"
+    risks:
+      - level: "high"
+        description: "Deploys application to cluster"
+      - level: "medium"
+        description: "Verify target namespace before running"
+    install_method: "Download from https://skaffold.dev/docs/install/"
+    version_check: "skaffold version"
+
+  - name: "skaffold build"
+    description: "Build container images only (no deployment)"
+    category: "Kubernetes Development"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "skaffold build [flags]"
+    options:
+      - flag: "--file-output"
+        description: "Save built images to file"
+      - flag: "--push"
+        description: "Push images to registry"
+    examples:
+      - command: "skaffold build"
+        description: "Build images locally"
+      - command: "skaffold build --push"
+        description: "Build and push to registry"
+      - command: "skaffold build --file-output=images.json"
+        description: "Build and save image tags to file"
+    risks:
+      - level: "low"
+        description: "Local build operation; no cluster deployment"
+    install_method: "Download from https://skaffold.dev/docs/install/"
+    version_check: "skaffold version"
+
+  - name: "skaffold delete"
+    description: "Delete Skaffold deployments"
+    category: "Kubernetes Development"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "skaffold delete [flags]"
+    options:
+      - flag: "--namespace"
+        description: "Delete from specific namespace"
+    examples:
+      - command: "skaffold delete"
+        description: "Delete deployed resources"
+      - command: "skaffold delete --namespace dev"
+        description: "Delete from dev namespace"
+    risks:
+      - level: "high"
+        description: "Deletes application resources from cluster"
+    install_method: "Download from https://skaffold.dev/docs/install/"
+    version_check: "skaffold version"
+
+  - name: "tilt up"
+    description: "Start Tilt development environment"
+    category: "Kubernetes Development"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "tilt up [flags]"
+    options:
+      - flag: "--port"
+        description: "Web UI port"
+      - flag: "--context"
+        description: "Kubernetes context"
+    examples:
+      - command: "tilt up"
+        description: "Start Tilt with web UI"
+      - command: "tilt up --port 8080"
+        description: "Start with custom UI port"
+      - command: "tilt up --context minikube"
+        description: "Start with specific context"
+    risks:
+      - level: "medium"
+        description: "Deploys to cluster with live updates"
+      - level: "low"
+        description: "Intended for local development"
+    install_method: "Download from https://docs.tilt.dev/install.html"
+    version_check: "tilt version"
+
+  - name: "tilt down"
+    description: "Stop Tilt and cleanup resources"
+    category: "Kubernetes Development"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "tilt down"
+    examples:
+      - command: "tilt down"
+        description: "Stop Tilt and delete resources"
+    risks:
+      - level: "medium"
+        description: "Deletes deployed resources from cluster"
+    install_method: "Download from https://docs.tilt.dev/install.html"
+    version_check: "tilt version"
+
+  - name: "telepresence connect"
+    description: "Connect local environment to Kubernetes cluster"
+    category: "Kubernetes Development"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "telepresence connect [flags]"
+    options:
+      - flag: "--namespace"
+        description: "Connect to specific namespace"
+      - flag: "--context"
+        description: "Kubernetes context"
+    examples:
+      - command: "telepresence connect"
+        description: "Connect to cluster"
+      - command: "telepresence connect --namespace production"
+        description: "Connect to production namespace"
+      - command: "telepresence status"
+        description: "Check connection status"
+    risks:
+      - level: "medium"
+        description: "Creates network proxy to cluster"
+      - level: "low"
+        description: "Read-only connection by default"
+    install_method: "Download from https://www.telepresence.io/docs/latest/install/"
+    version_check: "telepresence version"
+
+  - name: "telepresence intercept"
+    description: "Intercept traffic to service and redirect to local process"
+    category: "Kubernetes Development"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "telepresence intercept [deployment-name] --port [local-port]:[remote-port] [flags]"
+    options:
+      - flag: "--port"
+        description: "Port mapping local:remote"
+      - flag: "--namespace"
+        description: "Service namespace"
+    examples:
+      - command: "telepresence intercept myservice --port 8080:80"
+        description: "Intercept service traffic to local port 8080"
+      - command: "telepresence intercept api --port 3000:8080 --namespace production"
+        description: "Intercept production service to local dev"
+      - command: "telepresence leave api"
+        description: "Stop intercepting service"
+    risks:
+      - level: "critical"
+        description: "Redirects production traffic to local machine"
+      - level: "high"
+        description: "Can cause service disruption if local process fails"
+    install_method: "Download from https://www.telepresence.io/docs/latest/install/"
+    version_check: "telepresence version"

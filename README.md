@@ -1,9 +1,9 @@
 # cmd4coder - 命令行工具大全
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Go Version](https://img.shields.io/badge/go-%3E%3D1.19-blue)
-![Test Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen)
+![Go Version](https://img.shields.io/badge/go-%3E%3D1.21-blue)
+![Test Coverage](https://img.shields.io/badge/coverage-75%25-green)
 ![Build Status](https://img.shields.io/badge/build-passing-success)
 
 ## 📖 简介
@@ -12,7 +12,7 @@ cmd4coder 是一个面向运维工程师和开发者的命令行工具大全，�
 
 ### ✨ 核心特性
 
-- 📚 **全面的命令清单**: 涵盖 Linux、编程语言工具链、诊断工具、网络工具等20+分类，220+精选命令
+- 📚 **全面的命令清单**: 涵盖 Linux、编程语言工具链、诊断工具、网络工具、Kubernetes生态系统等32+分类，350+精选命令
 - 🔍 **强大的搜索功能**: 支持模糊搜索、关键词匹配和智能排序，4级优先级匹配算法
 - ⚡ **快速查询**: 本地化存储，无需网络，毫秒级响应，LRU缓存优化
 - 📝 **详细的命令说明**: 包含用法、选项、示例、注意事项和风险提示
@@ -127,9 +127,21 @@ go run ./cmd/cli -d ./data
 - ✅ 网络诊断 (tcpdump, netstat, ss等) (6个)
 - ✅ HTTP 工具 (curl, wget等) (5个)
 
-### 容器编排 (26个命令)
+### 容器编排 (140+个命令)
 - ✅ Docker 命令 (10个)
 - ✅ Kubernetes 命令 (kubectl) (16个)
+- ✅ K8s 集群管理 (kubeadm, kubelet, etcdctl) (12个)
+- ✅ K8s 容器运行时 (crictl, ctr, containerd) (9个)
+- ✅ K8s 监控日志 (prometheus, grafana, loki, fluentd) (11个)
+- ✅ K8s 网络插件 (calicoctl, cilium) (7个)
+- ✅ K8s 存储管理 (helm) (8个)
+- ✅ K8s CI/CD (argocd, flux, tekton) (11个)
+- ✅ K8s 配置管理 (ansible, terraform) (7个)
+- ✅ K8s 备份恢复 (velero, restic) (8个)
+- ✅ K8s 安全工具 (trivy, kube-bench, falco) (7个)
+- ✅ K8s 辅助工具 (k9s, kubectx, kubens, stern, popeye) (5个)
+- ✅ K8s 云平台工具 (eksctl, az aks, gcloud) (9个)
+- ✅ K8s 开发调试 (skaffold, tilt, telepresence) (8个)
 
 ### 数据库工具 (28个命令)
 - ✅ MySQL 工具 (mysql, mysqldump等) (8个)
@@ -145,7 +157,7 @@ go run ./cmd/cli -d ./data
 - ✅ Gradle (10个)
 - ✅ Make (7个)
 
-**总计**: 220个精选命令
+**总计**: 350+个精选命令，其中Kubernetes生态工具128条
 
 ## 🏗️ 项目架构
 
@@ -177,7 +189,7 @@ cmd4coder/
 
 ### 环境要求
 
-- Go 1.19 或更高版本
+- Go 1.21 或更高版本
 - Git
 
 ### 运行测试
@@ -306,6 +318,18 @@ A:
 
 本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
 
+## 🙏 致谢
+
+感谢所有贡献者和开源社区的支持。
+
+## 📧 联系方式
+
+- 项目主页: https://github.com/cmd4coder/cmd4coder
+- 问题反馈: https://github.com/cmd4coder/cmd4coder/issues
+
+---
+
+⭐ 如果这个项目对你有帮助，请给一个 Star！
 ## 🙏 致谢
 
 感谢所有贡献者和开源社区的支持。

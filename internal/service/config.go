@@ -24,23 +24,23 @@ func NewConfigService() (*ConfigService, error) {
 	if err != nil {
 		return nil, fmt.Errorf("获取用户目录失败: %w", err)
 	}
-	
+
 	configDir := filepath.Join(homeDir, ".cmd4coder")
 	configPath := filepath.Join(configDir, "config.json")
 	userDataPath := filepath.Join(configDir, "userdata.json")
-	
+
 	// 加载配置
 	config, err := model.LoadConfig(configPath)
 	if err != nil {
 		return nil, fmt.Errorf("加载配置失败: %w", err)
 	}
-	
+
 	// 加载用户数据
 	userData, err := model.LoadUserData(userDataPath)
 	if err != nil {
 		return nil, fmt.Errorf("加载用户数据失败: %w", err)
 	}
-	
+
 	return &ConfigService{
 		config:       config,
 		userData:     userData,
@@ -60,17 +60,17 @@ func (s *ConfigService) GetConfig() *model.Config {
 func (s *ConfigService) UpdateConfig(updater func(*model.Config)) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	
+
 	updater(s.config)
-	
+
 	if err := s.config.Validate(); err != nil {
 		return fmt.Errorf("配置验证失败: %w", err)
 	}
-	
+
 	if err := s.config.Save(s.configPath); err != nil {
 		return fmt.Errorf("保存配置失败: %w", err)
 	}
-	
+
 	return nil
 }
 
@@ -78,11 +78,11 @@ func (s *ConfigService) UpdateConfig(updater func(*model.Config)) error {
 func (s *ConfigService) SaveConfig() error {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	
+
 	if err := s.config.Validate(); err != nil {
 		return fmt.Errorf("配置验证失败: %w", err)
 	}
-	
+
 	return s.config.Save(s.configPath)
 }
 
@@ -97,7 +97,7 @@ func (s *ConfigService) GetUserData() *model.UserData {
 func (s *ConfigService) SaveUserData() error {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	
+
 	return s.userData.Save(s.userDataPath)
 }
 
@@ -105,7 +105,7 @@ func (s *ConfigService) SaveUserData() error {
 func (s *ConfigService) AddFavorite(commandName, category, note string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	
+
 	s.userData.AddFavorite(commandName, category, note)
 	return s.userData.Save(s.userDataPath)
 }
@@ -114,7 +114,7 @@ func (s *ConfigService) AddFavorite(commandName, category, note string) error {
 func (s *ConfigService) RemoveFavorite(commandName string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	
+
 	s.userData.RemoveFavorite(commandName)
 	return s.userData.Save(s.userDataPath)
 }
@@ -123,7 +123,7 @@ func (s *ConfigService) RemoveFavorite(commandName string) error {
 func (s *ConfigService) IsFavorite(commandName string) bool {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	
+
 	return s.userData.IsFavorite(commandName)
 }
 
@@ -131,7 +131,7 @@ func (s *ConfigService) IsFavorite(commandName string) bool {
 func (s *ConfigService) GetFavorites() []model.Favorite {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	
+
 	return s.userData.Favorites
 }
 
@@ -139,7 +139,7 @@ func (s *ConfigService) GetFavorites() []model.Favorite {
 func (s *ConfigService) AddHistory(commandName, category string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	
+
 	s.userData.AddHistory(commandName, category)
 	return s.userData.Save(s.userDataPath)
 }
@@ -148,7 +148,7 @@ func (s *ConfigService) AddHistory(commandName, category string) error {
 func (s *ConfigService) GetRecentHistory(limit int) []model.HistoryEntry {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	
+
 	return s.userData.GetRecentHistory(limit)
 }
 
@@ -156,7 +156,7 @@ func (s *ConfigService) GetRecentHistory(limit int) []model.HistoryEntry {
 func (s *ConfigService) ClearHistory() error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	
+
 	s.userData.ClearHistory()
 	return s.userData.Save(s.userDataPath)
 }

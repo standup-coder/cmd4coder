@@ -1,0 +1,504 @@
+category: "Kubernetes Monitoring & Logging"
+description: "Monitoring and logging tools for Kubernetes clusters"
+commands:
+  - name: "promtool check config"
+    description: "Validate Prometheus configuration file"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "promtool check config [config-file]"
+    examples:
+      - command: "promtool check config prometheus.yml"
+        description: "Validate Prometheus configuration"
+      - command: "promtool check rules rules/*.yml"
+        description: "Validate recording and alerting rules"
+    risks:
+      - level: "low"
+        description: "Read-only validation; no operational impact"
+    install_method: "Installed with Prometheus or download from https://prometheus.io/download/"
+    version_check: "promtool --version"
+
+  - name: "systemctl status prometheus"
+    description: "Check Prometheus service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status prometheus"
+    examples:
+      - command: "systemctl status prometheus"
+        description: "View Prometheus service status"
+      - command: "systemctl start prometheus"
+        description: "Start Prometheus service"
+      - command: "systemctl restart prometheus"
+        description: "Restart Prometheus service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "medium"
+        description: "Restarting Prometheus causes brief monitoring gap"
+    install_method: "Built-in systemd command"
+    version_check: "systemctl --version"
+
+  - name: "systemctl status grafana-server"
+    description: "Check Grafana service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status grafana-server"
+    examples:
+      - command: "systemctl status grafana-server"
+        description: "View Grafana service status"
+      - command: "systemctl start grafana-server"
+        description: "Start Grafana service"
+      - command: "systemctl restart grafana-server"
+        description: "Restart Grafana service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "medium"
+        description: "Restarting Grafana disrupts dashboard access"
+    install_method: "Built-in systemd command"
+    version_check: "systemctl --version"
+
+  - name: "grafana-cli plugins list-remote"
+    description: "List available Grafana plugins"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "grafana-cli plugins list-remote"
+    examples:
+      - command: "grafana-cli plugins list-remote"
+        description: "List all available plugins"
+      - command: "grafana-cli plugins list-remote | grep kubernetes"
+        description: "Search for Kubernetes-related plugins"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists available plugins"
+    install_method: "Installed with Grafana"
+    version_check: "grafana-cli --version"
+
+  - name: "grafana-cli plugins install"
+    description: "Install Grafana plugin"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "grafana-cli plugins install [plugin-id]"
+    examples:
+      - command: "grafana-cli plugins install grafana-piechart-panel"
+        description: "Install pie chart panel plugin"
+      - command: "grafana-cli plugins install grafana-kubernetes-app"
+        description: "Install Kubernetes monitoring app"
+    risks:
+      - level: "medium"
+        description: "Installing plugins modifies Grafana configuration"
+      - level: "low"
+        description: "Requires Grafana restart to take effect"
+    install_method: "Installed with Grafana"
+    version_check: "grafana-cli --version"
+
+  - name: "systemctl status loki"
+    description: "Check Loki service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status loki"
+    examples:
+      - command: "systemctl status loki"
+        description: "View Loki service status"
+      - command: "systemctl start loki"
+        description: "Start Loki service"
+      - command: "systemctl restart loki"
+        description: "Restart Loki service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "medium"
+        description: "Restarting Loki causes log ingestion interruption"
+    install_method: "Built-in systemd command"
+    version_check: "systemctl --version"
+
+  - name: "systemctl status promtail"
+    description: "Check Promtail service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status promtail"
+    examples:
+      - command: "systemctl status promtail"
+        description: "View Promtail service status"
+      - command: "systemctl start promtail"
+        description: "Start Promtail service"
+      - command: "systemctl restart promtail"
+        description: "Restart Promtail service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "medium"
+        description: "Restarting Promtail causes log collection gap"
+    install_method: "Built-in systemd command"
+    version_check: "systemctl --version"
+
+  - name: "fluentd -c"
+    description: "Start Fluentd with configuration file"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "fluentd -c [config-file]"
+    options:
+      - flag: "-c"
+        description: "Configuration file path"
+      - flag: "-v"
+        description: "Increase verbosity level"
+      - flag: "--dry-run"
+        description: "Check configuration without starting"
+    examples:
+      - command: "fluentd -c /etc/fluent/fluent.conf"
+        description: "Start Fluentd with config file"
+      - command: "fluentd -c fluent.conf --dry-run"
+        description: "Validate configuration without starting"
+      - command: "fluentd -c fluent.conf -vv"
+        description: "Start with verbose logging"
+    risks:
+      - level: "medium"
+        description: "Incorrect config may cause log loss or performance issues"
+    install_method: "gem install fluentd or use td-agent package"
+    version_check: "fluentd --version"
+
+  - name: "systemctl status fluentd"
+    description: "Check Fluentd service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status fluentd"
+    examples:
+      - command: "systemctl status fluentd"
+        description: "View Fluentd service status"
+      - command: "systemctl start fluentd"
+        description: "Start Fluentd service"
+      - command: "systemctl restart fluentd"
+        description: "Restart Fluentd service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "medium"
+        description: "Restarting Fluentd causes log collection interruption"
+    install_method: "Built-in systemd command"
+    version_check: "systemctl --version"
+
+  - name: "fluent-bit -c"
+    description: "Start Fluent Bit with configuration file"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "fluent-bit -c [config-file]"
+    options:
+      - flag: "-c"
+        description: "Configuration file path"
+      - flag: "-v"
+        description: "Increase verbosity"
+      - flag: "--dry-run"
+        description: "Check configuration without starting"
+    examples:
+      - command: "fluent-bit -c /etc/fluent-bit/fluent-bit.conf"
+        description: "Start Fluent Bit with config"
+      - command: "fluent-bit -c fluent-bit.conf --dry-run"
+        description: "Validate configuration"
+    risks:
+      - level: "medium"
+        description: "Incorrect config may cause log loss"
+    install_method: "Download from https://fluentbit.io/ or package manager"
+    version_check: "fluent-bit --version"
+
+  - name: "systemctl status kube-state-metrics"
+    description: "Check kube-state-metrics service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status kube-state-metrics"
+    examples:
+      - command: "systemctl status kube-state-metrics"
+        description: "View kube-state-metrics status"
+      - command: "systemctl start kube-state-metrics"
+        description: "Start kube-state-metrics service"
+      - command: "systemctl restart kube-state-metrics"
+        description: "Restart kube-state-metrics service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "low"
+        description: "Restarting causes brief metrics gap"
+    install_method: "Usually deployed as Kubernetes deployment"
+    version_check: "systemctl --version"
+category: "Kubernetes Monitoring & Logging"
+description: "Monitoring and logging tools for Kubernetes clusters"
+commands:
+  - name: "promtool check config"
+    description: "Validate Prometheus configuration file"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "promtool check config [config-file]"
+    examples:
+      - command: "promtool check config prometheus.yml"
+        description: "Validate Prometheus configuration"
+      - command: "promtool check rules rules/*.yml"
+        description: "Validate recording and alerting rules"
+    risks:
+      - level: "low"
+        description: "Read-only validation; no operational impact"
+    install_method: "Installed with Prometheus or download from https://prometheus.io/download/"
+    version_check: "promtool --version"
+
+  - name: "systemctl status prometheus"
+    description: "Check Prometheus service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status prometheus"
+    examples:
+      - command: "systemctl status prometheus"
+        description: "View Prometheus service status"
+      - command: "systemctl start prometheus"
+        description: "Start Prometheus service"
+      - command: "systemctl restart prometheus"
+        description: "Restart Prometheus service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "medium"
+        description: "Restarting Prometheus causes brief monitoring gap"
+    install_method: "Built-in systemd command"
+    version_check: "systemctl --version"
+
+  - name: "systemctl status grafana-server"
+    description: "Check Grafana service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status grafana-server"
+    examples:
+      - command: "systemctl status grafana-server"
+        description: "View Grafana service status"
+      - command: "systemctl start grafana-server"
+        description: "Start Grafana service"
+      - command: "systemctl restart grafana-server"
+        description: "Restart Grafana service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "medium"
+        description: "Restarting Grafana disrupts dashboard access"
+    install_method: "Built-in systemd command"
+    version_check: "systemctl --version"
+
+  - name: "grafana-cli plugins list-remote"
+    description: "List available Grafana plugins"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "grafana-cli plugins list-remote"
+    examples:
+      - command: "grafana-cli plugins list-remote"
+        description: "List all available plugins"
+      - command: "grafana-cli plugins list-remote | grep kubernetes"
+        description: "Search for Kubernetes-related plugins"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists available plugins"
+    install_method: "Installed with Grafana"
+    version_check: "grafana-cli --version"
+
+  - name: "grafana-cli plugins install"
+    description: "Install Grafana plugin"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "grafana-cli plugins install [plugin-id]"
+    examples:
+      - command: "grafana-cli plugins install grafana-piechart-panel"
+        description: "Install pie chart panel plugin"
+      - command: "grafana-cli plugins install grafana-kubernetes-app"
+        description: "Install Kubernetes monitoring app"
+    risks:
+      - level: "medium"
+        description: "Installing plugins modifies Grafana configuration"
+      - level: "low"
+        description: "Requires Grafana restart to take effect"
+    install_method: "Installed with Grafana"
+    version_check: "grafana-cli --version"
+
+  - name: "systemctl status loki"
+    description: "Check Loki service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status loki"
+    examples:
+      - command: "systemctl status loki"
+        description: "View Loki service status"
+      - command: "systemctl start loki"
+        description: "Start Loki service"
+      - command: "systemctl restart loki"
+        description: "Restart Loki service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "medium"
+        description: "Restarting Loki causes log ingestion interruption"
+    install_method: "Built-in systemd command"
+    version_check: "systemctl --version"
+
+  - name: "systemctl status promtail"
+    description: "Check Promtail service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status promtail"
+    examples:
+      - command: "systemctl status promtail"
+        description: "View Promtail service status"
+      - command: "systemctl start promtail"
+        description: "Start Promtail service"
+      - command: "systemctl restart promtail"
+        description: "Restart Promtail service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "medium"
+        description: "Restarting Promtail causes log collection gap"
+    install_method: "Built-in systemd command"
+    version_check: "systemctl --version"
+
+  - name: "fluentd -c"
+    description: "Start Fluentd with configuration file"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "fluentd -c [config-file]"
+    options:
+      - flag: "-c"
+        description: "Configuration file path"
+      - flag: "-v"
+        description: "Increase verbosity level"
+      - flag: "--dry-run"
+        description: "Check configuration without starting"
+    examples:
+      - command: "fluentd -c /etc/fluent/fluent.conf"
+        description: "Start Fluentd with config file"
+      - command: "fluentd -c fluent.conf --dry-run"
+        description: "Validate configuration without starting"
+      - command: "fluentd -c fluent.conf -vv"
+        description: "Start with verbose logging"
+    risks:
+      - level: "medium"
+        description: "Incorrect config may cause log loss or performance issues"
+    install_method: "gem install fluentd or use td-agent package"
+    version_check: "fluentd --version"
+
+  - name: "systemctl status fluentd"
+    description: "Check Fluentd service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status fluentd"
+    examples:
+      - command: "systemctl status fluentd"
+        description: "View Fluentd service status"
+      - command: "systemctl start fluentd"
+        description: "Start Fluentd service"
+      - command: "systemctl restart fluentd"
+        description: "Restart Fluentd service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "medium"
+        description: "Restarting Fluentd causes log collection interruption"
+    install_method: "Built-in systemd command"
+    version_check: "systemctl --version"
+
+  - name: "fluent-bit -c"
+    description: "Start Fluent Bit with configuration file"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "fluent-bit -c [config-file]"
+    options:
+      - flag: "-c"
+        description: "Configuration file path"
+      - flag: "-v"
+        description: "Increase verbosity"
+      - flag: "--dry-run"
+        description: "Check configuration without starting"
+    examples:
+      - command: "fluent-bit -c /etc/fluent-bit/fluent-bit.conf"
+        description: "Start Fluent Bit with config"
+      - command: "fluent-bit -c fluent-bit.conf --dry-run"
+        description: "Validate configuration"
+    risks:
+      - level: "medium"
+        description: "Incorrect config may cause log loss"
+    install_method: "Download from https://fluentbit.io/ or package manager"
+    version_check: "fluent-bit --version"
+
+  - name: "systemctl status kube-state-metrics"
+    description: "Check kube-state-metrics service status"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status kube-state-metrics"
+    examples:
+      - command: "systemctl status kube-state-metrics"
+        description: "View kube-state-metrics status"
+      - command: "systemctl start kube-state-metrics"
+        description: "Start kube-state-metrics service"
+      - command: "systemctl restart kube-state-metrics"
+        description: "Restart kube-state-metrics service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "low"
+        description: "Restarting causes brief metrics gap"
+    install_method: "Usually deployed as Kubernetes deployment"
+    version_check: "systemctl --version"

@@ -17,25 +17,25 @@ type Model struct {
 	// 服务
 	commandService *service.CommandService
 	configService  *service.ConfigService
-	
+
 	// 数据
-	categories     []string
-	commands       []*model.Command
-	selectedCmd    *model.Command
-	
+	categories  []string
+	commands    []*model.Command
+	selectedCmd *model.Command
+
 	// UI组件
-	searchInput    textinput.Model
-	categoryList   list.Model
-	commandList    list.Model
-	
+	searchInput  textinput.Model
+	categoryList list.Model
+	commandList  list.Model
+
 	// 状态
-	activePanel    int // 0: search, 1: category, 2: command, 3: detail
-	width          int
-	height         int
-	ready          bool
-	
+	activePanel int // 0: search, 1: category, 2: command, 3: detail
+	width       int
+	height      int
+	ready       bool
+
 	// 键盘绑定
-	keys           keyMap
+	keys keyMap
 }
 
 // keyMap 键盘映射
@@ -109,7 +109,7 @@ func NewModel(cmdService *service.CommandService, cfgService *service.ConfigServ
 	ti.Focus()
 	ti.CharLimit = 100
 	ti.Width = 50
-	
+
 	return &Model{
 		commandService: cmdService,
 		configService:  cfgService,
@@ -128,50 +128,50 @@ func (m Model) Init() tea.Cmd {
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 	var cmds []tea.Cmd
-	
+
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
 		m.height = msg.Height
-		
+
 		if !m.ready {
 			m.setupLists()
 			m.ready = true
 		}
 		return m, nil
-		
+
 	case tea.KeyMsg:
 		// 全局快捷键
 		switch {
 		case key.Matches(msg, m.keys.Quit):
 			return m, tea.Quit
-			
+
 		case key.Matches(msg, m.keys.Tab):
 			m.activePanel = (m.activePanel + 1) % 3
 			m.updateFocus()
 			return m, nil
-			
+
 		case key.Matches(msg, m.keys.Search):
 			m.activePanel = 0
 			m.searchInput.Focus()
 			return m, nil
 		}
-		
+
 		// 面板特定的键盘处理
 		return m.handlePanelInput(msg)
 	}
-	
+
 	// 更新搜索输入框
 	m.searchInput, cmd = m.searchInput.Update(msg)
 	cmds = append(cmds, cmd)
-	
+
 	return m, tea.Batch(cmds...)
 }
 
 // handlePanelInput 处理面板输入
 func (m Model) handlePanelInput(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
-	
+
 	switch m.activePanel {
 	case 0: // 搜索面板
 		switch {
@@ -185,7 +185,7 @@ func (m Model) handlePanelInput(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.updateFocus()
 			return m, nil
 		}
-		
+
 	case 1: // 分类列表
 		switch {
 		case key.Matches(msg, m.keys.Up):
@@ -200,7 +200,7 @@ func (m Model) handlePanelInput(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			return m, nil
 		}
 		m.categoryList, cmd = m.categoryList.Update(msg)
-		
+
 	case 2: // 命令列表
 		switch {
 		case key.Matches(msg, m.keys.Left):
@@ -216,7 +216,7 @@ func (m Model) handlePanelInput(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 		m.commandList, cmd = m.commandList.Update(msg)
 	}
-	
+
 	return m, cmd
 }
 
@@ -225,19 +225,19 @@ func (m Model) View() string {
 	if !m.ready {
 		return "初始化中..."
 	}
-	
+
 	// 样式
 	docStyle := lipgloss.NewStyle().Padding(1, 2)
-	
+
 	// 标题
 	title := lipgloss.NewStyle().
 		Bold(true).
 		Foreground(lipgloss.Color("170")).
 		Render("CMD4Coder - 命令速查工具")
-	
+
 	// 搜索栏
 	searchBar := m.renderSearchBar()
-	
+
 	// 三栏布局
 	panels := lipgloss.JoinHorizontal(
 		lipgloss.Top,
@@ -245,13 +245,13 @@ func (m Model) View() string {
 		m.renderCommandPanel(),
 		m.renderDetailPanel(),
 	)
-	
+
 	// 状态栏
 	statusBar := m.renderStatusBar()
-	
+
 	// 帮助信息
 	helpBar := m.renderHelpBar()
-	
+
 	// 组合所有部分
 	content := lipgloss.JoinVertical(
 		lipgloss.Left,
@@ -261,7 +261,7 @@ func (m Model) View() string {
 		statusBar,
 		helpBar,
 	)
-	
+
 	return docStyle.Render(content)
 }
 
@@ -272,11 +272,11 @@ func (m Model) renderSearchBar() string {
 		BorderForeground(lipgloss.Color("62")).
 		Padding(0, 1).
 		Width(m.width - 6)
-	
+
 	if m.activePanel == 0 {
 		style = style.BorderForeground(lipgloss.Color("170"))
 	}
-	
+
 	return style.Render(m.searchInput.View())
 }
 
@@ -284,23 +284,23 @@ func (m Model) renderSearchBar() string {
 func (m Model) renderCategoryPanel() string {
 	panelWidth := (m.width - 6) / 3
 	panelHeight := m.height - 12
-	
+
 	style := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color("62")).
 		Width(panelWidth).
 		Height(panelHeight)
-	
+
 	if m.activePanel == 1 {
 		style = style.BorderForeground(lipgloss.Color("170"))
 	}
-	
+
 	title := lipgloss.NewStyle().Bold(true).Render("📁 分类")
-	
+
 	if len(m.categories) == 0 {
 		return style.Render(title + "\n\n无数据")
 	}
-	
+
 	return style.Render(title + "\n" + m.categoryList.View())
 }
 
@@ -308,23 +308,23 @@ func (m Model) renderCategoryPanel() string {
 func (m Model) renderCommandPanel() string {
 	panelWidth := (m.width - 6) / 3
 	panelHeight := m.height - 12
-	
+
 	style := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color("62")).
 		Width(panelWidth).
 		Height(panelHeight)
-	
+
 	if m.activePanel == 2 {
 		style = style.BorderForeground(lipgloss.Color("170"))
 	}
-	
+
 	title := lipgloss.NewStyle().Bold(true).Render("📝 命令")
-	
+
 	if len(m.commands) == 0 {
 		return style.Render(title + "\n\n请选择分类")
 	}
-	
+
 	return style.Render(title + "\n" + m.commandList.View())
 }
 
@@ -332,19 +332,19 @@ func (m Model) renderCommandPanel() string {
 func (m Model) renderDetailPanel() string {
 	panelWidth := (m.width - 6) / 3
 	panelHeight := m.height - 12
-	
+
 	style := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color("62")).
 		Width(panelWidth).
 		Height(panelHeight)
-	
+
 	title := lipgloss.NewStyle().Bold(true).Render("📖 详情")
-	
+
 	if m.selectedCmd == nil {
 		return style.Render(title + "\n\n请选择命令")
 	}
-	
+
 	detail := m.formatCommandDetail()
 	return style.Render(title + "\n" + detail)
 }
@@ -354,10 +354,10 @@ func (m Model) renderStatusBar() string {
 	style := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("240")).
 		Render
-	
+
 	totalCmds := m.commandService.Count()
 	status := fmt.Sprintf("总命令数: %d | 当前分类: %d 个命令", totalCmds, len(m.commands))
-	
+
 	return style(status)
 }
 
@@ -366,7 +366,7 @@ func (m Model) renderHelpBar() string {
 	style := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("241")).
 		Render
-	
+
 	help := "tab:切换 /:搜索 f:收藏 e:导出 q:退出"
 	return style(help)
 }
@@ -374,10 +374,10 @@ func (m Model) renderHelpBar() string {
 // formatCommandDetail 格式化命令详情
 func (m Model) formatCommandDetail() string {
 	cmd := m.selectedCmd
-	
+
 	detail := fmt.Sprintf("名称: %s\n\n", cmd.Name)
 	detail += fmt.Sprintf("描述: %s\n\n", cmd.Description)
-	
+
 	if len(cmd.Usage) > 0 {
 		detail += "用法:\n"
 		for _, u := range cmd.Usage {
@@ -385,7 +385,7 @@ func (m Model) formatCommandDetail() string {
 		}
 		detail += "\n"
 	}
-	
+
 	if len(cmd.Examples) > 0 {
 		detail += "示例:\n"
 		for i, ex := range cmd.Examples {
@@ -395,7 +395,7 @@ func (m Model) formatCommandDetail() string {
 			detail += fmt.Sprintf("  %s\n  %s\n\n", ex.Command, ex.Description)
 		}
 	}
-	
+
 	return detail
 }
 
@@ -404,19 +404,19 @@ func (m *Model) setupLists() {
 	// 加载分类
 	cats := m.commandService.GetCategories()
 	m.categories = cats
-	
+
 	// 设置分类列表
 	items := make([]list.Item, len(cats))
 	for i, cat := range cats {
 		items[i] = listItem{title: cat, desc: ""}
 	}
-	
+
 	m.categoryList = list.New(items, list.NewDefaultDelegate(), 0, 0)
 	m.categoryList.Title = ""
 	m.categoryList.SetShowStatusBar(false)
 	m.categoryList.SetFilteringEnabled(false)
 	m.categoryList.SetShowHelp(false)
-	
+
 	// 设置命令列表
 	m.commandList = list.New([]list.Item{}, list.NewDefaultDelegate(), 0, 0)
 	m.commandList.Title = ""
@@ -431,10 +431,10 @@ func (m *Model) performSearch() {
 	if query == "" {
 		return
 	}
-	
+
 	results := m.commandService.Search(query)
 	m.commands = results
-	
+
 	// 更新命令列表
 	items := make([]list.Item, len(results))
 	for i, cmd := range results {
@@ -451,16 +451,16 @@ func (m *Model) loadCategoryCommands() {
 	if len(m.categories) == 0 {
 		return
 	}
-	
+
 	selectedIdx := m.categoryList.Index()
 	if selectedIdx < 0 || selectedIdx >= len(m.categories) {
 		return
 	}
-	
+
 	category := m.categories[selectedIdx]
 	cmds := m.commandService.GetByCategory(category)
 	m.commands = cmds
-	
+
 	// 更新命令列表
 	items := make([]list.Item, len(cmds))
 	for i, cmd := range cmds {
@@ -477,14 +477,14 @@ func (m *Model) loadCommandDetail() {
 	if len(m.commands) == 0 {
 		return
 	}
-	
+
 	selectedIdx := m.commandList.Index()
 	if selectedIdx < 0 || selectedIdx >= len(m.commands) {
 		return
 	}
-	
+
 	m.selectedCmd = m.commands[selectedIdx]
-	
+
 	// 添加到历史记录
 	if m.configService != nil {
 		m.configService.AddHistory(m.selectedCmd.Name, m.selectedCmd.Category)
@@ -496,7 +496,7 @@ func (m *Model) toggleFavorite() {
 	if m.selectedCmd == nil || m.configService == nil {
 		return
 	}
-	
+
 	if m.configService.IsFavorite(m.selectedCmd.Name) {
 		m.configService.RemoveFavorite(m.selectedCmd.Name)
 	} else {

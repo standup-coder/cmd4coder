@@ -1,0 +1,534 @@
+category: "Kubernetes Cloud Platforms"
+description: "Cloud platform-specific Kubernetes management tools"
+commands:
+  - name: "eksctl create cluster"
+    description: "Create AWS EKS Kubernetes cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "eksctl create cluster [flags]"
+    options:
+      - flag: "--name"
+        description: "Cluster name"
+      - flag: "--region"
+        description: "AWS region"
+      - flag: "--nodes"
+        description: "Number of nodes"
+      - flag: "--node-type"
+        description: "EC2 instance type for nodes"
+    examples:
+      - command: "eksctl create cluster --name my-cluster --region us-west-2"
+        description: "Create EKS cluster in us-west-2"
+      - command: "eksctl create cluster --name production --nodes 3 --node-type t3.large"
+        description: "Create cluster with 3 t3.large nodes"
+      - command: "eksctl create cluster --name dev --region us-east-1 --nodes-min 1 --nodes-max 5"
+        description: "Create cluster with auto-scaling"
+    risks:
+      - level: "critical"
+        description: "Creates billable AWS resources; incurs costs"
+      - level: "high"
+        description: "Cluster creation takes 15-20 minutes"
+    install_method: "Download from https://eksctl.io/introduction/#installation"
+    version_check: "eksctl version"
+
+  - name: "eksctl get cluster"
+    description: "List AWS EKS clusters"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "eksctl get cluster [flags]"
+    options:
+      - flag: "--region"
+        description: "AWS region"
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "eksctl get cluster"
+        description: "List all EKS clusters"
+      - command: "eksctl get cluster --region us-west-2"
+        description: "List clusters in specific region"
+      - command: "eksctl get cluster -o json"
+        description: "List clusters in JSON format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists clusters only"
+    install_method: "Download from https://eksctl.io/introduction/#installation"
+    version_check: "eksctl version"
+
+  - name: "eksctl delete cluster"
+    description: "Delete AWS EKS cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "eksctl delete cluster [flags]"
+    options:
+      - flag: "--name"
+        description: "Cluster name"
+      - flag: "--region"
+        description: "AWS region"
+      - flag: "--wait"
+        description: "Wait for deletion to complete"
+    examples:
+      - command: "eksctl delete cluster --name my-cluster"
+        description: "Delete EKS cluster"
+      - command: "eksctl delete cluster --name my-cluster --region us-west-2"
+        description: "Delete cluster in specific region"
+      - command: "eksctl delete cluster --name my-cluster --wait"
+        description: "Delete and wait for completion"
+    risks:
+      - level: "critical"
+        description: "Permanently deletes cluster and all resources"
+      - level: "critical"
+        description: "Cannot be undone; backup data before deleting"
+    install_method: "Download from https://eksctl.io/introduction/#installation"
+    version_check: "eksctl version"
+
+  - name: "az aks create"
+    description: "Create Azure AKS Kubernetes cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "az aks create [flags]"
+    options:
+      - flag: "--resource-group"
+        description: "Resource group name"
+      - flag: "--name"
+        description: "Cluster name"
+      - flag: "--node-count"
+        description: "Number of nodes"
+      - flag: "--node-vm-size"
+        description: "VM size for nodes"
+    examples:
+      - command: "az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 3"
+        description: "Create AKS cluster with 3 nodes"
+      - command: "az aks create --resource-group prod-rg --name prod-cluster --node-vm-size Standard_D4s_v3"
+        description: "Create cluster with specific VM size"
+      - command: "az aks create --resource-group dev-rg --name dev-cluster --enable-addons monitoring"
+        description: "Create cluster with monitoring enabled"
+    risks:
+      - level: "critical"
+        description: "Creates billable Azure resources; incurs costs"
+      - level: "high"
+        description: "Cluster creation takes 10-15 minutes"
+    install_method: "Part of Azure CLI; install from https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
+    version_check: "az --version"
+
+  - name: "az aks list"
+    description: "List Azure AKS clusters"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "az aks list [flags]"
+    options:
+      - flag: "--resource-group"
+        description: "Filter by resource group"
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "az aks list"
+        description: "List all AKS clusters"
+      - command: "az aks list --resource-group myResourceGroup"
+        description: "List clusters in specific resource group"
+      - command: "az aks list -o table"
+        description: "List clusters in table format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists clusters only"
+    install_method: "Part of Azure CLI; install from https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
+    version_check: "az --version"
+
+  - name: "az aks delete"
+    description: "Delete Azure AKS cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "az aks delete [flags]"
+    options:
+      - flag: "--resource-group"
+        description: "Resource group name"
+      - flag: "--name"
+        description: "Cluster name"
+      - flag: "--yes"
+        description: "Skip confirmation prompt"
+    examples:
+      - command: "az aks delete --resource-group myResourceGroup --name myAKSCluster"
+        description: "Delete AKS cluster with confirmation"
+      - command: "az aks delete --resource-group myRG --name myCluster --yes"
+        description: "Delete without confirmation"
+    risks:
+      - level: "critical"
+        description: "Permanently deletes cluster and all resources"
+      - level: "critical"
+        description: "Cannot be undone; backup data before deleting"
+    install_method: "Part of Azure CLI; install from https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
+    version_check: "az --version"
+
+  - name: "gcloud container clusters create"
+    description: "Create Google GKE Kubernetes cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "gcloud container clusters create [cluster-name] [flags]"
+    options:
+      - flag: "--zone"
+        description: "Compute zone"
+      - flag: "--num-nodes"
+        description: "Number of nodes"
+      - flag: "--machine-type"
+        description: "Machine type for nodes"
+    examples:
+      - command: "gcloud container clusters create my-cluster --zone us-central1-a"
+        description: "Create GKE cluster in us-central1-a"
+      - command: "gcloud container clusters create prod-cluster --num-nodes 5 --machine-type n1-standard-4"
+        description: "Create cluster with 5 n1-standard-4 nodes"
+      - command: "gcloud container clusters create dev-cluster --zone us-west1-b --enable-autoscaling --min-nodes 1 --max-nodes 10"
+        description: "Create cluster with auto-scaling"
+    risks:
+      - level: "critical"
+        description: "Creates billable GCP resources; incurs costs"
+      - level: "high"
+        description: "Cluster creation takes 10-15 minutes"
+    install_method: "Part of Google Cloud SDK; install from https://cloud.google.com/sdk/install"
+    version_check: "gcloud version"
+
+  - name: "gcloud container clusters list"
+    description: "List Google GKE clusters"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "gcloud container clusters list [flags]"
+    options:
+      - flag: "--zone"
+        description: "Filter by zone"
+      - flag: "--format"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "gcloud container clusters list"
+        description: "List all GKE clusters"
+      - command: "gcloud container clusters list --zone us-central1-a"
+        description: "List clusters in specific zone"
+      - command: "gcloud container clusters list --format json"
+        description: "List clusters in JSON format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists clusters only"
+    install_method: "Part of Google Cloud SDK; install from https://cloud.google.com/sdk/install"
+    version_check: "gcloud version"
+
+  - name: "gcloud container clusters delete"
+    description: "Delete Google GKE cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "gcloud container clusters delete [cluster-name] [flags]"
+    options:
+      - flag: "--zone"
+        description: "Cluster zone"
+      - flag: "--quiet"
+        description: "Skip confirmation prompt"
+    examples:
+      - command: "gcloud container clusters delete my-cluster --zone us-central1-a"
+        description: "Delete GKE cluster with confirmation"
+      - command: "gcloud container clusters delete my-cluster --zone us-central1-a --quiet"
+        description: "Delete without confirmation"
+    risks:
+      - level: "critical"
+        description: "Permanently deletes cluster and all resources"
+      - level: "critical"
+        description: "Cannot be undone; backup data before deleting"
+    install_method: "Part of Google Cloud SDK; install from https://cloud.google.com/sdk/install"
+    version_check: "gcloud version"
+category: "Kubernetes Cloud Platforms"
+description: "Cloud platform-specific Kubernetes management tools"
+commands:
+  - name: "eksctl create cluster"
+    description: "Create AWS EKS Kubernetes cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "eksctl create cluster [flags]"
+    options:
+      - flag: "--name"
+        description: "Cluster name"
+      - flag: "--region"
+        description: "AWS region"
+      - flag: "--nodes"
+        description: "Number of nodes"
+      - flag: "--node-type"
+        description: "EC2 instance type for nodes"
+    examples:
+      - command: "eksctl create cluster --name my-cluster --region us-west-2"
+        description: "Create EKS cluster in us-west-2"
+      - command: "eksctl create cluster --name production --nodes 3 --node-type t3.large"
+        description: "Create cluster with 3 t3.large nodes"
+      - command: "eksctl create cluster --name dev --region us-east-1 --nodes-min 1 --nodes-max 5"
+        description: "Create cluster with auto-scaling"
+    risks:
+      - level: "critical"
+        description: "Creates billable AWS resources; incurs costs"
+      - level: "high"
+        description: "Cluster creation takes 15-20 minutes"
+    install_method: "Download from https://eksctl.io/introduction/#installation"
+    version_check: "eksctl version"
+
+  - name: "eksctl get cluster"
+    description: "List AWS EKS clusters"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "eksctl get cluster [flags]"
+    options:
+      - flag: "--region"
+        description: "AWS region"
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "eksctl get cluster"
+        description: "List all EKS clusters"
+      - command: "eksctl get cluster --region us-west-2"
+        description: "List clusters in specific region"
+      - command: "eksctl get cluster -o json"
+        description: "List clusters in JSON format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists clusters only"
+    install_method: "Download from https://eksctl.io/introduction/#installation"
+    version_check: "eksctl version"
+
+  - name: "eksctl delete cluster"
+    description: "Delete AWS EKS cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "eksctl delete cluster [flags]"
+    options:
+      - flag: "--name"
+        description: "Cluster name"
+      - flag: "--region"
+        description: "AWS region"
+      - flag: "--wait"
+        description: "Wait for deletion to complete"
+    examples:
+      - command: "eksctl delete cluster --name my-cluster"
+        description: "Delete EKS cluster"
+      - command: "eksctl delete cluster --name my-cluster --region us-west-2"
+        description: "Delete cluster in specific region"
+      - command: "eksctl delete cluster --name my-cluster --wait"
+        description: "Delete and wait for completion"
+    risks:
+      - level: "critical"
+        description: "Permanently deletes cluster and all resources"
+      - level: "critical"
+        description: "Cannot be undone; backup data before deleting"
+    install_method: "Download from https://eksctl.io/introduction/#installation"
+    version_check: "eksctl version"
+
+  - name: "az aks create"
+    description: "Create Azure AKS Kubernetes cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "az aks create [flags]"
+    options:
+      - flag: "--resource-group"
+        description: "Resource group name"
+      - flag: "--name"
+        description: "Cluster name"
+      - flag: "--node-count"
+        description: "Number of nodes"
+      - flag: "--node-vm-size"
+        description: "VM size for nodes"
+    examples:
+      - command: "az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 3"
+        description: "Create AKS cluster with 3 nodes"
+      - command: "az aks create --resource-group prod-rg --name prod-cluster --node-vm-size Standard_D4s_v3"
+        description: "Create cluster with specific VM size"
+      - command: "az aks create --resource-group dev-rg --name dev-cluster --enable-addons monitoring"
+        description: "Create cluster with monitoring enabled"
+    risks:
+      - level: "critical"
+        description: "Creates billable Azure resources; incurs costs"
+      - level: "high"
+        description: "Cluster creation takes 10-15 minutes"
+    install_method: "Part of Azure CLI; install from https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
+    version_check: "az --version"
+
+  - name: "az aks list"
+    description: "List Azure AKS clusters"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "az aks list [flags]"
+    options:
+      - flag: "--resource-group"
+        description: "Filter by resource group"
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "az aks list"
+        description: "List all AKS clusters"
+      - command: "az aks list --resource-group myResourceGroup"
+        description: "List clusters in specific resource group"
+      - command: "az aks list -o table"
+        description: "List clusters in table format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists clusters only"
+    install_method: "Part of Azure CLI; install from https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
+    version_check: "az --version"
+
+  - name: "az aks delete"
+    description: "Delete Azure AKS cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "az aks delete [flags]"
+    options:
+      - flag: "--resource-group"
+        description: "Resource group name"
+      - flag: "--name"
+        description: "Cluster name"
+      - flag: "--yes"
+        description: "Skip confirmation prompt"
+    examples:
+      - command: "az aks delete --resource-group myResourceGroup --name myAKSCluster"
+        description: "Delete AKS cluster with confirmation"
+      - command: "az aks delete --resource-group myRG --name myCluster --yes"
+        description: "Delete without confirmation"
+    risks:
+      - level: "critical"
+        description: "Permanently deletes cluster and all resources"
+      - level: "critical"
+        description: "Cannot be undone; backup data before deleting"
+    install_method: "Part of Azure CLI; install from https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
+    version_check: "az --version"
+
+  - name: "gcloud container clusters create"
+    description: "Create Google GKE Kubernetes cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "gcloud container clusters create [cluster-name] [flags]"
+    options:
+      - flag: "--zone"
+        description: "Compute zone"
+      - flag: "--num-nodes"
+        description: "Number of nodes"
+      - flag: "--machine-type"
+        description: "Machine type for nodes"
+    examples:
+      - command: "gcloud container clusters create my-cluster --zone us-central1-a"
+        description: "Create GKE cluster in us-central1-a"
+      - command: "gcloud container clusters create prod-cluster --num-nodes 5 --machine-type n1-standard-4"
+        description: "Create cluster with 5 n1-standard-4 nodes"
+      - command: "gcloud container clusters create dev-cluster --zone us-west1-b --enable-autoscaling --min-nodes 1 --max-nodes 10"
+        description: "Create cluster with auto-scaling"
+    risks:
+      - level: "critical"
+        description: "Creates billable GCP resources; incurs costs"
+      - level: "high"
+        description: "Cluster creation takes 10-15 minutes"
+    install_method: "Part of Google Cloud SDK; install from https://cloud.google.com/sdk/install"
+    version_check: "gcloud version"
+
+  - name: "gcloud container clusters list"
+    description: "List Google GKE clusters"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "gcloud container clusters list [flags]"
+    options:
+      - flag: "--zone"
+        description: "Filter by zone"
+      - flag: "--format"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "gcloud container clusters list"
+        description: "List all GKE clusters"
+      - command: "gcloud container clusters list --zone us-central1-a"
+        description: "List clusters in specific zone"
+      - command: "gcloud container clusters list --format json"
+        description: "List clusters in JSON format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists clusters only"
+    install_method: "Part of Google Cloud SDK; install from https://cloud.google.com/sdk/install"
+    version_check: "gcloud version"
+
+  - name: "gcloud container clusters delete"
+    description: "Delete Google GKE cluster"
+    category: "Kubernetes Cloud Platforms"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "gcloud container clusters delete [cluster-name] [flags]"
+    options:
+      - flag: "--zone"
+        description: "Cluster zone"
+      - flag: "--quiet"
+        description: "Skip confirmation prompt"
+    examples:
+      - command: "gcloud container clusters delete my-cluster --zone us-central1-a"
+        description: "Delete GKE cluster with confirmation"
+      - command: "gcloud container clusters delete my-cluster --zone us-central1-a --quiet"
+        description: "Delete without confirmation"
+    risks:
+      - level: "critical"
+        description: "Permanently deletes cluster and all resources"
+      - level: "critical"
+        description: "Cannot be undone; backup data before deleting"
+    install_method: "Part of Google Cloud SDK; install from https://cloud.google.com/sdk/install"
+    version_check: "gcloud version"

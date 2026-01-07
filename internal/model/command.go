@@ -36,8 +36,8 @@ type Option struct {
 
 // Example 使用示例
 type Example struct {
-	Command     string `yaml:"command" json:"command"`         // 示例命令
-	Description string `yaml:"description" json:"description"` // 示例说明
+	Command     string `yaml:"command" json:"command"`                   // 示例命令
+	Description string `yaml:"description" json:"description"`           // 示例说明
 	Output      string `yaml:"output,omitempty" json:"output,omitempty"` // 预期输出（可选）
 }
 
@@ -50,20 +50,20 @@ type VersionInfo struct {
 
 // Command 命令结构
 type Command struct {
-	Name            string       `yaml:"name" json:"name"`                                     // 命令名称
-	Category        string       `yaml:"category" json:"category"`                             // 所属分类
-	InstallRequired bool         `yaml:"install_required" json:"install_required"`             // 是否需要单独安装
-	InstallMethod   string       `yaml:"install_method,omitempty" json:"install_method,omitempty"` // 安装方式说明
-	Description     string       `yaml:"description" json:"description"`                       // 命令功能简述
-	Usage           []string     `yaml:"usage" json:"usage"`                                   // 常用使用方式
-	Options         []Option     `yaml:"options" json:"options"`                               // 常用选项说明
-	Examples        []Example    `yaml:"examples" json:"examples"`                             // 使用示例
-	Notes           []string     `yaml:"notes,omitempty" json:"notes,omitempty"`               // 注意事项
-	Risks           []Risk       `yaml:"risks,omitempty" json:"risks,omitempty"`               // 风险说明
+	Name            string       `yaml:"name" json:"name"`                                             // 命令名称
+	Category        string       `yaml:"category" json:"category"`                                     // 所属分类
+	InstallRequired bool         `yaml:"install_required" json:"install_required"`                     // 是否需要单独安装
+	InstallMethod   string       `yaml:"install_method,omitempty" json:"install_method,omitempty"`     // 安装方式说明
+	Description     string       `yaml:"description" json:"description"`                               // 命令功能简述
+	Usage           []string     `yaml:"usage" json:"usage"`                                           // 常用使用方式
+	Options         []Option     `yaml:"options" json:"options"`                                       // 常用选项说明
+	Examples        []Example    `yaml:"examples" json:"examples"`                                     // 使用示例
+	Notes           []string     `yaml:"notes,omitempty" json:"notes,omitempty"`                       // 注意事项
+	Risks           []Risk       `yaml:"risks,omitempty" json:"risks,omitempty"`                       // 风险说明
 	RelatedCommands []string     `yaml:"related_commands,omitempty" json:"related_commands,omitempty"` // 相关命令
-	Platforms       []string     `yaml:"platforms" json:"platforms"`                           // 支持的平台
-	Versions        *VersionInfo `yaml:"versions,omitempty" json:"versions,omitempty"`         // 版本兼容性说明
-	References      []string     `yaml:"references,omitempty" json:"references,omitempty"`     // 参考链接
+	Platforms       []string     `yaml:"platforms" json:"platforms"`                                   // 支持的平台
+	Versions        *VersionInfo `yaml:"versions,omitempty" json:"versions,omitempty"`                 // 版本兼容性说明
+	References      []string     `yaml:"references,omitempty" json:"references,omitempty"`             // 参考链接
 }
 
 // Validate 验证命令数据完整性
@@ -154,9 +154,9 @@ func (c *Command) HasPlatform(platform string) bool {
 
 // CommandList 命令列表的包装类型
 type CommandList struct {
-	Category    string     `yaml:"category" json:"category"`               // 分类名称
-	Description string     `yaml:"description" json:"description"`         // 分类描述
-	Commands    []*Command `yaml:"commands" json:"commands"`               // 命令列表
+	Category    string     `yaml:"category" json:"category"`                         // 分类名称
+	Description string     `yaml:"description" json:"description"`                   // 分类描述
+	Commands    []*Command `yaml:"commands" json:"commands"`                         // 命令列表
 	UpdatedAt   time.Time  `yaml:"updated_at,omitempty" json:"updated_at,omitempty"` // 更新时间
 }
 

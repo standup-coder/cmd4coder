@@ -1,0 +1,460 @@
+category: "Kubernetes Storage"
+description: "Kubernetes storage management and package tools"
+commands:
+  - name: "helm repo add"
+    description: "Add Helm chart repository"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm repo add [repo-name] [repo-url]"
+    examples:
+      - command: "helm repo add stable https://charts.helm.sh/stable"
+        description: "Add official stable chart repository"
+      - command: "helm repo add bitnami https://charts.bitnami.com/bitnami"
+        description: "Add Bitnami chart repository"
+      - command: "helm repo add prometheus-community https://prometheus-community.github.io/helm-charts"
+        description: "Add Prometheus community charts"
+    risks:
+      - level: "low"
+        description: "Adds repository reference only; no cluster changes"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm repo update"
+    description: "Update local Helm chart repository cache"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm repo update"
+    examples:
+      - command: "helm repo update"
+        description: "Update all repository indexes"
+      - command: "helm repo list"
+        description: "List configured repositories"
+    risks:
+      - level: "low"
+        description: "Updates local cache only; no cluster impact"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm install"
+    description: "Install Helm chart to Kubernetes cluster"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm install [release-name] [chart] [flags]"
+    options:
+      - flag: "-n"
+        description: "Target namespace"
+      - flag: "--create-namespace"
+        description: "Create namespace if not exists"
+      - flag: "--values"
+        description: "Values file path"
+      - flag: "--set"
+        description: "Set values on command line"
+      - flag: "--dry-run"
+        description: "Simulate installation"
+    examples:
+      - command: "helm install nginx bitnami/nginx"
+        description: "Install nginx chart with release name nginx"
+      - command: "helm install nginx bitnami/nginx -n production --create-namespace"
+        description: "Install to production namespace"
+      - command: "helm install nginx bitnami/nginx --values values.yaml"
+        description: "Install with custom values file"
+      - command: "helm install nginx bitnami/nginx --dry-run --debug"
+        description: "Preview installation without applying"
+    risks:
+      - level: "high"
+        description: "Deploys resources to cluster; may affect existing workloads"
+      - level: "medium"
+        description: "Always review chart values before installation"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm upgrade"
+    description: "Upgrade Helm release to new version"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm upgrade [release-name] [chart] [flags]"
+    options:
+      - flag: "-n"
+        description: "Release namespace"
+      - flag: "--install"
+        description: "Install if release doesn't exist"
+      - flag: "--values"
+        description: "Values file path"
+      - flag: "--atomic"
+        description: "Rollback on failure"
+    examples:
+      - command: "helm upgrade nginx bitnami/nginx"
+        description: "Upgrade nginx release"
+      - command: "helm upgrade nginx bitnami/nginx --install"
+        description: "Upgrade or install if not exists"
+      - command: "helm upgrade nginx bitnami/nginx --values values.yaml"
+        description: "Upgrade with new values"
+      - command: "helm upgrade nginx bitnami/nginx --atomic"
+        description: "Upgrade with automatic rollback on failure"
+    risks:
+      - level: "high"
+        description: "Modifies running applications; may cause service disruption"
+      - level: "medium"
+        description: "Test in staging environment first"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm uninstall"
+    description: "Uninstall Helm release from cluster"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm uninstall [release-name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Release namespace"
+      - flag: "--keep-history"
+        description: "Keep release history for rollback"
+    examples:
+      - command: "helm uninstall nginx"
+        description: "Uninstall nginx release"
+      - command: "helm uninstall nginx -n production"
+        description: "Uninstall from production namespace"
+      - command: "helm uninstall nginx --keep-history"
+        description: "Uninstall but keep history"
+    risks:
+      - level: "critical"
+        description: "Removes all resources managed by release; causes service downtime"
+      - level: "high"
+        description: "Backup data before uninstalling stateful applications"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm list"
+    description: "List Helm releases"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm list [flags]"
+    options:
+      - flag: "-n"
+        description: "Filter by namespace"
+      - flag: "-A"
+        description: "List releases across all namespaces"
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "helm list"
+        description: "List releases in default namespace"
+      - command: "helm list -A"
+        description: "List all releases in all namespaces"
+      - command: "helm list -n production"
+        description: "List releases in production namespace"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists releases only"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm status"
+    description: "Display status of Helm release"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm status [release-name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Release namespace"
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "helm status nginx"
+        description: "Show nginx release status"
+      - command: "helm status nginx -n production"
+        description: "Show status of release in production"
+      - command: "helm status nginx -o yaml"
+        description: "Show status in YAML format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; displays status only"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm template"
+    description: "Render Helm chart templates locally"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm template [release-name] [chart] [flags]"
+    options:
+      - flag: "--values"
+        description: "Values file path"
+      - flag: "--set"
+        description: "Set values on command line"
+      - flag: "--output-dir"
+        description: "Write rendered templates to directory"
+    examples:
+      - command: "helm template nginx bitnami/nginx"
+        description: "Render nginx chart templates"
+      - command: "helm template nginx bitnami/nginx --values values.yaml"
+        description: "Render with custom values"
+      - command: "helm template nginx bitnami/nginx --output-dir ./output"
+        description: "Render and save to directory"
+    risks:
+      - level: "low"
+        description: "Local rendering only; no cluster interaction"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+category: "Kubernetes Storage"
+description: "Kubernetes storage management and package tools"
+commands:
+  - name: "helm repo add"
+    description: "Add Helm chart repository"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm repo add [repo-name] [repo-url]"
+    examples:
+      - command: "helm repo add stable https://charts.helm.sh/stable"
+        description: "Add official stable chart repository"
+      - command: "helm repo add bitnami https://charts.bitnami.com/bitnami"
+        description: "Add Bitnami chart repository"
+      - command: "helm repo add prometheus-community https://prometheus-community.github.io/helm-charts"
+        description: "Add Prometheus community charts"
+    risks:
+      - level: "low"
+        description: "Adds repository reference only; no cluster changes"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm repo update"
+    description: "Update local Helm chart repository cache"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm repo update"
+    examples:
+      - command: "helm repo update"
+        description: "Update all repository indexes"
+      - command: "helm repo list"
+        description: "List configured repositories"
+    risks:
+      - level: "low"
+        description: "Updates local cache only; no cluster impact"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm install"
+    description: "Install Helm chart to Kubernetes cluster"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm install [release-name] [chart] [flags]"
+    options:
+      - flag: "-n"
+        description: "Target namespace"
+      - flag: "--create-namespace"
+        description: "Create namespace if not exists"
+      - flag: "--values"
+        description: "Values file path"
+      - flag: "--set"
+        description: "Set values on command line"
+      - flag: "--dry-run"
+        description: "Simulate installation"
+    examples:
+      - command: "helm install nginx bitnami/nginx"
+        description: "Install nginx chart with release name nginx"
+      - command: "helm install nginx bitnami/nginx -n production --create-namespace"
+        description: "Install to production namespace"
+      - command: "helm install nginx bitnami/nginx --values values.yaml"
+        description: "Install with custom values file"
+      - command: "helm install nginx bitnami/nginx --dry-run --debug"
+        description: "Preview installation without applying"
+    risks:
+      - level: "high"
+        description: "Deploys resources to cluster; may affect existing workloads"
+      - level: "medium"
+        description: "Always review chart values before installation"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm upgrade"
+    description: "Upgrade Helm release to new version"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm upgrade [release-name] [chart] [flags]"
+    options:
+      - flag: "-n"
+        description: "Release namespace"
+      - flag: "--install"
+        description: "Install if release doesn't exist"
+      - flag: "--values"
+        description: "Values file path"
+      - flag: "--atomic"
+        description: "Rollback on failure"
+    examples:
+      - command: "helm upgrade nginx bitnami/nginx"
+        description: "Upgrade nginx release"
+      - command: "helm upgrade nginx bitnami/nginx --install"
+        description: "Upgrade or install if not exists"
+      - command: "helm upgrade nginx bitnami/nginx --values values.yaml"
+        description: "Upgrade with new values"
+      - command: "helm upgrade nginx bitnami/nginx --atomic"
+        description: "Upgrade with automatic rollback on failure"
+    risks:
+      - level: "high"
+        description: "Modifies running applications; may cause service disruption"
+      - level: "medium"
+        description: "Test in staging environment first"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm uninstall"
+    description: "Uninstall Helm release from cluster"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm uninstall [release-name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Release namespace"
+      - flag: "--keep-history"
+        description: "Keep release history for rollback"
+    examples:
+      - command: "helm uninstall nginx"
+        description: "Uninstall nginx release"
+      - command: "helm uninstall nginx -n production"
+        description: "Uninstall from production namespace"
+      - command: "helm uninstall nginx --keep-history"
+        description: "Uninstall but keep history"
+    risks:
+      - level: "critical"
+        description: "Removes all resources managed by release; causes service downtime"
+      - level: "high"
+        description: "Backup data before uninstalling stateful applications"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm list"
+    description: "List Helm releases"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm list [flags]"
+    options:
+      - flag: "-n"
+        description: "Filter by namespace"
+      - flag: "-A"
+        description: "List releases across all namespaces"
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "helm list"
+        description: "List releases in default namespace"
+      - command: "helm list -A"
+        description: "List all releases in all namespaces"
+      - command: "helm list -n production"
+        description: "List releases in production namespace"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists releases only"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm status"
+    description: "Display status of Helm release"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm status [release-name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Release namespace"
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "helm status nginx"
+        description: "Show nginx release status"
+      - command: "helm status nginx -n production"
+        description: "Show status of release in production"
+      - command: "helm status nginx -o yaml"
+        description: "Show status in YAML format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; displays status only"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm template"
+    description: "Render Helm chart templates locally"
+    category: "Kubernetes Storage"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm template [release-name] [chart] [flags]"
+    options:
+      - flag: "--values"
+        description: "Values file path"
+      - flag: "--set"
+        description: "Set values on command line"
+      - flag: "--output-dir"
+        description: "Write rendered templates to directory"
+    examples:
+      - command: "helm template nginx bitnami/nginx"
+        description: "Render nginx chart templates"
+      - command: "helm template nginx bitnami/nginx --values values.yaml"
+        description: "Render with custom values"
+      - command: "helm template nginx bitnami/nginx --output-dir ./output"
+        description: "Render and save to directory"
+    risks:
+      - level: "low"
+        description: "Local rendering only; no cluster interaction"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"

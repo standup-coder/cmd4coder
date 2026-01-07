@@ -1,0 +1,438 @@
+category: "Kubernetes Backup & Recovery"
+description: "Disaster recovery and backup tools for Kubernetes"
+commands:
+  - name: "velero backup create"
+    description: "Create backup of Kubernetes resources"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "velero backup create [backup-name] [flags]"
+    options:
+      - flag: "--include-namespaces"
+        description: "Namespaces to include in backup"
+      - flag: "--exclude-namespaces"
+        description: "Namespaces to exclude from backup"
+      - flag: "--include-resources"
+        description: "Resource types to include"
+      - flag: "--selector"
+        description: "Label selector to filter resources"
+    examples:
+      - command: "velero backup create mybackup"
+        description: "Create full cluster backup"
+      - command: "velero backup create prod-backup --include-namespaces production"
+        description: "Backup specific namespace"
+      - command: "velero backup create pv-backup --include-resources persistentvolumes,persistentvolumeclaims"
+        description: "Backup only persistent volumes"
+      - command: "velero backup create app-backup --selector app=nginx"
+        description: "Backup resources with label selector"
+    risks:
+      - level: "low"
+        description: "Read-only backup operation; no cluster modifications"
+      - level: "medium"
+        description: "Large backups may impact cluster performance"
+    install_method: "Download from https://velero.io/docs/main/basic-install/"
+    version_check: "velero version"
+
+  - name: "velero backup list"
+    description: "List all Velero backups"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "velero backup list [flags]"
+    options:
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "velero backup list"
+        description: "List all backups"
+      - command: "velero backup list -o json"
+        description: "List backups in JSON format"
+      - command: "velero backup describe mybackup"
+        description: "Show detailed backup information"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists backups only"
+    install_method: "Download from https://velero.io/docs/main/basic-install/"
+    version_check: "velero version"
+
+  - name: "velero restore create"
+    description: "Restore from Velero backup"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "velero restore create [restore-name] --from-backup [backup-name] [flags]"
+    options:
+      - flag: "--from-backup"
+        description: "Backup name to restore from"
+      - flag: "--include-namespaces"
+        description: "Namespaces to restore"
+      - flag: "--namespace-mappings"
+        description: "Map namespaces during restore"
+    examples:
+      - command: "velero restore create --from-backup mybackup"
+        description: "Restore from backup"
+      - command: "velero restore create prod-restore --from-backup prod-backup --include-namespaces production"
+        description: "Restore specific namespace"
+      - command: "velero restore create --from-backup mybackup --namespace-mappings old-ns:new-ns"
+        description: "Restore with namespace mapping"
+    risks:
+      - level: "critical"
+        description: "Restores resources to cluster; may overwrite existing resources"
+      - level: "high"
+        description: "Test restore in non-production environment first"
+    install_method: "Download from https://velero.io/docs/main/basic-install/"
+    version_check: "velero version"
+
+  - name: "velero schedule create"
+    description: "Create scheduled backup"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "velero schedule create [schedule-name] --schedule [cron-expression] [flags]"
+    options:
+      - flag: "--schedule"
+        description: "Cron expression for schedule"
+      - flag: "--include-namespaces"
+        description: "Namespaces to include"
+    examples:
+      - command: "velero schedule create daily-backup --schedule '0 2 * * *'"
+        description: "Schedule daily backup at 2 AM"
+      - command: "velero schedule create hourly-backup --schedule '@hourly' --include-namespaces production"
+        description: "Schedule hourly backup for production namespace"
+    risks:
+      - level: "low"
+        description: "Creates scheduled task; actual backups are read-only"
+    install_method: "Download from https://velero.io/docs/main/basic-install/"
+    version_check: "velero version"
+
+  - name: "restic init"
+    description: "Initialize restic backup repository"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "restic init --repo [repository-path]"
+    examples:
+      - command: "restic init --repo /backup/restic-repo"
+        description: "Initialize local backup repository"
+      - command: "restic init --repo s3:s3.amazonaws.com/my-backup-bucket"
+        description: "Initialize S3 backup repository"
+    risks:
+      - level: "low"
+        description: "Creates empty repository; no data operations"
+    install_method: "Download from https://restic.net/ or package manager"
+    version_check: "restic version"
+
+  - name: "restic backup"
+    description: "Create restic backup"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "restic backup [path] --repo [repository] [flags]"
+    options:
+      - flag: "--repo"
+        description: "Repository path"
+      - flag: "--exclude"
+        description: "Exclude pattern"
+      - flag: "--tag"
+        description: "Tags for backup"
+    examples:
+      - command: "restic backup /data --repo /backup/restic-repo"
+        description: "Backup directory to repository"
+      - command: "restic backup /data --repo s3:s3.amazonaws.com/bucket --tag production"
+        description: "Backup to S3 with tag"
+      - command: "restic backup /var/lib/etcd --repo /backup/etcd-backup"
+        description: "Backup etcd data directory"
+    risks:
+      - level: "low"
+        description: "Read-only backup operation; no data modification"
+    install_method: "Download from https://restic.net/ or package manager"
+    version_check: "restic version"
+
+  - name: "restic restore"
+    description: "Restore from restic backup"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "restic restore [snapshot-id] --repo [repository] --target [path] [flags]"
+    options:
+      - flag: "--repo"
+        description: "Repository path"
+      - flag: "--target"
+        description: "Restore target path"
+    examples:
+      - command: "restic restore latest --repo /backup/restic-repo --target /restore"
+        description: "Restore latest snapshot"
+      - command: "restic restore abc123 --repo s3:s3.amazonaws.com/bucket --target /restore"
+        description: "Restore specific snapshot from S3"
+    risks:
+      - level: "high"
+        description: "Overwrites files in target directory"
+      - level: "medium"
+        description: "Verify snapshot before restoring"
+    install_method: "Download from https://restic.net/ or package manager"
+    version_check: "restic version"
+
+  - name: "restic snapshots"
+    description: "List restic backup snapshots"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "restic snapshots --repo [repository] [flags]"
+    options:
+      - flag: "--repo"
+        description: "Repository path"
+      - flag: "--tag"
+        description: "Filter by tag"
+    examples:
+      - command: "restic snapshots --repo /backup/restic-repo"
+        description: "List all snapshots"
+      - command: "restic snapshots --repo s3:s3.amazonaws.com/bucket --tag production"
+        description: "List snapshots with specific tag"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists snapshots only"
+    install_method: "Download from https://restic.net/ or package manager"
+    version_check: "restic version"
+category: "Kubernetes Backup & Recovery"
+description: "Disaster recovery and backup tools for Kubernetes"
+commands:
+  - name: "velero backup create"
+    description: "Create backup of Kubernetes resources"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "velero backup create [backup-name] [flags]"
+    options:
+      - flag: "--include-namespaces"
+        description: "Namespaces to include in backup"
+      - flag: "--exclude-namespaces"
+        description: "Namespaces to exclude from backup"
+      - flag: "--include-resources"
+        description: "Resource types to include"
+      - flag: "--selector"
+        description: "Label selector to filter resources"
+    examples:
+      - command: "velero backup create mybackup"
+        description: "Create full cluster backup"
+      - command: "velero backup create prod-backup --include-namespaces production"
+        description: "Backup specific namespace"
+      - command: "velero backup create pv-backup --include-resources persistentvolumes,persistentvolumeclaims"
+        description: "Backup only persistent volumes"
+      - command: "velero backup create app-backup --selector app=nginx"
+        description: "Backup resources with label selector"
+    risks:
+      - level: "low"
+        description: "Read-only backup operation; no cluster modifications"
+      - level: "medium"
+        description: "Large backups may impact cluster performance"
+    install_method: "Download from https://velero.io/docs/main/basic-install/"
+    version_check: "velero version"
+
+  - name: "velero backup list"
+    description: "List all Velero backups"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "velero backup list [flags]"
+    options:
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+    examples:
+      - command: "velero backup list"
+        description: "List all backups"
+      - command: "velero backup list -o json"
+        description: "List backups in JSON format"
+      - command: "velero backup describe mybackup"
+        description: "Show detailed backup information"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists backups only"
+    install_method: "Download from https://velero.io/docs/main/basic-install/"
+    version_check: "velero version"
+
+  - name: "velero restore create"
+    description: "Restore from Velero backup"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "velero restore create [restore-name] --from-backup [backup-name] [flags]"
+    options:
+      - flag: "--from-backup"
+        description: "Backup name to restore from"
+      - flag: "--include-namespaces"
+        description: "Namespaces to restore"
+      - flag: "--namespace-mappings"
+        description: "Map namespaces during restore"
+    examples:
+      - command: "velero restore create --from-backup mybackup"
+        description: "Restore from backup"
+      - command: "velero restore create prod-restore --from-backup prod-backup --include-namespaces production"
+        description: "Restore specific namespace"
+      - command: "velero restore create --from-backup mybackup --namespace-mappings old-ns:new-ns"
+        description: "Restore with namespace mapping"
+    risks:
+      - level: "critical"
+        description: "Restores resources to cluster; may overwrite existing resources"
+      - level: "high"
+        description: "Test restore in non-production environment first"
+    install_method: "Download from https://velero.io/docs/main/basic-install/"
+    version_check: "velero version"
+
+  - name: "velero schedule create"
+    description: "Create scheduled backup"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "velero schedule create [schedule-name] --schedule [cron-expression] [flags]"
+    options:
+      - flag: "--schedule"
+        description: "Cron expression for schedule"
+      - flag: "--include-namespaces"
+        description: "Namespaces to include"
+    examples:
+      - command: "velero schedule create daily-backup --schedule '0 2 * * *'"
+        description: "Schedule daily backup at 2 AM"
+      - command: "velero schedule create hourly-backup --schedule '@hourly' --include-namespaces production"
+        description: "Schedule hourly backup for production namespace"
+    risks:
+      - level: "low"
+        description: "Creates scheduled task; actual backups are read-only"
+    install_method: "Download from https://velero.io/docs/main/basic-install/"
+    version_check: "velero version"
+
+  - name: "restic init"
+    description: "Initialize restic backup repository"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "restic init --repo [repository-path]"
+    examples:
+      - command: "restic init --repo /backup/restic-repo"
+        description: "Initialize local backup repository"
+      - command: "restic init --repo s3:s3.amazonaws.com/my-backup-bucket"
+        description: "Initialize S3 backup repository"
+    risks:
+      - level: "low"
+        description: "Creates empty repository; no data operations"
+    install_method: "Download from https://restic.net/ or package manager"
+    version_check: "restic version"
+
+  - name: "restic backup"
+    description: "Create restic backup"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "restic backup [path] --repo [repository] [flags]"
+    options:
+      - flag: "--repo"
+        description: "Repository path"
+      - flag: "--exclude"
+        description: "Exclude pattern"
+      - flag: "--tag"
+        description: "Tags for backup"
+    examples:
+      - command: "restic backup /data --repo /backup/restic-repo"
+        description: "Backup directory to repository"
+      - command: "restic backup /data --repo s3:s3.amazonaws.com/bucket --tag production"
+        description: "Backup to S3 with tag"
+      - command: "restic backup /var/lib/etcd --repo /backup/etcd-backup"
+        description: "Backup etcd data directory"
+    risks:
+      - level: "low"
+        description: "Read-only backup operation; no data modification"
+    install_method: "Download from https://restic.net/ or package manager"
+    version_check: "restic version"
+
+  - name: "restic restore"
+    description: "Restore from restic backup"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "restic restore [snapshot-id] --repo [repository] --target [path] [flags]"
+    options:
+      - flag: "--repo"
+        description: "Repository path"
+      - flag: "--target"
+        description: "Restore target path"
+    examples:
+      - command: "restic restore latest --repo /backup/restic-repo --target /restore"
+        description: "Restore latest snapshot"
+      - command: "restic restore abc123 --repo s3:s3.amazonaws.com/bucket --target /restore"
+        description: "Restore specific snapshot from S3"
+    risks:
+      - level: "high"
+        description: "Overwrites files in target directory"
+      - level: "medium"
+        description: "Verify snapshot before restoring"
+    install_method: "Download from https://restic.net/ or package manager"
+    version_check: "restic version"
+
+  - name: "restic snapshots"
+    description: "List restic backup snapshots"
+    category: "Kubernetes Backup & Recovery"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "restic snapshots --repo [repository] [flags]"
+    options:
+      - flag: "--repo"
+        description: "Repository path"
+      - flag: "--tag"
+        description: "Filter by tag"
+    examples:
+      - command: "restic snapshots --repo /backup/restic-repo"
+        description: "List all snapshots"
+      - command: "restic snapshots --repo s3:s3.amazonaws.com/bucket --tag production"
+        description: "List snapshots with specific tag"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists snapshots only"
+    install_method: "Download from https://restic.net/ or package manager"
+    version_check: "restic version"

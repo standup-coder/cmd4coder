@@ -1,0 +1,230 @@
+category: "Kubernetes Container Runtime"
+description: "Container runtime tools for Kubernetes"
+commands:
+  - name: "crictl images"
+    description: "List container images"
+    category: "Kubernetes Container Runtime"
+    platforms:
+      - "linux"
+    usage:
+      - "crictl images [flags]"
+    options:
+      - flag: "-q"
+        description: "Only display image IDs"
+      - flag: "--no-trunc"
+        description: "Show full image ID"
+    examples:
+      - command: "crictl images"
+        description: "List all images"
+      - command: "crictl images -q"
+        description: "List only image IDs"
+      - command: "crictl images nginx"
+        description: "List nginx images"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists images only"
+    install_method: "Download from https://github.com/kubernetes-sigs/cri-tools/releases"
+    version_check: "crictl --version"
+
+  - name: "crictl pods"
+    description: "List all pods"
+    category: "Kubernetes Container Runtime"
+    platforms:
+      - "linux"
+    usage:
+      - "crictl pods [flags]"
+    options:
+      - flag: "-q"
+        description: "Only display pod IDs"
+      - flag: "--namespace"
+        description: "Filter by namespace"
+      - flag: "--name"
+        description: "Filter by pod name"
+    examples:
+      - command: "crictl pods"
+        description: "List all pods"
+      - command: "crictl pods --namespace kube-system"
+        description: "List pods in kube-system namespace"
+      - command: "crictl pods -q"
+        description: "List only pod IDs"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists pods only"
+    install_method: "Download from https://github.com/kubernetes-sigs/cri-tools/releases"
+    version_check: "crictl --version"
+
+  - name: "crictl ps"
+    description: "List running containers"
+    category: "Kubernetes Container Runtime"
+    platforms:
+      - "linux"
+    usage:
+      - "crictl ps [flags]"
+    options:
+      - flag: "-a"
+        description: "Show all containers (default shows just running)"
+      - flag: "-q"
+        description: "Only display container IDs"
+      - flag: "--pod"
+        description: "Filter by pod ID"
+    examples:
+      - command: "crictl ps"
+        description: "List running containers"
+      - command: "crictl ps -a"
+        description: "List all containers including stopped ones"
+      - command: "crictl ps --pod <pod-id>"
+        description: "List containers in specific pod"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists containers only"
+    install_method: "Download from https://github.com/kubernetes-sigs/cri-tools/releases"
+    version_check: "crictl --version"
+
+  - name: "crictl logs"
+    description: "Fetch logs of a container"
+    category: "Kubernetes Container Runtime"
+    platforms:
+      - "linux"
+    usage:
+      - "crictl logs [container-id] [flags]"
+    options:
+      - flag: "-f"
+        description: "Follow log output"
+      - flag: "--tail"
+        description: "Number of lines to show from the end of the logs"
+      - flag: "--since"
+        description: "Show logs since timestamp"
+    examples:
+      - command: "crictl logs <container-id>"
+        description: "Print container logs"
+      - command: "crictl logs -f <container-id>"
+        description: "Follow container logs in real-time"
+      - command: "crictl logs --tail=100 <container-id>"
+        description: "Show last 100 lines of logs"
+    risks:
+      - level: "low"
+        description: "Read-only operation; views logs only"
+    install_method: "Download from https://github.com/kubernetes-sigs/cri-tools/releases"
+    version_check: "crictl --version"
+
+  - name: "crictl exec"
+    description: "Execute command in running container"
+    category: "Kubernetes Container Runtime"
+    platforms:
+      - "linux"
+    usage:
+      - "crictl exec [flags] [container-id] [command]"
+    options:
+      - flag: "-i"
+        description: "Keep STDIN open"
+      - flag: "-t"
+        description: "Allocate a pseudo-TTY"
+    examples:
+      - command: "crictl exec <container-id> ls /"
+        description: "Execute ls command in container"
+      - command: "crictl exec -it <container-id> /bin/sh"
+        description: "Open interactive shell in container"
+      - command: "crictl exec <container-id> env"
+        description: "Show environment variables in container"
+    risks:
+      - level: "high"
+        description: "Can execute arbitrary commands in running containers"
+      - level: "medium"
+        description: "Changes are ephemeral but can affect running application"
+    install_method: "Download from https://github.com/kubernetes-sigs/cri-tools/releases"
+    version_check: "crictl --version"
+
+  - name: "crictl stats"
+    description: "Display container resource usage statistics"
+    category: "Kubernetes Container Runtime"
+    platforms:
+      - "linux"
+    usage:
+      - "crictl stats [flags]"
+    options:
+      - flag: "-a"
+        description: "Show all containers (default shows just running)"
+      - flag: "--no-stream"
+        description: "Disable streaming stats and only pull the first result"
+    examples:
+      - command: "crictl stats"
+        description: "Show real-time resource usage for running containers"
+      - command: "crictl stats -a"
+        description: "Show stats for all containers"
+      - command: "crictl stats --no-stream"
+        description: "Show current stats snapshot"
+    risks:
+      - level: "low"
+        description: "Read-only operation; displays resource metrics only"
+    install_method: "Download from https://github.com/kubernetes-sigs/cri-tools/releases"
+    version_check: "crictl --version"
+
+  - name: "ctr images list"
+    description: "List images in containerd"
+    category: "Kubernetes Container Runtime"
+    platforms:
+      - "linux"
+    usage:
+      - "ctr images list [flags]"
+    options:
+      - flag: "-q"
+        description: "Print only the image refs"
+    examples:
+      - command: "ctr images list"
+        description: "List all containerd images"
+      - command: "ctr images list -q"
+        description: "List only image references"
+      - command: "ctr -n k8s.io images list"
+        description: "List images in k8s.io namespace"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists images only"
+    install_method: "Installed with containerd"
+    version_check: "ctr version"
+
+  - name: "ctr containers list"
+    description: "List containers in containerd"
+    category: "Kubernetes Container Runtime"
+    platforms:
+      - "linux"
+    usage:
+      - "ctr containers list [flags]"
+    options:
+      - flag: "-q"
+        description: "Print only container IDs"
+    examples:
+      - command: "ctr containers list"
+        description: "List all containerd containers"
+      - command: "ctr -n k8s.io containers list"
+        description: "List containers in k8s.io namespace"
+      - command: "ctr containers list -q"
+        description: "List only container IDs"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists containers only"
+    install_method: "Installed with containerd"
+    version_check: "ctr version"
+
+  - name: "systemctl status containerd"
+    description: "Check containerd service status"
+    category: "Kubernetes Container Runtime"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status containerd"
+    examples:
+      - command: "systemctl status containerd"
+        description: "View containerd service status"
+      - command: "systemctl start containerd"
+        description: "Start containerd service"
+      - command: "systemctl enable containerd"
+        description: "Enable containerd to start on boot"
+      - command: "systemctl restart containerd"
+        description: "Restart containerd service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+      - level: "high"
+        description: "Restarting containerd affects all running containers"
+    install_method: "Built-in systemd command"
+    version_check: "systemctl --version"

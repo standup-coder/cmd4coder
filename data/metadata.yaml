@@ -1,5 +1,5 @@
-version: "1.0.0"
-updated_at: "2025-12-14"
+version: "1.1.0"
+updated_at: "2026-01-07"
 description: "cmd4coder 命令行工具大全数据文件"
 
 categories:
@@ -87,6 +87,78 @@ categories:
     description: "Kubernetes管理命令"
     parent: ""
     order: 41
+  container_k8s_cluster:
+    id: container_k8s_cluster
+    name: "容器编排/K8s集群管理"
+    description: "Kubernetes集群管理和控制平面工具"
+    parent: ""
+    order: 42
+  container_k8s_runtime:
+    id: container_k8s_runtime
+    name: "容器编排/K8s容器运行时"
+    description: "Kubernetes容器运行时工具"
+    parent: ""
+    order: 43
+  container_k8s_monitor:
+    id: container_k8s_monitor
+    name: "容器编排/K8s监控日志"
+    description: "Kubernetes监控与日志工具"
+    parent: ""
+    order: 44
+  container_k8s_network:
+    id: container_k8s_network
+    name: "容器编排/K8s网络插件"
+    description: "Kubernetes网络插件管理工具"
+    parent: ""
+    order: 45
+  container_k8s_storage:
+    id: container_k8s_storage
+    name: "容器编排/K8s存储管理"
+    description: "Kubernetes存储管理和包工具"
+    parent: ""
+    order: 46
+  container_k8s_cicd:
+    id: container_k8s_cicd
+    name: "容器编排/K8s持续集成"
+    description: "Kubernetes持续集成与部署工具"
+    parent: ""
+    order: 47
+  container_k8s_config:
+    id: container_k8s_config
+    name: "容器编排/K8s配置管理"
+    description: "Kubernetes配置管理与IaC工具"
+    parent: ""
+    order: 48
+  container_k8s_backup:
+    id: container_k8s_backup
+    name: "容器编排/K8s备份恢复"
+    description: "Kubernetes灾难恢复与备份工具"
+    parent: ""
+    order: 49
+  container_k8s_security:
+    id: container_k8s_security
+    name: "容器编排/K8s安全工具"
+    description: "Kubernetes安全扫描与合规工具"
+    parent: ""
+    order: 50
+  container_k8s_utilities:
+    id: container_k8s_utilities
+    name: "容器编排/K8s辅助工具"
+    description: "Kubernetes集群管理辅助工具"
+    parent: ""
+    order: 51
+  container_k8s_cloud:
+    id: container_k8s_cloud
+    name: "容器编排/K8s云平台工具"
+    description: "云平台专属Kubernetes管理工具"
+    parent: ""
+    order: 52
+  container_k8s_dev:
+    id: container_k8s_dev
+    name: "容器编排/K8s开发调试"
+    description: "Kubernetes开发与调试工具"
+    parent: ""
+    order: 53
   database_mysql:
     id: database_mysql
     name: "数据库工具/MySQL工具"
@@ -151,6 +223,18 @@ data_files:
   - "network/http.yaml"
   - "container/docker.yaml"
   - "container/kubernetes.yaml"
+  - "container/k8s-cluster.yaml"
+  - "container/k8s-runtime.yaml"
+  - "container/k8s-monitor.yaml"
+  - "container/k8s-network.yaml"
+  - "container/k8s-storage.yaml"
+  - "container/k8s-cicd.yaml"
+  - "container/k8s-config.yaml"
+  - "container/k8s-backup.yaml"
+  - "container/k8s-security.yaml"
+  - "container/k8s-utilities.yaml"
+  - "container/k8s-cloud.yaml"
+  - "container/k8s-dev.yaml"
   - "database/mysql.yaml"
   - "database/redis.yaml"
   - "database/postgresql.yaml"

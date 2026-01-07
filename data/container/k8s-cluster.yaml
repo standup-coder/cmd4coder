@@ -1,0 +1,307 @@
+category: "Kubernetes Cluster Management"
+description: "Kubernetes cluster management and control plane tools"
+commands:
+  - name: "kubeadm init"
+    description: "Initialize Kubernetes control plane node"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "kubeadm init [flags]"
+    options:
+      - flag: "--pod-network-cidr"
+        description: "Specify range of IP addresses for the pod network"
+      - flag: "--apiserver-advertise-address"
+        description: "The IP address the API Server will advertise"
+      - flag: "--control-plane-endpoint"
+        description: "Specify a stable IP address or DNS name for the control plane"
+      - flag: "--kubernetes-version"
+        description: "Choose a specific Kubernetes version for the control plane"
+    examples:
+      - command: "kubeadm init --pod-network-cidr=10.244.0.0/16"
+        description: "Initialize control plane with pod network CIDR"
+      - command: "kubeadm init --apiserver-advertise-address=192.168.1.100"
+        description: "Initialize with specific API server address"
+      - command: "kubeadm init --control-plane-endpoint=cluster-endpoint:6443"
+        description: "Initialize with high availability endpoint"
+    risks:
+      - level: "critical"
+        description: "Initializes new cluster; existing cluster data may be affected"
+      - level: "high"
+        description: "Requires careful network configuration; misconfig causes cluster failure"
+    install_method: "apt-get install kubeadm (Ubuntu) or yum install kubeadm (CentOS)"
+    version_check: "kubeadm version"
+
+  - name: "kubeadm join"
+    description: "Join worker node to Kubernetes cluster"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "kubeadm join [api-server-endpoint] --token [token] --discovery-token-ca-cert-hash [hash]"
+    options:
+      - flag: "--token"
+        description: "Use this token for mutual authentication"
+      - flag: "--discovery-token-ca-cert-hash"
+        description: "Validate the root CA public key with this hash"
+      - flag: "--control-plane"
+        description: "Create a new control plane instance on this node"
+    examples:
+      - command: "kubeadm join 192.168.1.100:6443 --token abcdef.0123456789abcdef --discovery-token-ca-cert-hash sha256:hash..."
+        description: "Join node to cluster with token"
+      - command: "kubeadm join 192.168.1.100:6443 --token abcdef.0123456789abcdef --discovery-token-ca-cert-hash sha256:hash... --control-plane"
+        description: "Join as control plane node for HA"
+    risks:
+      - level: "high"
+        description: "Adds node to production cluster; verify token and endpoint carefully"
+      - level: "medium"
+        description: "Incorrect token or CA hash causes join failure"
+    install_method: "apt-get install kubeadm (Ubuntu) or yum install kubeadm (CentOS)"
+    version_check: "kubeadm version"
+
+  - name: "kubeadm upgrade"
+    description: "Upgrade Kubernetes cluster to specified version"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "kubeadm upgrade [subcommand]"
+    options:
+      - flag: "plan"
+        description: "Check which versions are available to upgrade to"
+      - flag: "apply"
+        description: "Upgrade cluster to specified version"
+      - flag: "node"
+        description: "Upgrade commands for worker nodes"
+    examples:
+      - command: "kubeadm upgrade plan"
+        description: "Check available upgrade versions"
+      - command: "kubeadm upgrade apply v1.28.0"
+        description: "Upgrade control plane to v1.28.0"
+      - command: "kubeadm upgrade node"
+        description: "Upgrade worker node components"
+    risks:
+      - level: "critical"
+        description: "Cluster upgrade may cause downtime; backup before upgrading"
+      - level: "high"
+        description: "Version skew policy must be respected; test in staging first"
+    install_method: "apt-get install kubeadm (Ubuntu) or yum install kubeadm (CentOS)"
+    version_check: "kubeadm version"
+
+  - name: "kubeadm reset"
+    description: "Reset node state and undo kubeadm init or join"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "kubeadm reset [flags]"
+    options:
+      - flag: "-f"
+        description: "Force reset without prompting for confirmation"
+      - flag: "--cleanup-tmp-dir"
+        description: "Cleanup the /etc/kubernetes/tmp directory"
+    examples:
+      - command: "kubeadm reset"
+        description: "Reset node with confirmation prompt"
+      - command: "kubeadm reset -f"
+        description: "Force reset without confirmation"
+    risks:
+      - level: "critical"
+        description: "Removes all Kubernetes components and data from node"
+      - level: "critical"
+        description: "Cannot be undone; ensure node is properly drained first"
+    install_method: "apt-get install kubeadm (Ubuntu) or yum install kubeadm (CentOS)"
+    version_check: "kubeadm version"
+
+  - name: "kubeadm token list"
+    description: "List bootstrap tokens on the cluster"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "kubeadm token list"
+    examples:
+      - command: "kubeadm token list"
+        description: "List all cluster join tokens"
+      - command: "kubeadm token create --print-join-command"
+        description: "Generate new token and print join command"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists existing tokens"
+    install_method: "apt-get install kubeadm (Ubuntu) or yum install kubeadm (CentOS)"
+    version_check: "kubeadm version"
+
+  - name: "kubeadm config view"
+    description: "View the kubeadm configuration"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "kubeadm config view"
+    examples:
+      - command: "kubeadm config view"
+        description: "Display current cluster configuration"
+      - command: "kubeadm config print init-defaults"
+        description: "Print default init configuration"
+    risks:
+      - level: "low"
+        description: "Read-only operation; displays configuration only"
+    install_method: "apt-get install kubeadm (Ubuntu) or yum install kubeadm (CentOS)"
+    version_check: "kubeadm version"
+
+  - name: "systemctl status kubelet"
+    description: "Check kubelet service status"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "systemctl status kubelet"
+    examples:
+      - command: "systemctl status kubelet"
+        description: "View kubelet service status"
+      - command: "systemctl start kubelet"
+        description: "Start kubelet service"
+      - command: "systemctl enable kubelet"
+        description: "Enable kubelet to start on boot"
+      - command: "systemctl restart kubelet"
+        description: "Restart kubelet service"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no risks"
+    install_method: "Installed with kubeadm"
+    version_check: "kubelet --version"
+
+  - name: "journalctl -u kubelet"
+    description: "View kubelet service logs"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "journalctl -u kubelet [flags]"
+    options:
+      - flag: "-f"
+        description: "Follow log output in real-time"
+      - flag: "-n"
+        description: "Number of recent log entries to show"
+      - flag: "--since"
+        description: "Show logs since specific time"
+    examples:
+      - command: "journalctl -u kubelet -f"
+        description: "Follow kubelet logs in real-time"
+      - command: "journalctl -u kubelet -n 100"
+        description: "Show last 100 log entries"
+      - command: "journalctl -u kubelet --since '10 minutes ago'"
+        description: "Show logs from last 10 minutes"
+    risks:
+      - level: "low"
+        description: "Read-only operation; views logs only"
+    install_method: "Built-in systemd command"
+    version_check: "journalctl --version"
+
+  - name: "etcdctl snapshot save"
+    description: "Create backup snapshot of etcd data"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "etcdctl snapshot save [snapshot-file]"
+    options:
+      - flag: "--endpoints"
+        description: "Comma-separated list of etcd endpoints"
+      - flag: "--cacert"
+        description: "Path to CA certificate"
+      - flag: "--cert"
+        description: "Path to client certificate"
+      - flag: "--key"
+        description: "Path to client key"
+    examples:
+      - command: "etcdctl snapshot save /backup/etcd-snapshot.db"
+        description: "Save etcd snapshot to file"
+      - command: "etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key snapshot save /backup/snapshot.db"
+        description: "Save snapshot with TLS authentication"
+    risks:
+      - level: "low"
+        description: "Read-only backup operation; safe to perform"
+      - level: "medium"
+        description: "Ensure sufficient disk space for snapshot file"
+    install_method: "Installed with etcd or download from etcd releases"
+    version_check: "etcdctl version"
+
+  - name: "etcdctl snapshot restore"
+    description: "Restore etcd cluster from backup snapshot"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "etcdctl snapshot restore [snapshot-file] [flags]"
+    options:
+      - flag: "--data-dir"
+        description: "Path to restore data directory"
+      - flag: "--name"
+        description: "Human-readable name for etcd member"
+      - flag: "--initial-cluster"
+        description: "Initial cluster configuration"
+      - flag: "--initial-advertise-peer-urls"
+        description: "List of this member's peer URLs"
+    examples:
+      - command: "etcdctl snapshot restore /backup/snapshot.db --data-dir=/var/lib/etcd-restore"
+        description: "Restore snapshot to new data directory"
+      - command: "etcdctl snapshot restore snapshot.db --name=node1 --initial-cluster=node1=http://10.0.0.1:2380 --initial-advertise-peer-urls=http://10.0.0.1:2380 --data-dir=/var/lib/etcd"
+        description: "Restore with cluster configuration"
+    risks:
+      - level: "critical"
+        description: "Restoring snapshot replaces current cluster data; backup first"
+      - level: "critical"
+        description: "All cluster members must be restored; requires cluster downtime"
+    install_method: "Installed with etcd or download from etcd releases"
+    version_check: "etcdctl version"
+
+  - name: "etcdctl member list"
+    description: "List all etcd cluster members"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "etcdctl member list [flags]"
+    options:
+      - flag: "--endpoints"
+        description: "Comma-separated list of etcd endpoints"
+      - flag: "-w"
+        description: "Output format: simple, json, table"
+    examples:
+      - command: "etcdctl member list"
+        description: "List cluster members in simple format"
+      - command: "etcdctl member list -w table"
+        description: "List members in table format"
+      - command: "etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key member list"
+        description: "List members with TLS authentication"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists members only"
+    install_method: "Installed with etcd or download from etcd releases"
+    version_check: "etcdctl version"
+
+  - name: "etcdctl get"
+    description: "Get value of specified key from etcd"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "etcdctl get [key] [flags]"
+    options:
+      - flag: "--prefix"
+        description: "Get all keys with matching prefix"
+      - flag: "--keys-only"
+        description: "Get only keys, not values"
+      - flag: "-w"
+        description: "Output format: simple, json, fields"
+    examples:
+      - command: "etcdctl get /registry/pods --prefix --keys-only"
+        description: "List all pod keys in etcd"
+      - command: "etcdctl get /registry/namespaces/default"
+        description: "Get specific namespace data"
+    risks:
+      - level: "low"
+        description: "Read-only operation; retrieves data only"
+    install_method: "Installed with etcd or download from etcd releases"
+    version_check: "etcdctl version"

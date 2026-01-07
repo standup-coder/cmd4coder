@@ -1,0 +1,172 @@
+category: "Kubernetes Networking"
+description: "Kubernetes network plugin management tools"
+commands:
+  - name: "calicoctl get nodes"
+    description: "List all Calico nodes"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "calicoctl get nodes [flags]"
+    options:
+      - flag: "-o"
+        description: "Output format: yaml, json, wide"
+    examples:
+      - command: "calicoctl get nodes"
+        description: "List all Calico nodes"
+      - command: "calicoctl get nodes -o wide"
+        description: "List nodes with detailed information"
+      - command: "calicoctl get nodes -o yaml"
+        description: "List nodes in YAML format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists nodes only"
+    install_method: "Download from https://github.com/projectcalico/calico/releases"
+    version_check: "calicoctl version"
+
+  - name: "calicoctl get networkpolicies"
+    description: "List Calico network policies"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "calicoctl get networkpolicies [flags]"
+    options:
+      - flag: "-n"
+        description: "Filter by namespace"
+      - flag: "-o"
+        description: "Output format: yaml, json, wide"
+    examples:
+      - command: "calicoctl get networkpolicies"
+        description: "List all network policies"
+      - command: "calicoctl get networkpolicies -n production"
+        description: "List policies in production namespace"
+      - command: "calicoctl get networkpolicies -o yaml"
+        description: "Export policies in YAML format"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists policies only"
+    install_method: "Download from https://github.com/projectcalico/calico/releases"
+    version_check: "calicoctl version"
+
+  - name: "calicoctl apply"
+    description: "Apply Calico network policy configuration"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "calicoctl apply -f [policy-file]"
+    options:
+      - flag: "-f"
+        description: "Policy configuration file path"
+    examples:
+      - command: "calicoctl apply -f network-policy.yaml"
+        description: "Apply network policy from file"
+      - command: "calicoctl apply -f policies/"
+        description: "Apply all policies in directory"
+    risks:
+      - level: "high"
+        description: "Modifies network policies; can affect pod connectivity"
+      - level: "medium"
+        description: "Incorrect policy may block legitimate traffic"
+    install_method: "Download from https://github.com/projectcalico/calico/releases"
+    version_check: "calicoctl version"
+
+  - name: "calicoctl delete networkpolicy"
+    description: "Delete Calico network policy"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "calicoctl delete networkpolicy [policy-name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Policy namespace"
+    examples:
+      - command: "calicoctl delete networkpolicy allow-frontend -n production"
+        description: "Delete specific network policy"
+      - command: "calicoctl delete -f policy.yaml"
+        description: "Delete policy defined in file"
+    risks:
+      - level: "high"
+        description: "Removing policy may expose services to unauthorized access"
+      - level: "critical"
+        description: "Deleting critical policies affects security posture"
+    install_method: "Download from https://github.com/projectcalico/calico/releases"
+    version_check: "calicoctl version"
+
+  - name: "cilium status"
+    description: "Check Cilium agent status"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+    usage:
+      - "cilium status [flags]"
+    options:
+      - flag: "--wait"
+        description: "Wait for Cilium to be ready"
+      - flag: "-o"
+        description: "Output format: json, jsonpath, yaml"
+    examples:
+      - command: "cilium status"
+        description: "Display Cilium agent status"
+      - command: "cilium status --wait"
+        description: "Wait for Cilium to become ready"
+      - command: "cilium status -o json"
+        description: "Display status in JSON format"
+    risks:
+      - level: "low"
+        description: "Read-only status check; no operational impact"
+    install_method: "Installed on nodes with Cilium CNI"
+    version_check: "cilium version"
+
+  - name: "cilium connectivity test"
+    description: "Run connectivity test between pods"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+    usage:
+      - "cilium connectivity test [flags]"
+    options:
+      - flag: "--namespace"
+        description: "Namespace for test pods"
+    examples:
+      - command: "cilium connectivity test"
+        description: "Run full connectivity test"
+      - command: "cilium connectivity test --namespace test"
+        description: "Run test in specific namespace"
+    risks:
+      - level: "low"
+        description: "Creates temporary test pods; cleaned up after test"
+      - level: "medium"
+        description: "May consume cluster resources during test"
+    install_method: "Installed on nodes with Cilium CNI"
+    version_check: "cilium version"
+
+  - name: "cilium hubble status"
+    description: "Check Hubble observability status"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+    usage:
+      - "cilium hubble status"
+    examples:
+      - command: "cilium hubble status"
+        description: "Display Hubble status"
+      - command: "hubble observe"
+        description: "Observe network flows in real-time"
+      - command: "hubble observe --namespace default"
+        description: "Observe flows in specific namespace"
+    risks:
+      - level: "low"
+        description: "Read-only observation; no operational impact"
+    install_method: "Installed with Cilium Hubble"
+    version_check: "cilium version"

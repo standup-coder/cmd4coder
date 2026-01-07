@@ -11,23 +11,23 @@ import (
 // Config 应用程序配置
 type Config struct {
 	// 应用设置
-	Language     string `json:"language"`      // 语言: zh/en
-	Theme        string `json:"theme"`         // 主题: default/dark/light
-	Editor       string `json:"editor"`        // 默认编辑器
-	PageSize     int    `json:"page_size"`     // 每页显示数量
-	
+	Language string `json:"language"`  // 语言: zh/en
+	Theme    string `json:"theme"`     // 主题: default/dark/light
+	Editor   string `json:"editor"`    // 默认编辑器
+	PageSize int    `json:"page_size"` // 每页显示数量
+
 	// TUI设置
 	TUI TUIConfig `json:"tui"`
-	
+
 	// 搜索设置
 	Search SearchConfig `json:"search"`
-	
+
 	// 导出设置
 	Export ExportConfig `json:"export"`
-	
+
 	// 用户数据路径
 	UserDataPath string `json:"user_data_path"`
-	
+
 	// 版本
 	Version string `json:"version"`
 }
@@ -60,10 +60,10 @@ type ExportConfig struct {
 type UserData struct {
 	// 收藏的命令
 	Favorites []Favorite `json:"favorites"`
-	
+
 	// 历史记录
 	History []HistoryEntry `json:"history"`
-	
+
 	// 最后更新时间
 	LastUpdated time.Time `json:"last_updated"`
 }
@@ -87,7 +87,7 @@ type HistoryEntry struct {
 func DefaultConfig() *Config {
 	homeDir, _ := os.UserHomeDir()
 	userDataPath := filepath.Join(homeDir, ".cmd4coder")
-	
+
 	return &Config{
 		Language:     "zh",
 		Theme:        "default",
@@ -95,7 +95,7 @@ func DefaultConfig() *Config {
 		PageSize:     20,
 		UserDataPath: userDataPath,
 		Version:      "1.0.0",
-		
+
 		TUI: TUIConfig{
 			Enabled:         true,
 			ColorScheme:     "default",
@@ -103,14 +103,14 @@ func DefaultConfig() *Config {
 			ShowLineNumbers: false,
 			WrapText:        true,
 		},
-		
+
 		Search: SearchConfig{
 			CaseSensitive: false,
 			MaxResults:    50,
 			UseCache:      true,
 			CacheSize:     100,
 		},
-		
+
 		Export: ExportConfig{
 			DefaultFormat: "markdown",
 			OutputDir:     ".",
@@ -125,17 +125,17 @@ func LoadConfig(path string) (*Config, error) {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return DefaultConfig(), nil
 	}
-	
+
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("读取配置文件失败: %w", err)
 	}
-	
+
 	var config Config
 	if err := json.Unmarshal(data, &config); err != nil {
 		return nil, fmt.Errorf("解析配置文件失败: %w", err)
 	}
-	
+
 	return &config, nil
 }
 
@@ -146,16 +146,16 @@ func (c *Config) Save(path string) error {
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return fmt.Errorf("创建配置目录失败: %w", err)
 	}
-	
+
 	data, err := json.MarshalIndent(c, "", "  ")
 	if err != nil {
 		return fmt.Errorf("序列化配置失败: %w", err)
 	}
-	
+
 	if err := os.WriteFile(path, data, 0644); err != nil {
 		return fmt.Errorf("写入配置文件失败: %w", err)
 	}
-	
+
 	return nil
 }
 
@@ -164,24 +164,24 @@ func (c *Config) Validate() error {
 	if c.PageSize <= 0 {
 		return fmt.Errorf("page_size 必须大于0")
 	}
-	
+
 	if c.Search.MaxResults <= 0 {
 		return fmt.Errorf("search.max_results 必须大于0")
 	}
-	
+
 	if c.Search.CacheSize <= 0 {
 		return fmt.Errorf("search.cache_size 必须大于0")
 	}
-	
+
 	if c.Language != "zh" && c.Language != "en" {
 		return fmt.Errorf("language 必须是 zh 或 en")
 	}
-	
+
 	validFormats := map[string]bool{"markdown": true, "json": true}
 	if !validFormats[c.Export.DefaultFormat] {
 		return fmt.Errorf("export.default_format 必须是 markdown 或 json")
 	}
-	
+
 	return nil
 }
 
@@ -200,17 +200,17 @@ func LoadUserData(path string) (*UserData, error) {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return NewUserData(), nil
 	}
-	
+
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("读取用户数据文件失败: %w", err)
 	}
-	
+
 	var userData UserData
 	if err := json.Unmarshal(data, &userData); err != nil {
 		return nil, fmt.Errorf("解析用户数据文件失败: %w", err)
 	}
-	
+
 	return &userData, nil
 }
 
@@ -218,22 +218,22 @@ func LoadUserData(path string) (*UserData, error) {
 func (u *UserData) Save(path string) error {
 	// 更新时间戳
 	u.LastUpdated = time.Now()
-	
+
 	// 确保目录存在
 	dir := filepath.Dir(path)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return fmt.Errorf("创建用户数据目录失败: %w", err)
 	}
-	
+
 	data, err := json.MarshalIndent(u, "", "  ")
 	if err != nil {
 		return fmt.Errorf("序列化用户数据失败: %w", err)
 	}
-	
+
 	if err := os.WriteFile(path, data, 0644); err != nil {
 		return fmt.Errorf("写入用户数据文件失败: %w", err)
 	}
-	
+
 	return nil
 }
 
@@ -245,7 +245,7 @@ func (u *UserData) AddFavorite(commandName, category, note string) {
 			return
 		}
 	}
-	
+
 	u.Favorites = append(u.Favorites, Favorite{
 		CommandName: commandName,
 		Category:    category,
@@ -283,14 +283,14 @@ func (u *UserData) AddHistory(commandName, category string) {
 			i--
 		}
 	}
-	
+
 	// 添加到开头
 	u.History = append([]HistoryEntry{{
 		CommandName: commandName,
 		Category:    category,
 		AccessedAt:  time.Now(),
 	}}, u.History...)
-	
+
 	// 限制历史记录数量
 	maxHistory := 100
 	if len(u.History) > maxHistory {

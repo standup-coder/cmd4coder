@@ -19,9 +19,9 @@ func ExportToJSON(commands []*model.Command, filename string) error {
 
 	// 创建导出结构
 	export := struct {
-		Version  string            `json:"version"`
-		Total    int               `json:"total"`
-		Commands []*model.Command  `json:"commands"`
+		Version  string           `json:"version"`
+		Total    int              `json:"total"`
+		Commands []*model.Command `json:"commands"`
 	}{
 		Version:  "1.0.0",
 		Total:    len(commands),
@@ -31,7 +31,7 @@ func ExportToJSON(commands []*model.Command, filename string) error {
 	// 编码为JSON（格式化输出）
 	encoder := json.NewEncoder(f)
 	encoder.SetIndent("", "  ")
-	
+
 	if err := encoder.Encode(export); err != nil {
 		return fmt.Errorf("failed to encode JSON: %w", err)
 	}

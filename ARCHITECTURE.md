@@ -44,8 +44,25 @@ cmd4coder采用清晰的分层架构设计,将应用分为四个主要层次:模
 │                    数据存储 (Data Files)                  │
 │  ┌────────────────────────────────────────────┐         │
 │  │  YAML文件 (data/)                          │         │
-│  │  - os/       - lang/      - network/       │         │
-│  │  - container/ - database/ - vcs/           │         │
+│  │  - os/           - lang/        - network/       │         │
+│  │  - container/    - database/   - vcs/           │         │
+│  │  - diagnostic/   - build/                       │         │
+│  │                                                  │         │
+│  │  容器编排目录 (container/):                      │         │
+│  │  - docker.yaml                                   │         │
+│  │  - kubernetes.yaml                               │         │
+│  │  - k8s-cluster.yaml    (集群管理)               │         │
+│  │  - k8s-runtime.yaml    (容器运行时)             │         │
+│  │  - k8s-monitor.yaml    (监控日志)               │         │
+│  │  - k8s-network.yaml    (网络插件)               │         │
+│  │  - k8s-storage.yaml    (存储管理)               │         │
+│  │  - k8s-cicd.yaml       (CI/CD)                  │         │
+│  │  - k8s-config.yaml     (配置管理)               │         │
+│  │  - k8s-backup.yaml     (备份恢复)               │         │
+│  │  - k8s-security.yaml   (安全工具)               │         │
+│  │  - k8s-utilities.yaml  (辅助工具)               │         │
+│  │  - k8s-cloud.yaml      (云平台工具)             │         │
+│  │  - k8s-dev.yaml        (开发调试)               │         │
 │  └────────────────────────────────────────────┘         │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -497,6 +514,23 @@ func (h *HTMLExporter) Export(commands []*model.Command, output string) error {
 ```bash
 # 单平台构建
 go build -o bin/cmd4coder ./cmd/cli
+
+# 多平台构建
+GOOS=linux GOARCH=amd64 go build -o bin/cmd4coder-linux-amd64 ./cmd/cli
+GOOS=darwin GOARCH=amd64 go build -o bin/cmd4coder-darwin-amd64 ./cmd/cli
+GOOS=windows GOARCH=amd64 go build -o bin/cmd4coder-windows-amd64.exe ./cmd/cli
+```
+
+### 发布
+
+1. 创建Git标签
+2. GitHub Actions自动构建多平台二进制
+3. 创建GitHub Release
+4. 上传构建产物
+
+## 总结
+
+cmd4coder采用清晰的分层架构,各层职责明确,模块间解耦良好。通过合理的索引设计和缓存策略,在保持简洁的同时提供了良好的性能。架构设计预留了足够的扩展点,便于未来功能增强。
 
 # 多平台构建
 GOOS=linux GOARCH=amd64 go build -o bin/cmd4coder-linux-amd64 ./cmd/cli
