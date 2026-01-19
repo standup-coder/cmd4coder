@@ -1,0 +1,54 @@
+category: "AI基础设施/ML框架"
+description: "主流机器学习框架相关命令"
+commands:
+  - name: torchrun
+    category: "AI基础设施/ML框架"
+    install_required: true
+    install_method: "pip install torch"
+    description: "PyTorch分布式训练启动器"
+    usage:
+      - "torchrun [OPTIONS] SCRIPT.py [ARGS...]"
+    options:
+      - flag: "--nnodes"
+        description: "训练的节点数"
+      - flag: "--nproc_per_node"
+        description: "每个节点的进程数 (通常是GPU数量)"
+      - flag: "--rdzv_id"
+        description: "唯一的作业ID"
+      - flag: "--rdzv_backend"
+        description: "集合点后端 (例如 c10d)"
+      - flag: "--rdzv_endpoint"
+        description: "集合点端点 (例如 master_addr:port)"
+    examples:
+      - command: "torchrun --nproc_per_node=4 train.py --batch_size=32"
+        description: "在单机4卡上运行分布式训练"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    references:
+      - "https://pytorch.org/docs/stable/distributed.html#launch-utility"
+
+  - name: tensorboard
+    category: "AI基础设施/ML框架"
+    install_required: true
+    install_method: "pip install tensorboard"
+    description: "TensorFlow和PyTorch的训练可视化工具"
+    usage:
+      - "tensorboard [OPTIONS]"
+    options:
+      - flag: "--logdir"
+        description: "指定TensorBoard日志文件所在的目录"
+      - flag: "--host"
+        description: "绑定的主机地址 (默认 'localhost')"
+      - flag: "--port"
+        description: "监听的端口 (默认 6006)"
+    examples:
+      - command: "tensorboard --logdir=runs"
+        description: "启动TensorBoard并读取'runs'目录下的日志"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    references:
+      - "https://www.tensorflow.org/tensorboard"

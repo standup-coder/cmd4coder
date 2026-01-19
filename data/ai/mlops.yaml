@@ -1,0 +1,58 @@
+category: "AI基础设施/MLOps平台"
+description: "MLOps平台(Kubeflow, MLflow)相关命令"
+commands:
+  - name: kfp
+    category: "AI基础设施/MLOps平台"
+    install_required: true
+    install_method: "pip install kfp"
+    description: "Kubeflow Pipelines (KFP) 命令行客户端"
+    usage:
+      - "kfp [COMMAND] [OPTIONS]"
+    options:
+      - flag: "pipeline"
+        description: "管理Pipeline (upload, delete, get)"
+      - flag: "run"
+        description: "管理Run (submit, list, get)"
+      - flag: "experiment"
+        description: "管理Experiment (create, list, get)"
+    examples:
+      - command: "kfp pipeline upload -p my_pipeline.yaml my-pipeline"
+        description: "上传一个pipeline"
+      - command: "kfp run submit -e my-experiment -p my-pipeline"
+        description: "基于pipeline提交一个运行"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    references:
+      - "https://www.kubeflow.org/docs/components/pipelines/sdk/sdk-overview/"
+
+  - name: mlflow
+    category: "AI基础设施/MLOps平台"
+    install_required: true
+    install_method: "pip install mlflow"
+    description: "MLflow 命令行客户端，用于模型全生命周期管理"
+    usage:
+      - "mlflow [COMMAND] [OPTIONS]"
+    options:
+      - flag: "run"
+        description: "运行一个MLflow项目"
+      - flag: "ui"
+        description: "启动MLflow跟踪UI"
+      - flag: "models"
+        description: "管理模型 (serve, predict, build-docker)"
+      - flag: "artifacts"
+        description: "下载或上传产物"
+    examples:
+      - command: "mlflow ui --backend-store-uri sqlite:///mlflow.db"
+        description: "启动UI，使用SQLite作为后端存储"
+      - command: "mlflow run . -e train --P alpha=0.5"
+        description: "运行当前项目的'train'入口点，并传递参数"
+      - command: "mlflow models serve -m runs:/<run_id>/model -p 1234"
+        description: "将指定运行产出的模型部署为一个本地服务"
+    platforms:
+      - "linux"
+      - "macos"
+      - "windows"
+    references:
+      - "https://mlflow.org/docs/latest/cli.html"

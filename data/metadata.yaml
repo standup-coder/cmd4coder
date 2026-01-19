@@ -213,6 +213,24 @@ categories:
     description: "Make构建工具命令"
     parent: ""
     order: 72
+  ai_ml_frameworks:
+    id: ai_ml_frameworks
+    name: "AI基础设施/ML框架"
+    description: "主流机器学习框架相关命令"
+    parent: ""
+    order: 80
+  ai_mlops:
+    id: ai_mlops
+    name: "AI基础设施/MLOps平台"
+    description: "MLOps平台(Kubeflow, MLflow)相关命令"
+    parent: ""
+    order: 81
+  ai_model_serving:
+    id: ai_model_serving
+    name: "AI基础设施/模型服务"
+    description: "模型服务工具(BentoML)相关命令"
+    parent: ""
+    order: 82
 
 data_files:
   - "os/common.yaml"
@@ -250,3 +268,6 @@ data_files:
   - "build/maven.yaml"
   - "build/gradle.yaml"
   - "build/make.yaml"
+  - "ai/ml-frameworks.yaml"
+  - "ai/mlops.yaml"
+  - "ai/model-serving.yaml"

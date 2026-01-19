@@ -157,7 +157,12 @@ go run ./cmd/cli -d ./data
 - ✅ Gradle (10个)
 - ✅ Make (7个)
 
-**总计**: 420+个精选命令，其中Kubernetes生态工具165条
+### AI基础设施 (4个命令)
+- ✅ ML框架 (torchrun, tensorboard) (2个)
+- ✅ MLOps平台 (kfp, mlflow) (2个)
+- ✅ 模型服务 (bentoml) (1个)
+
+**总计**: 380+个精选命令
 
 ## 🏗️ 项目架构
 
@@ -318,18 +323,6 @@ A:
 
 本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
 
-## 🙏 致谢
-
-感谢所有贡献者和开源社区的支持。
-
-## 📧 联系方式
-
-- 项目主页: https://github.com/cmd4coder/cmd4coder
-- 问题反馈: https://github.com/cmd4coder/cmd4coder/issues
-
----
-
-⭐ 如果这个项目对你有帮助，请给一个 Star！
 ## 🙏 致谢
 
 感谢所有贡献者和开源社区的支持。

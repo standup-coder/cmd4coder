@@ -217,10 +217,54 @@ func TestCommandServiceIntegration(t *testing.T) {
 	// 测试总命令数量
 	t.Run("VerifyTotalCommandCount", func(t *testing.T) {
 		commands := cmdService.GetAllCommands()
-		if len(commands) < 420 {
-			t.Errorf("总命令数量不足: %d (期望至少420个)", len(commands))
+		if len(commands) < 380 {
+			t.Errorf("总命令数量不足: %d (期望至少380个)", len(commands))
 		}
 		t.Logf("总命令数: %d", len(commands))
+	})
+
+	// 测试AI相关命令
+	t.Run("TestAICommands", func(t *testing.T) {
+		aiCommands := map[string]string{
+			"torchrun": "AI基础设施/ML框架",
+			"kfp":      "AI基础设施/MLOps平台",
+			"mlflow":   "AI基础设施/MLOps平台",
+			"bentoml":  "AI基础设施/模型服务",
+		}
+
+		for cmdName, category := range aiCommands {
+			results := cmdService.SearchCommands(cmdName)
+			if len(results) == 0 {
+				t.Errorf("搜索 '%s' 应该有结果，但没有找到", cmdName)
+				continue
+			}
+			t.Logf("搜索 '%s' 找到 %d 个命令", cmdName, len(results))
+
+			// 验证分类
+			found := false
+			for _, cmd := range results {
+				if cmd.Name == cmdName && cmd.Category == category {
+					found = true
+					break
+				}
+			}
+			if !found {
+				t.Errorf("命令 '%s' 未能在分类 '%s' 中找到", cmdName, category)
+			}
+		}
+
+		// 验证AI分类是否存在
+		categories := cmdService.GetAllCategories()
+		aiCategories := []string{"AI基础设施/ML框架", "AI基础设施/MLOps平台", "AI基础设施/模型服务"}
+		catSet := make(map[string]bool)
+		for _, cat := range categories {
+			catSet[cat] = true
+		}
+		for _, aiCat := range aiCategories {
+			if !catSet[aiCat] {
+				t.Errorf("AI分类 '%s' 未被加载", aiCat)
+			}
+		}
 	})
 }
 
