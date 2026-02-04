@@ -1,0 +1,395 @@
+category: "Kubernetes Troubleshooting"
+description: "Kubernetes 故障排查和诊断专用工具及命令集"
+commands:
+  # Pod 故障排查命令
+  - name: "kubectl describe pod"
+    description: "详细查看 Pod 状态和事件信息"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl describe pod [pod-name] [flags]"
+    options:
+      - flag: "-n"
+        description: "指定命名空间"
+      - flag: "--show-events"
+        description: "显示相关事件"
+    examples:
+      - command: "kubectl describe pod myapp-pod"
+        description: "查看指定 Pod 的详细信息"
+      - command: "kubectl describe pod myapp-pod -n production"
+        description: "查看生产环境中的 Pod 详情"
+      - command: "kubectl describe pod myapp-pod --show-events=false"
+        description: "查看 Pod 信息但不显示事件"
+    risks:
+      - level: "low"
+        description: "只读操作；显示详细诊断信息"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get events"
+    description: "获取集群事件信息，用于故障诊断"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get events [flags]"
+    options:
+      - flag: "-n"
+        description: "指定命名空间"
+      - flag: "-A"
+        description: "所有命名空间"
+      - flag: "--sort-by"
+        description: "按字段排序"
+      - flag: "--field-selector"
+        description: "字段选择器过滤"
+    examples:
+      - command: "kubectl get events -n production"
+        description: "查看生产环境事件"
+      - command: "kubectl get events -A --sort-by='.lastTimestamp'"
+        description: "按时间排序查看所有事件"
+      - command: "kubectl get events --field-selector type=Warning"
+        description: "只查看警告类型事件"
+    risks:
+      - level: "low"
+        description: "只读操作；显示事件日志"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get componentstatuses"
+    description: "检查 Kubernetes 控制平面组件健康状态"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get componentstatuses"
+    examples:
+      - command: "kubectl get cs"
+        description: "检查控制平面组件状态"
+      - command: "kubectl get componentstatuses -o wide"
+        description: "详细显示组件状态信息"
+    risks:
+      - level: "low"
+        description: "只读健康检查；无修改风险"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  # 网络故障排查
+  - name: "kubectl exec -it"
+    description: "进入容器执行网络诊断命令"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl exec -it [pod-name] -- [command]"
+    options:
+      - flag: "-n"
+        description: "指定命名空间"
+      - flag: "-c"
+        description: "指定容器名称"
+    examples:
+      - command: "kubectl exec -it mypod -- /bin/sh"
+        description: "进入 Pod 的 shell 环境"
+      - command: "kubectl exec -it mypod -- nslookup kubernetes.default"
+        description: "测试 DNS 解析"
+      - command: "kubectl exec -it mypod -- curl -v http://service:8080"
+        description: "测试服务连通性"
+    risks:
+      - level: "medium"
+        description: "可在运行容器中执行任意命令"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl port-forward"
+    description: "端口转发用于本地调试和测试"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl port-forward [pod/service] [local-port]:[remote-port]"
+    options:
+      - flag: "-n"
+        description: "指定命名空间"
+      - flag: "--address"
+        description: "监听地址"
+    examples:
+      - command: "kubectl port-forward svc/myapp 8080:80"
+        description: "将服务端口转发到本地"
+      - command: "kubectl port-forward pod/mypod 9229:9229"
+        description: "转发调试端口用于远程调试"
+      - command: "kubectl port-forward svc/database 3306:3306 --address 0.0.0.0"
+        description: "允许外部访问的端口转发"
+    risks:
+      - level: "medium"
+        description: "暴露内部服务到本地网络"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  # 资源诊断命令
+  - name: "kubectl top"
+    description: "查看资源使用情况，识别性能瓶颈"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl top [nodes|pods] [flags]"
+    options:
+      - flag: "-n"
+        description: "指定命名空间"
+      - flag: "-A"
+        description: "所有命名空间"
+      - flag: "--containers"
+        description: "显示容器级别资源"
+    examples:
+      - command: "kubectl top nodes"
+        description: "查看节点资源使用情况"
+      - command: "kubectl top pods -n production"
+        description: "查看生产环境 Pod 资源使用"
+      - command: "kubectl top pods --containers"
+        description: "查看容器级别资源使用"
+    risks:
+      - level: "low"
+        description: "只读资源监控；需要 metrics-server"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get resourcequota"
+    description: "检查资源配额限制"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get resourcequota [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "指定命名空间"
+      - flag: "-A"
+        description: "所有命名空间"
+    examples:
+      - command: "kubectl get quota -n production"
+        description: "查看生产环境资源配额"
+      - command: "kubectl describe resourcequota default -n production"
+        description: "详细查看配额使用情况"
+    risks:
+      - level: "low"
+        description: "只读配额信息；帮助识别资源限制问题"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get limitrange"
+    description: "检查资源限制范围"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get limitrange [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "指定命名空间"
+    examples:
+      - command: "kubectl get limits -n production"
+        description: "查看生产环境资源限制"
+      - command: "kubectl describe limitrange mem-limit-range -n production"
+        description: "详细查看内存限制配置"
+    risks:
+      - level: "low"
+        description: "只读限制信息；帮助识别资源约束问题"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  # 日志和调试命令
+  - name: "kubectl logs"
+    description: "查看容器日志用于问题诊断"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl logs [pod-name] [flags]"
+    options:
+      - flag: "-f"
+        description: "实时跟踪日志"
+      - flag: "-p"
+        description: "查看前一个容器实例日志"
+      - flag: "--since"
+        description: "显示最近时间段的日志"
+      - flag: "--tail"
+        description: "显示最后 N 行日志"
+    examples:
+      - command: "kubectl logs mypod -f"
+        description: "实时跟踪 Pod 日志"
+      - command: "kubectl logs mypod --since=1h"
+        description: "查看最近1小时的日志"
+      - command: "kubectl logs mypod --tail=100"
+        description: "查看最后100行日志"
+      - command: "kubectl logs mypod -p"
+        description: "查看崩溃容器的前一个实例日志"
+    risks:
+      - level: "low"
+        description: "只读日志信息；敏感信息需注意"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl debug"
+    description: "创建调试容器进行故障排查"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl debug [pod-name] [flags]"
+    options:
+      - flag: "--image"
+        description: "调试容器镜像"
+      - flag: "-it"
+        description: "交互式调试"
+      - flag: "--copy-to"
+        description: "复制 Pod 进行调试"
+    examples:
+      - command: "kubectl debug mypod -it --image=busybox"
+        description: "使用 busybox 镜像调试 Pod"
+      - command: "kubectl debug mypod --copy-to=mydebugpod --container=main"
+        description: "复制 Pod 并调试指定容器"
+      - command: "kubectl debug node/mynode -it --image=ubuntu"
+        description: "调试节点"
+    risks:
+      - level: "medium"
+        description: "创建额外容器；注意资源消耗"
+    install_method: "kubectl 内置命令 (v1.18+)"
+    version_check: "kubectl version --client"
+
+  # 高级诊断工具
+  - name: "kubectl api-resources"
+    description: "列出所有可用的 API 资源"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl api-resources [flags]"
+    options:
+      - flag: "--namespaced"
+        description: "只显示命名空间作用域资源"
+      - flag: "--verbs"
+        description: "按支持的操作过滤"
+    examples:
+      - command: "kubectl api-resources"
+        description: "列出所有 API 资源"
+      - command: "kubectl api-resources --namespaced=true"
+        description: "只显示命名空间内资源"
+      - command: "kubectl api-resources --verbs=list,get"
+        description: "显示支持 list/get 操作的资源"
+    risks:
+      - level: "low"
+        description: "只读 API 信息；帮助理解集群能力"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl api-versions"
+    description: "显示支持的 API 版本"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl api-versions"
+    examples:
+      - command: "kubectl api-versions"
+        description: "显示所有支持的 API 版本"
+      - command: "kubectl api-versions | grep apps"
+        description: "过滤显示 apps 相关 API 版本"
+    risks:
+      - level: "low"
+        description: "只读版本信息；无修改风险"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl auth can-i"
+    description: "检查用户权限"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl auth can-i [verb] [resource]"
+    examples:
+      - command: "kubectl auth can-i get pods"
+        description: "检查是否有获取 Pod 的权限"
+      - command: "kubectl auth can-i '*' '*'"
+        description: "检查是否具有管理员权限"
+      - command: "kubectl auth can-i create deployments --namespace production"
+        description: "检查在生产环境创建 Deployment 的权限"
+    risks:
+      - level: "low"
+        description: "权限检查；帮助诊断 RBAC 问题"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  # 集群状态检查
+  - name: "kubectl cluster-info"
+    description: "显示集群基本信息"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl cluster-info [flags]"
+    options:
+      - flag: "dump"
+        description: "转储集群详细信息"
+    examples:
+      - command: "kubectl cluster-info"
+        description: "显示集群核心服务地址"
+      - command: "kubectl cluster-info dump"
+        description: "转储完整集群信息用于诊断"
+      - command: "kubectl cluster-info dump --output-directory=/tmp/cluster-dump"
+        description: "将集群信息转储到指定目录"
+    risks:
+      - level: "low"
+        description: "只读集群信息；dump 可能包含敏感数据"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl config current-context"
+    description: "显示当前配置上下文"
+    category: "Kubernetes Troubleshooting"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl config current-context"
+    examples:
+      - command: "kubectl config current-context"
+        description: "显示当前使用的集群上下文"
+      - command: "kubectl config get-contexts"
+        description: "列出所有可用上下文"
+      - command: "kubectl config use-context production"
+        description: "切换到生产环境上下文"
+    risks:
+      - level: "medium"
+        description: "上下文切换影响命令目标集群"
+    install_method: "kubectl 内置命令"
+    version_check: "kubectl version --client"

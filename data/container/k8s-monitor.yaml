@@ -664,6 +664,281 @@ commands:
     install_method: "Built-in systemd command"
     version_check: "systemctl --version"
 
+  # Advanced Monitoring and Alerting Commands
+  - name: "kubectl get prometheuses"
+    description: "List Prometheus instances managed by Prometheus Operator"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get prometheuses [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+      - flag: "-o"
+        description: "Output format (wide, yaml, json)"
+    examples:
+      - command: "kubectl get prometheuses -n monitoring"
+        description: "List Prometheus instances in monitoring namespace"
+      - command: "kubectl get prometheuses -A -o wide"
+        description: "List all Prometheus instances with detailed info"
+      - command: "kubectl get prometheuses kube-prometheus-stack-prometheus -n monitoring -o yaml"
+        description: "Get detailed YAML configuration"
+    risks:
+      - level: "low"
+        description: "Read-only operation; requires Prometheus Operator"
+    install_method: "kubectl with Prometheus Operator CRDs"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get servicemonitors"
+    description: "List ServiceMonitor resources for automatic service discovery"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get servicemonitors [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get servicemonitors -n monitoring"
+        description: "List ServiceMonitors in monitoring namespace"
+      - command: "kubectl get servicemonitors -A"
+        description: "List ServiceMonitors across all namespaces"
+      - command: "kubectl describe servicemonitor myapp-monitor -n production"
+        description: "Describe specific ServiceMonitor configuration"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows monitoring targets"
+    install_method: "kubectl with Prometheus Operator CRDs"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get podmonitors"
+    description: "List PodMonitor resources for direct pod monitoring"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get podmonitors [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get podmonitors -n monitoring"
+        description: "List PodMonitors in monitoring namespace"
+      - command: "kubectl describe podmonitor batch-jobs-monitor -n production"
+        description: "Describe batch job monitoring configuration"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows pod monitoring configs"
+    install_method: "kubectl with Prometheus Operator CRDs"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get prometheusrules"
+    description: "List PrometheusRule resources containing alerting and recording rules"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get prometheusrules [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get prometheusrules -n monitoring"
+        description: "List Prometheus rules in monitoring namespace"
+      - command: "kubectl get prometheusrules -A"
+        description: "List rules across all namespaces"
+      - command: "kubectl describe prometheusrule k8s-alerts -n monitoring"
+        description: "Describe Kubernetes alerting rules"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows alert rules"
+    install_method: "kubectl with Prometheus Operator CRDs"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get thanosrulers"
+    description: "List Thanos Ruler instances for distributed alerting"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get thanosrulers [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get thanosrulers -n monitoring"
+        description: "List Thanos rulers in monitoring namespace"
+      - command: "kubectl describe thanosruler production-ruler -n monitoring"
+        description: "Describe Thanos ruler configuration"
+    risks:
+      - level: "low"
+        description: "Read-only operation; requires Thanos deployment"
+    install_method: "kubectl with Thanos Operator CRDs"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl port-forward svc/prometheus-operated"
+    description: "Port forward to access Prometheus web UI"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl port-forward svc/[prometheus-service] [local-port]:9090"
+    examples:
+      - command: "kubectl port-forward svc/prometheus-operated 9090:9090 -n monitoring"
+        description: "Access Prometheus UI locally on port 9090"
+      - command: "kubectl port-forward svc/kube-prometheus-stack-prometheus 9090:9090 -n monitoring"
+        description: "Access Prometheus from kube-prometheus-stack"
+      - command: "kubectl port-forward svc/thanos-query 9090:9090 -n monitoring"
+        description: "Access Thanos Query frontend"
+    risks:
+      - level: "medium"
+        description: "Exposes monitoring interface; may contain sensitive metrics"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl port-forward svc/grafana"
+    description: "Port forward to access Grafana dashboard"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl port-forward svc/grafana [local-port]:3000"
+    examples:
+      - command: "kubectl port-forward svc/grafana 3000:3000 -n monitoring"
+        description: "Access Grafana dashboard locally on port 3000"
+      - command: "kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring"
+        description: "Access Grafana from kube-prometheus-stack"
+    risks:
+      - level: "medium"
+        description: "Exposes dashboard interface; may contain sensitive data"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl port-forward svc/alertmanager-operated"
+    description: "Port forward to access Alertmanager UI"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl port-forward svc/[alertmanager-service] [local-port]:9093"
+    examples:
+      - command: "kubectl port-forward svc/alertmanager-operated 9093:9093 -n monitoring"
+        description: "Access Alertmanager UI locally on port 9093"
+      - command: "kubectl port-forward svc/kube-prometheus-stack-alertmanager 9093:9093 -n monitoring"
+        description: "Access Alertmanager from kube-prometheus-stack"
+    risks:
+      - level: "medium"
+        description: "Exposes alert management interface"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl logs -f deployment/prometheus-operator"
+    description: "Stream logs from Prometheus Operator for troubleshooting"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl logs -f deployment/[prometheus-operator-deployment] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "--since"
+        description: "Show logs from specific time"
+      - flag: "--tail"
+        description: "Number of lines to show from end"
+    examples:
+      - command: "kubectl logs -f deployment/prometheus-operator -n monitoring"
+        description: "Stream operator logs for real-time monitoring"
+      - command: "kubectl logs deployment/prometheus-operator -n monitoring --since=1h"
+        description: "View last hour of operator logs"
+      - command: "kubectl logs deployment/prometheus-operator -n monitoring --tail=100"
+        description: "View last 100 lines of logs"
+    risks:
+      - level: "low"
+        description: "Read-only log viewing; may contain sensitive information"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get prometheusagents"
+    description: "List Prometheus Agent mode instances for lightweight monitoring"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get prometheusagents [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get prometheusagents -n monitoring"
+        description: "List Prometheus agents in monitoring namespace"
+      - command: "kubectl describe prometheusagent edge-monitor -n monitoring"
+        description: "Describe agent configuration for edge monitoring"
+    risks:
+      - level: "low"
+        description: "Read-only operation; requires Prometheus Agent CRDs"
+    install_method: "kubectl with Prometheus Operator v0.64+"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get scrapeconfigs"
+    description: "List ScrapeConfig resources for external target monitoring"
+    category: "Kubernetes Monitoring & Logging"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get scrapeconfigs [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get scrapeconfigs -n monitoring"
+        description: "List scrape configurations in monitoring namespace"
+      - command: "kubectl describe scrapeconfig external-db-monitor -n monitoring"
+        description: "Describe external database monitoring config"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows external monitoring targets"
+    install_method: "kubectl with Prometheus Operator v0.65+"
+    version_check: "kubectl version --client"
+
   - name: "systemctl status fluentd"
     description: "Check Fluentd service status"
     category: "Kubernetes Monitoring & Logging"

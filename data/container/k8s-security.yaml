@@ -164,6 +164,347 @@ commands:
     install_method: "Install from https://falco.org/docs/getting-started/installation/"
     version_check: "falco --version"
 
+  # RBAC Security Commands
+  - name: "kubectl auth can-i"
+    description: "Check if user has specific permissions"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl auth can-i [verb] [resource] [flags]"
+    options:
+      - flag: "--namespace"
+        description: "Check permissions in specific namespace"
+      - flag: "--as"
+        description: "Check permissions as specific user"
+      - flag: "--as-group"
+        description: "Check permissions as specific group"
+    examples:
+      - command: "kubectl auth can-i get pods"
+        description: "Check if current user can get pods"
+      - command: "kubectl auth can-i '*' '*'"
+        description: "Check if user has cluster-admin privileges"
+      - command: "kubectl auth can-i create deployments --namespace production"
+        description: "Check deployment creation permission in production"
+      - command: "kubectl auth can-i --as system:serviceaccount:default:my-sa get secrets"
+        description: "Check service account permissions"
+    risks:
+      - level: "low"
+        description: "Read-only permission check; no operational changes"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get roles"
+    description: "List Role resources for namespace-scoped permissions"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get roles [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+      - flag: "-o"
+        description: "Output format (wide, yaml, json)"
+    examples:
+      - command: "kubectl get roles -n production"
+        description: "List roles in production namespace"
+      - command: "kubectl get roles -A -o wide"
+        description: "List all roles with detailed permissions"
+      - command: "kubectl describe role admin-role -n production"
+        description: "Describe specific role configuration"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows permission mappings"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get clusterroles"
+    description: "List ClusterRole resources for cluster-wide permissions"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get clusterroles [name] [flags]"
+    options:
+      - flag: "-o"
+        description: "Output format (wide, yaml, json)"
+    examples:
+      - command: "kubectl get clusterroles"
+        description: "List all cluster roles"
+      - command: "kubectl get clusterroles -o yaml"
+        description: "Get detailed YAML of all cluster roles"
+      - command: "kubectl describe clusterrole cluster-admin"
+        description: "Describe cluster-admin permissions"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows cluster permissions"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get rolebindings"
+    description: "List RoleBinding resources linking users to roles"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get rolebindings [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get rolebindings -n production"
+        description: "List role bindings in production namespace"
+      - command: "kubectl get rolebindings -A"
+        description: "List role bindings across all namespaces"
+      - command: "kubectl describe rolebinding dev-team-rb -n development"
+        description: "Describe specific role binding"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows access assignments"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get clusterrolebindings"
+    description: "List ClusterRoleBinding resources for cluster-wide access"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get clusterrolebindings [name] [flags]"
+    examples:
+      - command: "kubectl get clusterrolebindings"
+        description: "List all cluster role bindings"
+      - command: "kubectl describe clusterrolebinding cluster-admin"
+        description: "Describe cluster-admin binding"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows cluster access mappings"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get serviceaccounts"
+    description: "List ServiceAccount resources for pod identities"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get serviceaccounts [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get sa -n production"
+        description: "List service accounts in production namespace"
+      - command: "kubectl get sa -A"
+        description: "List service accounts across all namespaces"
+      - command: "kubectl describe sa default -n production"
+        description: "Describe default service account"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows service account identities"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  # Network Policy Security Commands
+  - name: "kubectl get networkpolicies"
+    description: "List NetworkPolicy resources for traffic control"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get networkpolicies [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get netpol -n production"
+        description: "List network policies in production namespace"
+      - command: "kubectl get netpol -A"
+        description: "List policies across all namespaces"
+      - command: "kubectl describe netpol allow-frontend -n production"
+        description: "Describe specific network policy"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows network restrictions"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get podsecuritypolicies"
+    description: "List PodSecurityPolicy resources (deprecated but still used)"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get podsecuritypolicies [name] [flags]"
+    examples:
+      - command: "kubectl get psp"
+        description: "List all PodSecurityPolicies"
+      - command: "kubectl describe psp restricted"
+        description: "Describe restricted PSP configuration"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows security policies"
+    install_method: "kubectl built-in command (deprecated in v1.25+)"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get podsecuritystandards"
+    description: "List PodSecurity admission standards (v1.23+)"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get podsecuritystandards [name] [flags]"
+    examples:
+      - command: "kubectl get pss"
+        description: "List PodSecurityStandards"
+      - command: "kubectl describe pss restricted"
+        description: "Describe restricted security standard"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows security baselines"
+    install_method: "kubectl built-in command (v1.23+)"
+    version_check: "kubectl version --client"
+
+  # Security Context and Admission Control
+  - name: "kubectl get limitranges"
+    description: "List LimitRange resources for resource constraints"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get limitranges [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+    examples:
+      - command: "kubectl get limits -n production"
+        description: "List resource limits in production namespace"
+      - command: "kubectl describe limitrange mem-limit-range -n production"
+        description: "Describe memory limit configuration"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows resource constraints"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get resourcequotas"
+    description: "List ResourceQuota resources for namespace quotas"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get resourcequotas [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get quota -n production"
+        description: "List quotas in production namespace"
+      - command: "kubectl describe resourcequota compute-resources -n production"
+        description: "Describe compute resource quota"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows resource allocations"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  # Image Security and Registry Commands
+  - name: "kubectl get imagepolicies"
+    description: "List ImagePolicy resources for image validation"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get imagepolicies [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+    examples:
+      - command: "kubectl get imagepolicies -n production"
+        description: "List image policies in production namespace"
+      - command: "kubectl describe imagepolicy allow-trusted-images -n production"
+        description: "Describe trusted image policy"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows image validation rules"
+    install_method: "kubectl with OPA/Gatekeeper or similar tools"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get constrainttemplates"
+    description: "List ConstraintTemplate resources for OPA Gatekeeper"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get constrainttemplates [name] [flags]"
+    examples:
+      - command: "kubectl get constrainttemplates"
+        description: "List all constraint templates"
+      - command: "kubectl describe constrainttemplate k8srequiredlabels"
+        description: "Describe required labels constraint template"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows policy templates"
+    install_method: "kubectl with OPA Gatekeeper installed"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get constraints"
+    description: "List Constraint resources enforcing policies"
+    category: "Kubernetes Security"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get constraints [constraint-type] [name] [flags]"
+    examples:
+      - command: "kubectl get k8srequiredlabels"
+        description: "List required labels constraints"
+      - command: "kubectl describe k8srequiredlabels require-namespace-labels"
+        description: "Describe namespace labeling requirement"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows enforced policies"
+    install_method: "kubectl with OPA Gatekeeper installed"
+    version_check: "kubectl version --client"
+
   - name: "falco"
     description: "Start Falco runtime security monitoring"
     category: "Kubernetes Security"

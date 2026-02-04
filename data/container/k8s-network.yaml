@@ -170,3 +170,355 @@ commands:
         description: "Read-only observation; no operational impact"
     install_method: "Installed with Cilium Hubble"
     version_check: "cilium version"
+
+  # Ingress Controller Commands
+  - name: "kubectl get ingress"
+    description: "List Ingress resources for external access"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get ingress [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+      - flag: "-o"
+        description: "Output format (wide, yaml, json)"
+    examples:
+      - command: "kubectl get ingress -n production"
+        description: "List ingresses in production namespace"
+      - command: "kubectl get ingress -A -o wide"
+        description: "List all ingresses with detailed info"
+      - command: "kubectl describe ingress myapp-ingress -n production"
+        description: "Describe specific ingress configuration"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows routing rules"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get ingressclasses"
+    description: "List IngressClass resources defining ingress controller types"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get ingressclasses [name] [flags]"
+    examples:
+      - command: "kubectl get ingressclasses"
+        description: "List all ingress classes"
+      - command: "kubectl describe ingressclass nginx"
+        description: "Describe nginx ingress class"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows controller configurations"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  # Service Mesh Commands (Istio)
+  - name: "istioctl version"
+    description: "Check Istio service mesh version"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "istioctl version [flags]"
+    options:
+      - flag: "--remote"
+        description: "Check remote cluster version"
+      - flag: "--short"
+        description: "Show short version output"
+    examples:
+      - command: "istioctl version"
+        description: "Display Istio client and control plane versions"
+      - command: "istioctl version --remote"
+        description: "Check version of Istio control plane"
+      - command: "istioctl version --short"
+        description: "Show concise version information"
+    risks:
+      - level: "low"
+        description: "Read-only version check"
+    install_method: "Download from https://istio.io/latest/docs/setup/getting-started/#download"
+    version_check: "istioctl version"
+
+  - name: "istioctl proxy-status"
+    description: "Check Envoy proxy status in service mesh"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "istioctl proxy-status [pod-name] [flags]"
+    examples:
+      - command: "istioctl proxy-status"
+        description: "List status of all Envoy proxies"
+      - command: "istioctl proxy-status myapp-pod-123456-abcde"
+        description: "Check specific proxy status"
+      - command: "istioctl proxy-status --namespace production"
+        description: "Check proxies in production namespace"
+    risks:
+      - level: "low"
+        description: "Read-only status check; shows proxy health"
+    install_method: "Istio service mesh installation"
+    version_check: "istioctl version"
+
+  - name: "istioctl analyze"
+    description: "Analyze Istio configuration for potential issues"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "istioctl analyze [flags]"
+    options:
+      - flag: "-A"
+        description: "Analyze all namespaces"
+      - flag: "--namespace"
+        description: "Specific namespace to analyze"
+      - flag: "--output"
+        description: "Output format: short, json, yaml"
+    examples:
+      - command: "istioctl analyze -A"
+        description: "Analyze entire cluster configuration"
+      - command: "istioctl analyze --namespace production"
+        description: "Analyze production namespace only"
+      - command: "istioctl analyze -A --output json"
+        description: "Analyze with JSON output for automation"
+    risks:
+      - level: "low"
+        description: "Read-only analysis; identifies configuration issues"
+    install_method: "Istio service mesh installation"
+    version_check: "istioctl version"
+
+  - name: "istioctl proxy-config"
+    description: "Inspect Envoy proxy configuration"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "istioctl proxy-config [resource-type] [pod-name] [flags]"
+    options:
+      - flag: "clusters"
+        description: "Show cluster configuration"
+      - flag: "listeners"
+        description: "Show listener configuration"
+      - flag: "routes"
+        description: "Show route configuration"
+    examples:
+      - command: "istioctl proxy-config listeners myapp-pod-123456-abcde"
+        description: "Show listener configuration for specific pod"
+      - command: "istioctl proxy-config clusters myapp-pod -n production"
+        description: "Show cluster config in production namespace"
+      - command: "istioctl proxy-config routes myapp-pod --name http.80"
+        description: "Show specific route configuration"
+    risks:
+      - level: "low"
+        description: "Read-only configuration inspection"
+    install_method: "Istio service mesh installation"
+    version_check: "istioctl version"
+
+  # Network Policy Enhanced Commands
+  - name: "kubectl get ciliumnetworkpolicies"
+    description: "List CiliumNetworkPolicy resources for advanced networking"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get ciliumnetworkpolicies [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get cnp -n production"
+        description: "List Cilium policies in production namespace"
+      - command: "kubectl get cnp -A"
+        description: "List policies across all namespaces"
+      - command: "kubectl describe cnp app-policy -n production"
+        description: "Describe specific Cilium policy"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows advanced policies"
+    install_method: "kubectl with Cilium installed"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get ciliumclusterwidenetworkpolicies"
+    description: "List CiliumClusterwideNetworkPolicy resources"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get ciliumclusterwidenetworkpolicies [name] [flags]"
+    examples:
+      - command: "kubectl get ccnp"
+        description: "List cluster-wide Cilium policies"
+      - command: "kubectl describe ccnp deny-all-traffic"
+        description: "Describe cluster-wide policy"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows cluster policies"
+    install_method: "kubectl with Cilium installed"
+    version_check: "kubectl version --client"
+
+  # Gateway API Commands
+  - name: "kubectl get gateways"
+    description: "List Gateway resources (Gateway API)"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get gateways [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get gateways -n production"
+        description: "List gateways in production namespace"
+      - command: "kubectl get gateways -A"
+        description: "List gateways across all namespaces"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows gateway resources"
+    install_method: "kubectl with Gateway API CRDs installed"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get httproutes"
+    description: "List HTTPRoute resources (Gateway API)"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get httproutes [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get httproutes -n production"
+        description: "List HTTP routes in production namespace"
+      - command: "kubectl describe httproute api-route -n production"
+        description: "Describe specific HTTP route"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows routing rules"
+    install_method: "kubectl with Gateway API CRDs installed"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get tlsroutes"
+    description: "List TLSRoute resources (Gateway API)"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get tlsroutes [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+    examples:
+      - command: "kubectl get tlsroutes -n production"
+        description: "List TLS routes in production namespace"
+      - command: "kubectl describe tlsroute secure-api -n production"
+        description: "Describe specific TLS route"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows TLS routing rules"
+    install_method: "kubectl with Gateway API CRDs installed"
+    version_check: "kubectl version --client"
+
+  # Network Diagnostics
+  - name: "kubectl exec -it"
+    description: "Enter pod for network troubleshooting"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl exec -it [pod-name] -- [command]"
+    examples:
+      - command: "kubectl exec -it mypod -- /bin/sh"
+        description: "Enter pod shell for network diagnostics"
+      - command: "kubectl exec -it mypod -- nslookup kubernetes.default"
+        description: "Test DNS resolution from pod"
+      - command: "kubectl exec -it mypod -- curl -v http://service:8080"
+        description: "Test service connectivity"
+      - command: "kubectl exec -it mypod -- traceroute google.com"
+        description: "Trace network path from pod"
+    risks:
+      - level: "medium"
+        description: "Can execute arbitrary commands in pod"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl port-forward"
+    description: "Forward local ports to pod for network testing"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl port-forward [pod/service] [local-port]:[remote-port]"
+    examples:
+      - command: "kubectl port-forward svc/myapp 8080:80"
+        description: "Forward local port 8080 to service port 80"
+      - command: "kubectl port-forward pod/mypod 9229:9229"
+        description: "Forward debugging port"
+      - command: "kubectl port-forward svc/database 3306:3306 --address 0.0.0.0"
+        description: "Allow external access to forwarded port"
+    risks:
+      - level: "medium"
+        description: "Exposes internal services to local network"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get endpointslices"
+    description: "List EndpointSlice resources showing service endpoints"
+    category: "Kubernetes Networking"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get endpointslices [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get endpointslices -n production"
+        description: "List endpoint slices in production namespace"
+      - command: "kubectl describe endpointslice myapp-endpointslice -n production"
+        description: "Describe specific endpoint slice"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows service topology"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"

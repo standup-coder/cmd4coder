@@ -1,0 +1,419 @@
+category: "Kubernetes Storage Management"
+description: "Kubernetes 存储管理命令，包括 PV/PVC、存储类、卷快照等"
+commands:
+  # PersistentVolume Commands
+  - name: "kubectl get pv"
+    description: "List PersistentVolume resources"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get pv [name] [flags]"
+    options:
+      - flag: "-o"
+        description: "Output format: wide, yaml, json"
+      - flag: "--show-labels"
+        description: "Show labels in output"
+    examples:
+      - command: "kubectl get pv"
+        description: "List all persistent volumes"
+      - command: "kubectl get pv -o wide"
+        description: "List PVs with detailed information"
+      - command: "kubectl get pv -o yaml"
+        description: "Get detailed YAML configuration"
+      - command: "kubectl describe pv my-pv"
+        description: "Describe specific persistent volume"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows storage volumes"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get pvc"
+    description: "List PersistentVolumeClaim resources"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get pvc [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+      - flag: "-o"
+        description: "Output format: wide, yaml, json"
+    examples:
+      - command: "kubectl get pvc -n production"
+        description: "List PVCs in production namespace"
+      - command: "kubectl get pvc -A -o wide"
+        description: "List all PVCs with detailed info"
+      - command: "kubectl describe pvc data-volume -n production"
+        description: "Describe specific PVC"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows volume claims"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  # StorageClass Commands
+  - name: "kubectl get storageclass"
+    description: "List StorageClass resources defining storage provisioners"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get storageclass [name] [flags]"
+    aliases:
+      - "kubectl get sc"
+    options:
+      - flag: "-o"
+        description: "Output format: wide, yaml, json"
+    examples:
+      - command: "kubectl get sc"
+        description: "List all storage classes"
+      - command: "kubectl get sc -o yaml"
+        description: "Get detailed YAML of storage classes"
+      - command: "kubectl describe sc fast-ssd"
+        description: "Describe specific storage class"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows storage provisioners"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl patch storageclass"
+    description: "Modify StorageClass configuration"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl patch storageclass [name] -p [patch-content]"
+    examples:
+      - command: "kubectl patch sc slow-hdd -p '{\"metadata\":{\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"false\"}}}'"
+        description: "Remove default storage class annotation"
+      - command: "kubectl patch sc fast-ssd -p '{\"metadata\":{\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"true\"}}}'"
+        description: "Set storage class as default"
+    risks:
+      - level: "medium"
+        description: "Changes storage provisioning behavior"
+      - level: "high"
+        description: "Setting wrong default may affect new PVCs"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  # VolumeSnapshot Commands
+  - name: "kubectl get volumesnapshot"
+    description: "List VolumeSnapshot resources for backup and restore"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get volumesnapshot [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get volumesnapshot -n production"
+        description: "List volume snapshots in production namespace"
+      - command: "kubectl get volumesnapshot -A"
+        description: "List snapshots across all namespaces"
+      - command: "kubectl describe volumesnapshot db-backup-20260204 -n production"
+        description: "Describe specific volume snapshot"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows backup snapshots"
+    install_method: "kubectl with CSI snapshot controller"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get volumesnapshotclass"
+    description: "List VolumeSnapshotClass resources defining snapshot provisioners"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get volumesnapshotclass [name] [flags]"
+    examples:
+      - command: "kubectl get volumesnapshotclass"
+        description: "List all volume snapshot classes"
+      - command: "kubectl describe volumesnapshotclass csi-hostpath-snapclass"
+        description: "Describe specific snapshot class"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows snapshot provisioners"
+    install_method: "kubectl with CSI snapshot controller"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get volumesnapshotcontent"
+    description: "List VolumeSnapshotContent resources representing actual snapshots"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get volumesnapshotcontent [name] [flags]"
+    examples:
+      - command: "kubectl get volumesnapshotcontent"
+        description: "List all volume snapshot contents"
+      - command: "kubectl describe volumesnapshotcontent snapcontent-12345"
+        description: "Describe specific snapshot content"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows actual snapshots"
+    install_method: "kubectl with CSI snapshot controller"
+    version_check: "kubectl version --client"
+
+  # CSI Driver Commands
+  - name: "kubectl get csidrivers"
+    description: "List CSIDriver resources for Container Storage Interface drivers"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get csidrivers [name] [flags]"
+    examples:
+      - command: "kubectl get csidrivers"
+        description: "List all CSI drivers"
+      - command: "kubectl describe csidriver hostpath.csi.k8s.io"
+        description: "Describe specific CSI driver"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows storage drivers"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl get csinodes"
+    description: "List CSINode resources showing node storage capabilities"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get csinodes [name] [flags]"
+    examples:
+      - command: "kubectl get csinodes"
+        description: "List CSI node information"
+      - command: "kubectl describe csinode worker-node-1"
+        description: "Describe specific node's CSI capabilities"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows node storage info"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  # Storage Capacity Commands
+  - name: "kubectl get csistoragecapacities"
+    description: "List CSIStorageCapacity resources showing storage availability"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get csistoragecapacities [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl get csistoragecapacities -n production"
+        description: "List storage capacities in production namespace"
+      - command: "kubectl get csistoragecapacities -A"
+        description: "List capacities across all namespaces"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows storage availability"
+    install_method: "kubectl with CSI storage capacity tracking"
+    version_check: "kubectl version --client"
+
+  # Volume Attachment Commands
+  - name: "kubectl get volumeattachments"
+    description: "List VolumeAttachment resources showing volume-node associations"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get volumeattachments [name] [flags]"
+    examples:
+      - command: "kubectl get volumeattachments"
+        description: "List all volume attachments"
+      - command: "kubectl describe volumeattachment csi-12345678"
+        description: "Describe specific volume attachment"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows volume mounting status"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  # Storage Pool Commands (for storage systems that support pools)
+  - name: "kubectl get storagepools"
+    description: "List StoragePool resources (specific storage systems)"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl get storagepools [name] [flags]"
+    examples:
+      - command: "kubectl get storagepools"
+        description: "List storage pools (depends on storage provider)"
+      - command: "kubectl describe storagepool pool-ssd-fast"
+        description: "Describe specific storage pool"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows storage pools"
+    install_method: "kubectl with specific storage provider CRDs"
+    version_check: "kubectl version --client"
+
+  # Storage Performance Monitoring
+  - name: "kubectl top pvc"
+    description: "Show PVC resource usage (if metrics available)"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl top pvc [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "-A"
+        description: "All namespaces"
+    examples:
+      - command: "kubectl top pvc -n production"
+        description: "Show PVC usage in production namespace"
+      - command: "kubectl top pvc -A"
+        description: "Show usage across all namespaces"
+    risks:
+      - level: "low"
+        description: "Read-only metrics display"
+    install_method: "kubectl with metrics-server and storage metrics"
+    version_check: "kubectl version --client"
+
+  # Storage Diagnostics
+  - name: "kubectl exec -it"
+    description: "Enter pod to diagnose storage issues"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl exec -it [pod-name] -- [command]"
+    examples:
+      - command: "kubectl exec -it storage-pod -- df -h"
+        description: "Check disk space usage in pod"
+      - command: "kubectl exec -it storage-pod -- ls -la /data"
+        description: "List files in mounted volume"
+      - command: "kubectl exec -it storage-pod -- iostat -x 1 5"
+        description: "Monitor I/O statistics"
+      - command: "kubectl exec -it storage-pod -- mount | grep persistent"
+        description: "Check persistent volume mounts"
+    risks:
+      - level: "medium"
+        description: "Can execute commands in pod filesystem"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  # Storage Migration Commands
+  - name: "kubectl cp"
+    description: "Copy files between local filesystem and pod"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl cp [source] [destination] [flags]"
+    options:
+      - flag: "-c"
+        description: "Container name if pod has multiple containers"
+      - flag: "-n"
+        description: "Namespace"
+    examples:
+      - command: "kubectl cp /local/data.txt mypod:/data/data.txt -n production"
+        description: "Copy local file to pod"
+      - command: "kubectl cp mypod:/data/logs.txt /local/logs.txt -n production"
+        description: "Copy file from pod to local"
+      - command: "kubectl cp /backup/ mypod:/restore/ -n production"
+        description: "Copy entire directory to pod"
+    risks:
+      - level: "medium"
+        description: "Transfers data between environments"
+      - level: "high"
+        description: "Large transfers may impact network performance"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  # Storage Cleanup Commands
+  - name: "kubectl delete pvc"
+    description: "Delete PersistentVolumeClaim resources"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl delete pvc [name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Specify namespace"
+      - flag: "--force"
+        description: "Force deletion (dangerous)"
+    examples:
+      - command: "kubectl delete pvc old-data-volume -n development"
+        description: "Delete unused PVC"
+      - command: "kubectl delete pvc --all -n test"
+        description: "Delete all PVCs in test namespace"
+    risks:
+      - level: "critical"
+        description: "Deletes persistent data permanently"
+      - level: "high"
+        description: "Always backup data before deletion"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl delete pv"
+    description: "Delete PersistentVolume resources"
+    category: "Kubernetes Storage Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl delete pv [name] [flags]"
+    examples:
+      - command: "kubectl delete pv orphaned-pv-12345"
+        description: "Delete orphaned persistent volume"
+      - command: "kubectl delete pv --all"
+        description: "Delete all PVs (very dangerous)"
+    risks:
+      - level: "critical"
+        description: "Permanently deletes storage volumes"
+      - level: "high"
+        description: "Ensure no PVCs are bound before deletion"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"

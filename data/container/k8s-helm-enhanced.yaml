@@ -1,0 +1,579 @@
+category: "Kubernetes Helm Package Management"
+description: "Helm 包管理增强命令，包括仓库管理、版本控制、模板调试等"
+commands:
+  # Helm Repository Management
+  - name: "helm repo add"
+    description: "Add Helm chart repository"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm repo add [repo-name] [repo-url] [flags]"
+    options:
+      - flag: "--username"
+        description: "Username for repository authentication"
+      - flag: "--password"
+        description: "Password for repository authentication"
+      - flag: "--ca-file"
+        description: "CA bundle file for repository verification"
+      - flag: "--cert-file"
+        description: "Client certificate file"
+      - flag: "--key-file"
+        description: "Client key file"
+    examples:
+      - command: "helm repo add stable https://charts.helm.sh/stable"
+        description: "Add official stable chart repository"
+      - command: "helm repo add bitnami https://charts.bitnami.com/bitnami"
+        description: "Add Bitnami chart repository"
+      - command: "helm repo add private-repo https://charts.example.com --username user --password pass"
+        description: "Add private repository with authentication"
+      - command: "helm repo add secure-repo https://secure.example.com --ca-file ca.crt"
+        description: "Add repository with custom CA certificate"
+    risks:
+      - level: "low"
+        description: "Adds repository reference only; verify repository trustworthiness"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm repo update"
+    description: "Update local Helm chart repository cache"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm repo update [repo-name]"
+    examples:
+      - command: "helm repo update"
+        description: "Update all repository indexes"
+      - command: "helm repo update bitnami"
+        description: "Update specific repository"
+      - command: "helm repo list"
+        description: "List configured repositories"
+    risks:
+      - level: "low"
+        description: "Updates local cache only; no cluster impact"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm repo remove"
+    description: "Remove Helm chart repository"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm repo remove [repo-name]"
+    examples:
+      - command: "helm repo remove deprecated-repo"
+        description: "Remove unused repository"
+      - command: "helm repo list"
+        description: "Verify repository removal"
+    risks:
+      - level: "low"
+        description: "Removes repository reference only"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm search repo"
+    description: "Search for charts in repositories"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm search repo [keyword] [flags]"
+    options:
+      - flag: "--versions"
+        description: "Show all versions of charts"
+      - flag: "--version"
+        description: "Specific version to search for"
+      - flag: "-l"
+        description: "Show long listing format"
+    examples:
+      - command: "helm search repo nginx"
+        description: "Search for nginx charts"
+      - command: "helm search repo nginx --versions"
+        description: "Show all versions of nginx charts"
+      - command: "helm search repo database -l"
+        description: "Search for database charts with detailed info"
+    risks:
+      - level: "low"
+        description: "Read-only search operation"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  # Helm Chart Installation and Management
+  - name: "helm install"
+    description: "Install Helm chart to Kubernetes cluster"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm install [release-name] [chart] [flags]"
+    options:
+      - flag: "-n"
+        description: "Target namespace"
+      - flag: "--create-namespace"
+        description: "Create namespace if not exists"
+      - flag: "--values"
+        description: "Values file path"
+      - flag: "--set"
+        description: "Set values on command line"
+      - flag: "--set-string"
+        description: "Set string values on command line"
+      - flag: "--set-file"
+        description: "Set values from file"
+      - flag: "--dry-run"
+        description: "Simulate installation"
+      - flag: "--debug"
+        description: "Enable verbose output"
+      - flag: "--timeout"
+        description: "Timeout for installation"
+      - flag: "--wait"
+        description: "Wait for resources to be ready"
+    examples:
+      - command: "helm install nginx bitnami/nginx"
+        description: "Install nginx chart with release name nginx"
+      - command: "helm install nginx bitnami/nginx -n production --create-namespace"
+        description: "Install to production namespace"
+      - command: "helm install nginx bitnami/nginx --values values.yaml"
+        description: "Install with custom values file"
+      - command: "helm install nginx bitnami/nginx --set replicaCount=3 --set service.port=8080"
+        description: "Install with inline values"
+      - command: "helm install nginx bitnami/nginx --dry-run --debug"
+        description: "Preview installation without applying"
+      - command: "helm install nginx bitnami/nginx --wait --timeout 10m"
+        description: "Install and wait for readiness"
+    risks:
+      - level: "high"
+        description: "Deploys resources to cluster; may affect existing workloads"
+      - level: "medium"
+        description: "Always review chart values before installation"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm upgrade"
+    description: "Upgrade Helm release to new version"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm upgrade [release-name] [chart] [flags]"
+    options:
+      - flag: "-n"
+        description: "Release namespace"
+      - flag: "--install"
+        description: "Install if release doesn't exist"
+      - flag: "--values"
+        description: "Values file path"
+      - flag: "--set"
+        description: "Set values on command line"
+      - flag: "--atomic"
+        description: "Rollback on failure"
+      - flag: "--cleanup-on-fail"
+        description: "Clean up new resources on upgrade failure"
+      - flag: "--reset-values"
+        description: "Reset values to chart defaults"
+      - flag: "--reuse-values"
+        description: "Reuse current values and merge with new ones"
+    examples:
+      - command: "helm upgrade nginx bitnami/nginx"
+        description: "Upgrade nginx release"
+      - command: "helm upgrade nginx bitnami/nginx --install"
+        description: "Upgrade or install if not exists"
+      - command: "helm upgrade nginx bitnami/nginx --values new-values.yaml"
+        description: "Upgrade with new values"
+      - command: "helm upgrade nginx bitnami/nginx --atomic"
+        description: "Upgrade with automatic rollback on failure"
+      - command: "helm upgrade nginx bitnami/nginx --set image.tag=v2.0.0"
+        description: "Upgrade with specific image version"
+    risks:
+      - level: "high"
+        description: "Modifies running applications; may cause service disruption"
+      - level: "medium"
+        description: "Test in staging environment first"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm rollback"
+    description: "Rollback Helm release to previous version"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm rollback [release-name] [revision] [flags]"
+    options:
+      - flag: "-n"
+        description: "Release namespace"
+      - flag: "--timeout"
+        description: "Timeout for rollback"
+      - flag: "--wait"
+        description: "Wait for resources to be ready"
+    examples:
+      - command: "helm rollback nginx 1"
+        description: "Rollback nginx to revision 1"
+      - command: "helm rollback nginx 0"
+        description: "Rollback to previous revision"
+      - command: "helm history nginx"
+        description: "View release history first"
+      - command: "helm rollback nginx 2 --wait"
+        description: "Rollback and wait for readiness"
+    risks:
+      - level: "high"
+        description: "Reverts application to previous state; may cause service disruption"
+      - level: "medium"
+        description: "Check history before rolling back"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  # Helm Release Management
+  - name: "helm list"
+    description: "List Helm releases"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm list [flags]"
+    options:
+      - flag: "-n"
+        description: "Filter by namespace"
+      - flag: "-A"
+        description: "List releases across all namespaces"
+      - flag: "-a"
+        description: "Show all releases (including uninstalled)"
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+      - flag: "--filter"
+        description: "Filter releases by regex pattern"
+    examples:
+      - command: "helm list"
+        description: "List releases in default namespace"
+      - command: "helm list -A"
+        description: "List all releases in all namespaces"
+      - command: "helm list -n production"
+        description: "List releases in production namespace"
+      - command: "helm list -a"
+        description: "Show all releases including uninstalled"
+      - command: "helm list --filter 'nginx'"
+        description: "Filter releases by name pattern"
+    risks:
+      - level: "low"
+        description: "Read-only operation; lists releases only"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm status"
+    description: "Display status of Helm release"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm status [release-name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Release namespace"
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+      - flag: "--show-resources"
+        description: "Show deployed resources"
+    examples:
+      - command: "helm status nginx"
+        description: "Show nginx release status"
+      - command: "helm status nginx -n production"
+        description: "Show status of release in production"
+      - command: "helm status nginx -o yaml"
+        description: "Show status in YAML format"
+      - command: "helm status nginx --show-resources"
+        description: "Show deployed resources"
+    risks:
+      - level: "low"
+        description: "Read-only operation; displays status only"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm history"
+    description: "View release history"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm history [release-name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Release namespace"
+      - flag: "-o"
+        description: "Output format: table, json, yaml"
+      - flag: "--max"
+        description: "Maximum number of revisions to fetch"
+    examples:
+      - command: "helm history nginx"
+        description: "View nginx release history"
+      - command: "helm history nginx -n production"
+        description: "View history in production namespace"
+      - command: "helm history nginx --max 10"
+        description: "Show last 10 revisions"
+    risks:
+      - level: "low"
+        description: "Read-only operation; shows revision history"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm uninstall"
+    description: "Uninstall Helm release from cluster"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm uninstall [release-name] [flags]"
+    options:
+      - flag: "-n"
+        description: "Release namespace"
+      - flag: "--keep-history"
+        description: "Keep release history for rollback"
+      - flag: "--no-hooks"
+        description: "Skip pre-delete and post-delete hooks"
+    examples:
+      - command: "helm uninstall nginx"
+        description: "Uninstall nginx release"
+      - command: "helm uninstall nginx -n production"
+        description: "Uninstall from production namespace"
+      - command: "helm uninstall nginx --keep-history"
+        description: "Uninstall but keep history"
+      - command: "helm uninstall nginx --no-hooks"
+        description: "Uninstall without running hooks"
+    risks:
+      - level: "critical"
+        description: "Removes all resources managed by release; causes service downtime"
+      - level: "high"
+        description: "Backup data before uninstalling stateful applications"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  # Helm Chart Development and Debugging
+  - name: "helm create"
+    description: "Create new Helm chart"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm create [chart-name]"
+    examples:
+      - command: "helm create myapp"
+        description: "Create new chart named myapp"
+      - command: "helm create myapp --starter default"
+        description: "Create chart using default starter"
+    risks:
+      - level: "low"
+        description: "Creates local chart files only"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm template"
+    description: "Render chart templates locally"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm template [release-name] [chart] [flags]"
+    options:
+      - flag: "--values"
+        description: "Values file path"
+      - flag: "--set"
+        description: "Set values on command line"
+      - flag: "--output-dir"
+        description: "Write rendered templates to directory"
+      - flag: "--show-only"
+        description: "Show only specific templates"
+    examples:
+      - command: "helm template nginx bitnami/nginx"
+        description: "Render nginx chart templates"
+      - command: "helm template nginx bitnami/nginx --values values.yaml"
+        description: "Render with custom values"
+      - command: "helm template nginx bitnami/nginx --output-dir rendered"
+        description: "Write rendered templates to directory"
+      - command: "helm template nginx bitnami/nginx --show-only templates/deployment.yaml"
+        description: "Show only deployment template"
+    risks:
+      - level: "low"
+        description: "Local rendering only; no cluster changes"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm lint"
+    description: "Lint chart for best practices and errors"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm lint [chart-path] [flags]"
+    options:
+      - flag: "--values"
+        description: "Values file for linting"
+      - flag: "--set"
+        description: "Set values for linting"
+      - flag: "--strict"
+        description: "Fail on lint warnings"
+    examples:
+      - command: "helm lint mychart"
+        description: "Lint chart in mychart directory"
+      - command: "helm lint mychart --values values.yaml"
+        description: "Lint with custom values"
+      - command: "helm lint mychart --strict"
+        description: "Strict linting mode"
+    risks:
+      - level: "low"
+        description: "Static analysis only; validates chart structure"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm package"
+    description: "Package chart into versioned archive"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm package [chart-path] [flags]"
+    options:
+      - flag: "--version"
+        description: "Override chart version"
+      - flag: "--app-version"
+        description: "Override app version"
+      - flag: "--destination"
+        description: "Location to write the chart package"
+    examples:
+      - command: "helm package mychart"
+        description: "Package chart in mychart directory"
+      - command: "helm package mychart --version 1.2.3"
+        description: "Package with specific version"
+      - command: "helm package mychart --destination /tmp/packages"
+        description: "Package to specific directory"
+    risks:
+      - level: "low"
+        description: "Creates chart archive; no cluster impact"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm dependency"
+    description: "Manage chart dependencies"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm dependency [subcommand] [flags]"
+    subcommands:
+      - "list": "List dependencies"
+      - "update": "Update dependencies"
+      - "build": "Rebuild Charts.lock file"
+    examples:
+      - command: "helm dependency list mychart"
+        description: "List chart dependencies"
+      - command: "helm dependency update mychart"
+        description: "Update chart dependencies"
+      - command: "helm dependency build mychart"
+        description: "Rebuild dependency lock file"
+    risks:
+      - level: "low"
+        description: "Manages local dependencies only"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  # Helm Plugin Management
+  - name: "helm plugin list"
+    description: "List installed Helm plugins"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm plugin list"
+    examples:
+      - command: "helm plugin list"
+        description: "Show all installed plugins"
+      - command: "helm plugin install https://github.com/helm/helm-2to3"
+        description: "Install helm-2to3 plugin"
+      - command: "helm plugin uninstall 2to3"
+        description: "Uninstall 2to3 plugin"
+    risks:
+      - level: "low"
+        description: "Plugin management only"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  # Helm Environment and Configuration
+  - name: "helm env"
+    description: "Display Helm environment information"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm env"
+    examples:
+      - command: "helm env"
+        description: "Show Helm environment variables and paths"
+      - command: "helm env | grep HELM_REPOSITORY_CACHE"
+        description: "Find repository cache location"
+    risks:
+      - level: "low"
+        description: "Read-only environment information"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"
+
+  - name: "helm version"
+    description: "Display Helm client and server version"
+    category: "Kubernetes Helm Package Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "helm version [flags]"
+    options:
+      - flag: "--short"
+        description: "Show short version only"
+      - flag: "--template"
+        description: "Template for custom output format"
+    examples:
+      - command: "helm version"
+        description: "Show client and server versions"
+      - command: "helm version --short"
+        description: "Show short version information"
+      - command: "helm version --template '{{.Client.SemVer}}'"
+        description: "Show client version only"
+    risks:
+      - level: "low"
+        description: "Version information only"
+    install_method: "Download from https://helm.sh/docs/intro/install/"
+    version_check: "helm version"

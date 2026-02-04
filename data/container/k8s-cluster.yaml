@@ -198,6 +198,61 @@ commands:
     install_method: "Built-in systemd command"
     version_check: "journalctl --version"
 
+  # Cluster Backup and Disaster Recovery Commands
+  - name: "etcdctl snapshot save"
+    description: "Create etcd snapshot for cluster backup"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "etcdctl snapshot save [filename] [flags]"
+    options:
+      - flag: "--endpoints"
+        description: "etcd endpoints (default: 127.0.0.1:2379)"
+      - flag: "--cacert"
+        description: "CA certificate for SSL/TLS"
+      - flag: "--cert"
+        description: "Client certificate for SSL/TLS"
+      - flag: "--key"
+        description: "Client key for SSL/TLS"
+    examples:
+      - command: "etcdctl snapshot save backup.db"
+        description: "Create etcd snapshot"
+      - command: "etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key snapshot save backup.db"
+        description: "Create secure etcd snapshot"
+    risks:
+      - level: "low"
+        description: "Read-only snapshot creation; no cluster impact"
+    install_method: "Included with etcd package"
+    version_check: "etcdctl version"
+
+  - name: "etcdctl snapshot restore"
+    description: "Restore etcd snapshot for disaster recovery"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+    usage:
+      - "etcdctl snapshot restore [filename] [flags]"
+    options:
+      - flag: "--data-dir"
+        description: "Path to the data directory"
+      - flag: "--initial-cluster"
+        description: "Initial cluster configuration for restore"
+      - flag: "--initial-cluster-token"
+        description: "Initial cluster token for the etcd cluster during restore"
+    examples:
+      - command: "etcdctl snapshot restore backup.db --data-dir=/var/lib/etcd-restore"
+        description: "Restore snapshot to new data directory"
+      - command: "etcdctl snapshot restore backup.db --data-dir=/var/lib/etcd-restore --initial-cluster=master-1=https://192.168.1.10:2380 --initial-cluster-token=etcd-cluster-1"
+        description: "Restore with cluster configuration"
+    risks:
+      - level: "critical"
+        description: "Restores cluster state; can overwrite current data"
+      - level: "high"
+        description: "Must stop etcd before restore; coordinate with team"
+    install_method: "Included with etcd package"
+    version_check: "etcdctl version"
+
   - name: "etcdctl snapshot save"
     description: "Create backup snapshot of etcd data"
     category: "Kubernetes Cluster Management"
@@ -305,3 +360,52 @@ commands:
         description: "Read-only operation; retrieves data only"
     install_method: "Installed with etcd or download from etcd releases"
     version_check: "etcdctl version"
+
+  # Advanced Node Management
+  - name: "kubectl taint nodes"
+    description: "Add or remove taints from nodes"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl taint nodes [node-name] [key]=[value]:[effect]"
+    effects:
+      - "NoSchedule": "Prevent new pods from scheduling"
+      - "PreferNoSchedule": "Avoid scheduling if possible"
+      - "NoExecute": "Evict existing pods and prevent new ones"
+    examples:
+      - command: "kubectl taint nodes worker-node-1 key=value:NoSchedule"
+        description: "Add NoSchedule taint to node"
+      - command: "kubectl taint nodes worker-node-1 key=value:NoExecute"
+        description: "Add NoExecute taint to node"
+      - command: "kubectl taint nodes worker-node-1 key:NoSchedule-"
+        description: "Remove NoSchedule taint from node"
+    risks:
+      - level: "medium"
+        description: "Affects pod scheduling; may cause service disruption"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"
+
+  - name: "kubectl label nodes"
+    description: "Add or remove labels from nodes"
+    category: "Kubernetes Cluster Management"
+    platforms:
+      - "linux"
+      - "darwin"
+      - "windows"
+    usage:
+      - "kubectl label nodes [node-name] [key]=[value]"
+    examples:
+      - command: "kubectl label nodes worker-node-1 disktype=ssd"
+        description: "Add label to node"
+      - command: "kubectl label nodes worker-node-1 disktype-"
+        description: "Remove label from node"
+      - command: "kubectl label nodes --all disktype=ssd"
+        description: "Label all nodes"
+    risks:
+      - level: "low"
+        description: "Labels affect scheduling but don't impact running pods"
+    install_method: "kubectl built-in command"
+    version_check: "kubectl version --client"

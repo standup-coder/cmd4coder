@@ -1,6 +1,6 @@
 # cmd4coder - 命令行工具大全
 
-![Version](https://img.shields.io/badge/version-1.2.0-blue)
+![Version](https://img.shields.io/badge/version-1.5.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Go Version](https://img.shields.io/badge/go-%3E%3D1.21-blue)
 ![Test Coverage](https://img.shields.io/badge/coverage-75%25-green)
@@ -12,7 +12,7 @@ cmd4coder 是一个面向运维工程师和开发者的命令行工具大全，�
 
 ### ✨ 核心特性
 
-- 📚 **全面的命令清单**: 涵盖 Linux、编程语言工具链、诊断工具、网络工具、Kubernetes生态系统等32+分类，420+精选命令
+- 📚 **全面的命令清单**: 涵盖 Linux、编程语言工具链、诊断工具、网络工具、Kubernetes生态系统等38+分类，500+精选命令
 - 🔍 **强大的搜索功能**: 支持模糊搜索、关键词匹配和智能排序，4级优先级匹配算法
 - ⚡ **快速查询**: 本地化存储，无需网络，毫秒级响应，LRU缓存优化
 - 📝 **详细的命令说明**: 包含用法、选项、示例、注意事项和风险提示
@@ -105,7 +105,26 @@ go run ./cmd/cli -d ./data
 - `?`: 显示帮助
 - `q`: 退出
 
-## 📚 命令清单
+## 📚 文档组织
+
+项目文档按照用途进行了分类整理：
+
+### 📖 使用指南 (docs/guides/)
+- **DEPLOYMENT.md**: 部署指南和最佳实践
+
+### 📊 技术参考 (docs/reference/)
+- **IMPLEMENTATION_SUMMARY.md**: 实现摘要和技术细节
+- **K8S_INTEGRATION_REPORT.md**: Kubernetes集成报告
+- **KUBERNETES_COMMANDS.md**: Kubernetes命令清单
+
+### 🏗️ 架构文档 (docs/architecture/)
+- **ARCHITECTURE.md**: 系统架构设计文档
+
+### 📈 项目报告 (docs/reports/)
+包含项目开发过程中的各类报告文档。
+
+### 🎨 网站资源 (docs/css/, docs/js/, docs/assets/)
+项目官网的前端资源文件。
 
 ### 操作系统 (45个命令)
 - ✅ Ubuntu 系统命令 (20个)
@@ -127,18 +146,20 @@ go run ./cmd/cli -d ./data
 - ✅ 网络诊断 (tcpdump, netstat, ss等) (6个)
 - ✅ HTTP 工具 (curl, wget等) (5个)
 
-### 容器编排 (140+个命令)
+### 容器编排 (200+个命令)
 - ✅ Docker 命令 (10个)
-- ✅ Kubernetes 命令 (kubectl) (16个)
-- ✅ K8s 集群管理 (kubeadm, kubelet, etcdctl) (12个)
+- ✅ Kubernetes 命令 (kubectl) (25个)
+- ✅ K8s 集群管理 (kubeadm, kubelet, etcdctl) (20个)
 - ✅ K8s 容器运行时 (crictl, ctr, containerd) (9个)
-- ✅ K8s 监控日志 (prometheus, grafana, opentelemetry, loki, fluentd) (28个)
-- ✅ K8s 网络插件 (calicoctl, cilium) (7个)
-- ✅ K8s 存储管理 (helm) (8个)
+- ✅ K8s 监控日志 (prometheus, grafana, opentelemetry, loki, fluentd) (45个)
+- ✅ K8s 网络插件 (calicoctl, cilium) (15个)
+- ✅ K8s 存储管理 (PV/PVC, StorageClass) (25个)
+- ✅ K8s Helm包管理 (35个)
 - ✅ K8s CI/CD (argocd, flux, tekton) (11个)
 - ✅ K8s 配置管理 (ansible, terraform) (27个)
 - ✅ K8s 备份恢复 (velero, restic) (8个)
-- ✅ K8s 安全工具 (trivy, kube-bench, falco) (7个)
+- ✅ K8s 安全工具 (trivy, kube-bench, falco, RBAC) (25个)
+- ✅ K8s 故障排查 (30个)
 - ✅ K8s 辅助工具 (k9s, kubectx, kubens, stern, popeye) (5个)
 - ✅ K8s 云平台工具 (eksctl, az aks, gcloud) (9个)
 - ✅ K8s 开发调试 (skaffold, tilt, telepresence) (8个)
@@ -162,22 +183,23 @@ go run ./cmd/cli -d ./data
 - ✅ MLOps平台 (kfp, mlflow) (2个)
 - ✅ 模型服务 (bentoml) (1个)
 
-**总计**: 380+个精选命令
+**总计**: 500+个精选命令
 
-## 🏗️ 项目架构
+## 📁 目录结构
 
 ```
 cmd4coder/
-├── cmd/cli/            # CLI 入口和命令定义
-├── internal/
+├── cmd/                # 命令行程序入口
+│   ├── cli/            # 主CLI程序
+│   └── validator/      # 数据验证工具
+├── internal/           # 内部包
 │   ├── model/          # 数据模型
 │   ├── data/           # 数据加载和索引
 │   ├── service/        # 业务逻辑层
-│   ├── ui/             # 用户界面（CLI/TUI）
-│   └── util/           # 工具函数
-├── pkg/
+│   └── ui/tui/         # TUI用户界面
+├── pkg/                # 公共包
 │   └── export/         # 导出功能
-├── data/               # YAML 命令清单数据
+├── data/               # YAML命令清单数据
 │   ├── metadata.yaml   # 元数据
 │   ├── os/             # 操作系统命令
 │   ├── lang/           # 编程语言工具
@@ -187,7 +209,22 @@ cmd4coder/
 │   ├── database/       # 数据库工具
 │   ├── vcs/            # 版本控制
 │   └── build/          # 构建工具
-└── test/               # 测试文件
+├── docs/               # 文档目录
+│   ├── guides/         # 使用指南
+│   ├── reference/      # 技术参考
+│   ├── architecture/   # 架构文档
+│   ├── reports/        # 项目报告
+│   ├── css/            # 样式文件
+│   ├── js/             # JavaScript文件
+│   ├── assets/         # 静态资源
+│   └── index.html      # 主页
+├── scripts/            # 构建脚本
+│   ├── build.sh        # Linux/macOS构建脚本
+│   └── build.ps1       # Windows构建脚本
+├── coverage_reports/   # 测试覆盖率报告
+├── test/               # 集成测试
+├── .github/            # GitHub配置
+└── .git/               # Git版本控制
 ```
 
 ## 🔧 开发
@@ -230,6 +267,31 @@ go vet ./...
 golangci-lint run
 ```
 
+### 构建项目
+
+```bash
+# 使用构建脚本
+./scripts/build.sh     # Linux/macOS
+cd scripts && ./build.ps1  # Windows (PowerShell)
+
+# 或者手动构建
+go build -o bin/cmd4coder ./cmd/cli
+
+# 如果需要指定模块目录
+cd build/config && go build -o ../../bin/cmd4coder ../../cmd/cli
+```
+
+### 查看测试覆盖率
+
+```bash
+# 生成覆盖率报告
+go test -coverprofile=coverage_reports/coverage.out ./...
+go tool cover -html=coverage_reports/coverage.out -o coverage_reports/coverage.html
+
+# 查看覆盖率统计
+go tool cover -func=coverage_reports/coverage.out
+```
+
 ### 添加新命令
 
 1. 在对应的 YAML 文件中添加命令定义
@@ -261,7 +323,7 @@ golangci-lint run
 
 ## 🤝 贡献
 
-欢迎贡献！请查看 [CONTRIBUTING.md](CONTRIBUTING.md) 了解详情。
+欢迎贡献！请查看 [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) 了解详情。
 
 ### 贡献方式
 
@@ -273,7 +335,7 @@ golangci-lint run
 
 ### 行为准则
 
-请阅读并遵守 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) 中的社区准则。
+请阅读并遵守 [docs/legal/CODE_OF_CONDUCT.md](docs/legal/CODE_OF_CONDUCT.md) 中的社区准则。
 
 ## ❓ 常见问题 (FAQ)
 
@@ -321,7 +383,7 @@ A:
 
 ## 📝 许可证
 
-本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
+本项目采用 MIT 许可证。详见 [docs/legal/LICENSE](docs/legal/LICENSE) 文件。
 
 ## 🙏 致谢
 
